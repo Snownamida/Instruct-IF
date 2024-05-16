@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package instructif.vue;
+package instructif;
 
 import instructif.dao.JpaUtil;
 import java.util.List;
@@ -19,53 +19,48 @@ import instructif.metier.service.Service;
  *
  * @author mbaratova
  */
-
-
-
-// Pour refresh la vue de la BD, il faut refresh la BD mais AUSSI réexécuter l'instruction SQL qui permet d'afficher les premières lignes !
-
-public class Main {
+// Pour refresh la vue de la BD, il faut refresh la BD mais AUSSI réexécuter
+// l'instruction SQL qui permet d'afficher les premières lignes !
+public class TestBack {
 
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        
-        JpaUtil.desactiverLog();
-        
-        
-        //scenario1BeaucoupDeTests();
-        //scenario2Intervenants();
-        //scenario3Connexions();
-        //scenario4EnvoiDeDemandes();
-        //scenario5Visio();
+
+        // scenario1BeaucoupDeTests();
+        // scenario2Intervenants();
+        // scenario3Connexions();
+        // scenario4EnvoiDeDemandes();
+        // scenario5Visio();
         scenario6NormalEleve();
-          
-    }  
-    
+
+    }
+
     // ce scénario regroupe beaucoup de testsen tout genre
-    public static void scenario1BeaucoupDeTests(){
+    public static void scenario1BeaucoupDeTests() {
         // initialisation de l'application
         JpaUtil.creerFabriquePersistance();
         Service service = new Service();
         service.initialiserApplication();
-        //service.desactiverLog();
+        // service.desactiverLog();
         service.desactiverStackTrace();
-        
+
         // inscription de trois éleves
         System.out.println("\n    INSCRIPTION DE TROIS ELEVES");
         String codeEtab1 = "0692155T"; // pour e1 et e2, college
         String codeEtab3 = "0690132U"; // pour e3 et e4, lycee
-        Eleve e1 = new Eleve("Hugo","Victor","26/02/1802",4,"vhugo@paris.fr", "1234");
-        Eleve e2 = new Eleve("Zola","Emile","02/04/1840",4,"ezola@paris.fr", "1234");
-        Eleve e3 = new Eleve("Sand","George","01/07/1804",1,"amantine@paris.fr", "1234");
-        Eleve e4 = new Eleve("Hugo","Victor","26/02/1802",2,"vhugo@paris.fr", "1234"); // inscription avec la même adresse mail
-        
-        service.inscrireEleve(e1,codeEtab1);
-        service.inscrireEleve(e2,codeEtab1);
-        service.inscrireEleve(e3,codeEtab3);
-        service.inscrireEleve(e4,codeEtab3); // echec de l'inscription
-        
+        Eleve e1 = new Eleve("Hugo", "Victor", "26/02/1802", 4, "vhugo@paris.fr", "1234");
+        Eleve e2 = new Eleve("Zola", "Emile", "02/04/1840", 4, "ezola@paris.fr", "1234");
+        Eleve e3 = new Eleve("Sand", "George", "01/07/1804", 1, "amantine@paris.fr", "1234");
+        Eleve e4 = new Eleve("Hugo", "Victor", "26/02/1802", 2, "vhugo@paris.fr", "1234"); // inscription avec la même
+                                                                                           // adresse mail
+
+        service.inscrireEleve(e1, codeEtab1);
+        service.inscrireEleve(e2, codeEtab1);
+        service.inscrireEleve(e3, codeEtab3);
+        service.inscrireEleve(e4, codeEtab3); // echec de l'inscription
+
         // connexion des élèves
         System.out.println("\n    CONNEXION ELEVES ( première est un échec)");
         Eleve e = service.connecterEleve("vhugo@paris.fr", "mauvais"); // mauvais mot de passe
@@ -76,7 +71,7 @@ public class Main {
         verificationConnexionEleve(e2);
         e3 = service.connecterEleve("amantine@paris.fr", "1234");
         verificationConnexionEleve(e3);
-        
+
         // envoi de demandes de cours
         System.out.println("\n    ENVOI DEMANDES DE COURS");
         long id = 4;
@@ -88,42 +83,40 @@ public class Main {
         id = 5;
         System.out.println("\n  INTERVENANT NON DISPO");
         testEnvoiDemande(e3, service, id, "Je suis en première.");
-        
-        
+
         // connexion des intervenants qui doivent intervenir dans les demandes
         System.out.println("\n    CONNEXION INTERVENANTS");
         Intervenant intervenant1 = service.connecterIntervenant(demande1.getIntervenant().getLogin());
         verificationConnexionIntervenant(intervenant1);
         Intervenant intervenant2 = service.connecterIntervenant(demande2.getIntervenant().getLogin());
         verificationConnexionIntervenant(intervenant2);
-        
+
         // visio numéro 1 : tout se passe bien
         System.out.println("\n    VISIO 1");
         service.lancerVisioIntervenant(intervenant1);
-        try{
+        try {
             TimeUnit.SECONDS.sleep(2);
-        } catch (Exception ex){
+        } catch (Exception ex) {
             System.out.println(ex);
         }
         service.raccrocherEleve(e1);
         service.evaluerVisio(e1, 2);
         service.envoyerBilan(intervenant1, "Tres bon travail");
-        
+
         // visio numéro 2 :
         System.out.println("\n    VISIO 2");
         service.lancerVisioIntervenant(intervenant2);
-        try{
+        try {
             TimeUnit.SECONDS.sleep(2);
-        } catch (Exception ex){
+        } catch (Exception ex) {
             System.out.println(ex);
         }
         service.raccrocherEleve(e2);
         service.evaluerVisio(e2, 2);
         System.out.println("\n  ENVOI DEMANDE ALORS QUE LE COURS N'EST PAS ENCORE CONCLU");
-        testEnvoiDemande(e2, service, id, "J'ai encore besoin d'une lecon svp"); 
+        testEnvoiDemande(e2, service, id, "J'ai encore besoin d'une lecon svp");
         service.envoyerBilan(intervenant2, "Tres bon travail");
-       
-       
+
         // affichage d'informations
         System.out.println("\n    AFFICHAGE DES STATISTIQUES");
         affichageStatistiques(service);
@@ -135,38 +128,36 @@ public class Main {
         affichageEtablissements(service);
         System.out.println("\n    AFFICHAGE MATIERES");
         affichageMatieres(service);
-        
+
         JpaUtil.fermerFabriquePersistance();
     }
-    
+
     // ce scénario teste l'allocation des intervenants
-    public static void scenario2Intervenants(){
+    public static void scenario2Intervenants() {
         JpaUtil.creerFabriquePersistance();
         Service service = new Service();
         service.initialiserApplication();
         service.desactiverLog();
         service.desactiverStackTrace();
-        
+
         /**
          * On a trois intervenants, avec leurs niveaux enseignés respectifs:
-         *  FSAM de la 6eme à la 3eme
-         *  DONALD de la 4eme à la 2nde
-         *  ew en terminale
+         * FSAM de la 6eme à la 3eme DONALD de la 4eme à la 2nde ew en terminale
          */
         // inscription de trois éleves
         System.out.println("\n    INSCRIPTION DE QUATRES ELEVES");
         String codeEtab1 = "0692155T";
         String codeEtab3 = "0690132U"; // lycee
-        Eleve e1 = new Eleve("Hugo","Victor","26/02/1802",4,"vhugo@paris.fr", "1234");
-        Eleve e2 = new Eleve("Zola","Emile","02/04/1840",4,"ezola@paris.fr", "1234");
-        Eleve e3 = new Eleve("Sand","George","01/07/1804",1,"amantine@paris.fr", "1234");
-        Eleve e4 = new Eleve("Berger","Gaston","01/07/1804",4,"gberger@lyon.fr", "1234");
-        
-        service.inscrireEleve(e1,codeEtab1);
-        service.inscrireEleve(e2,codeEtab1);
-        service.inscrireEleve(e3,codeEtab3);
-        service.inscrireEleve(e4,codeEtab1);
-        
+        Eleve e1 = new Eleve("Hugo", "Victor", "26/02/1802", 4, "vhugo@paris.fr", "1234");
+        Eleve e2 = new Eleve("Zola", "Emile", "02/04/1840", 4, "ezola@paris.fr", "1234");
+        Eleve e3 = new Eleve("Sand", "George", "01/07/1804", 1, "amantine@paris.fr", "1234");
+        Eleve e4 = new Eleve("Berger", "Gaston", "01/07/1804", 4, "gberger@lyon.fr", "1234");
+
+        service.inscrireEleve(e1, codeEtab1);
+        service.inscrireEleve(e2, codeEtab1);
+        service.inscrireEleve(e3, codeEtab3);
+        service.inscrireEleve(e4, codeEtab1);
+
         // envoi de demandes de cours
         System.out.println("\n    ENVOI DEMANDES DE COURS");
         long id = 4;
@@ -176,29 +167,27 @@ public class Main {
         testEnvoiDemande(e4, service, id, "Je suis en quatrieme.");
         System.out.println("\n  PAS D'INTERVENANT EN 1ere " + e3);
         testEnvoiDemande(e3, service, id, "Je suis en première.");
-               
-        
+
         JpaUtil.fermerFabriquePersistance();
     }
-    
+
     // ce scnéario teste les connexions à 'application
-    public static void scenario3Connexions(){
+    public static void scenario3Connexions() {
         JpaUtil.creerFabriquePersistance();
         Service service = new Service();
         service.initialiserApplication();
-        //service.desactiverLog();
+        // service.desactiverLog();
         service.desactiverStackTrace();
-        
-       
+
         // inscription de trois éleves
         System.out.println("\n    INSCRIPTION D'ELEVES");
         String codeEtab1 = "0692155T";
-        Eleve e1 = new Eleve("Hugo","Victor","26/02/1802",4,"vhugo@paris.fr", "1234");
-        Eleve e2 = new Eleve("Berger","Gaston","01/07/1804",4,"vhugo@paris.fr", "1234"); // inscription échouée
-        
-        service.inscrireEleve(e1,codeEtab1);
-        service.inscrireEleve(e2,codeEtab1);
-        
+        Eleve e1 = new Eleve("Hugo", "Victor", "26/02/1802", 4, "vhugo@paris.fr", "1234");
+        Eleve e2 = new Eleve("Berger", "Gaston", "01/07/1804", 4, "vhugo@paris.fr", "1234"); // inscription échouée
+
+        service.inscrireEleve(e1, codeEtab1);
+        service.inscrireEleve(e2, codeEtab1);
+
         // connexions d'un élève
         System.out.println("\n    CONNEXION REUSSIE");
         service.connecterEleve("vhugo@paris.fr", "1234");
@@ -208,33 +197,32 @@ public class Main {
         service.connecterEleve("vhugo", "1234");
         System.out.println("\n    CONNEXION ECHOUEE");
         service.connecterEleve("vhugo", "mauvais");
-        
+
         // connexion d'intervenants
         System.out.println("\n    CONNEXION REUSSIE");
         service.connecterIntervenant("FSAM");
         System.out.println("\n    CONNEXION ECHOUEE");
         service.connecterIntervenant("Malika");
-        
+
         JpaUtil.fermerFabriquePersistance();
     }
-    
-    public static void scenario4EnvoiDeDemandes(){
+
+    public static void scenario4EnvoiDeDemandes() {
         JpaUtil.creerFabriquePersistance();
         Service service = new Service();
         service.initialiserApplication();
-        //service.desactiverLog();
+        // service.desactiverLog();
         service.desactiverStackTrace();
-        
-       
+
         // inscription de deux éleves
         System.out.println("\n    INSCRIPTION DE DEUX ELEVES");
         String codeEtab1 = "0692155T";
-        Eleve e1 = new Eleve("Hugo","Victor","26/02/1802",4,"vhugo@paris.fr", "1234");
-        Eleve e2 = new Eleve("Berger","Gaston","01/07/1804",4,"gberger@paris.fr", "1234"); 
-        
-        service.inscrireEleve(e1,codeEtab1);
-        service.inscrireEleve(e2,codeEtab1);
-        
+        Eleve e1 = new Eleve("Hugo", "Victor", "26/02/1802", 4, "vhugo@paris.fr", "1234");
+        Eleve e2 = new Eleve("Berger", "Gaston", "01/07/1804", 4, "gberger@paris.fr", "1234");
+
+        service.inscrireEleve(e1, codeEtab1);
+        service.inscrireEleve(e2, codeEtab1);
+
         // envoi de demandes
         System.out.println("\n    ENVOI REUSSI");
         Demande demande1 = testEnvoiDemande(e1, service, (long) 4, "Première demande");
@@ -244,43 +232,41 @@ public class Main {
         testEnvoiDemande(e1, service, (long) 10, "Troisieme demande invalide");
         JpaUtil.fermerFabriquePersistance();
     }
-    
-    public static void scenario5Visio(){
+
+    public static void scenario5Visio() {
         JpaUtil.creerFabriquePersistance();
         Service service = new Service();
         service.initialiserApplication();
-        //service.desactiverLog();
+        // service.desactiverLog();
         service.desactiverStackTrace();
-        
-       
+
         // inscription de deux éleves
         System.out.println("\n    INSCRIPTION DE DEUX ELEVES");
         String codeEtab1 = "0692155T";
-        Eleve e1 = new Eleve("Hugo","Victor","26/02/1802",4,"vhugo@paris.fr", "1234");
-        Eleve e2 = new Eleve("Berger","Gaston","01/07/1804",4,"gberger@paris.fr", "1234"); 
-        
-        service.inscrireEleve(e1,codeEtab1);
-        service.inscrireEleve(e2,codeEtab1);
+        Eleve e1 = new Eleve("Hugo", "Victor", "26/02/1802", 4, "vhugo@paris.fr", "1234");
+        Eleve e2 = new Eleve("Berger", "Gaston", "01/07/1804", 4, "gberger@paris.fr", "1234");
 
-        
+        service.inscrireEleve(e1, codeEtab1);
+        service.inscrireEleve(e2, codeEtab1);
+
         // visio
         Intervenant intervenant1 = null;
-        
+
         System.out.println("\n    CINQ VISIO SUCCESSIVES");
-        for (int i=0;i<5;i++){
+        for (int i = 0; i < 5; i++) {
             Demande demande1 = testEnvoiDemande(e1, service, (long) 4, i + " demande");
             intervenant1 = service.connecterIntervenant(demande1.getIntervenant().getLogin());
             service.lancerVisioIntervenant(intervenant1);
-            try{
+            try {
                 TimeUnit.SECONDS.sleep(2);
-            } catch (Exception ex){
+            } catch (Exception ex) {
                 System.out.println(ex);
             }
             service.raccrocherEleve(e1);
             service.evaluerVisio(e1, 2);
             service.envoyerBilan(intervenant1, "Tres bon travail");
         }
-        
+
         System.out.println("\n    AFFICHAGE DES STATISTIQUES");
         affichageStatistiques(service);
         System.out.println("\n    AFFICHAGE HISTORIQUE D'UN ELEVE");
@@ -291,180 +277,168 @@ public class Main {
         affichageEtablissements(service);
         System.out.println("\n    AFFICHAGE MATIERES");
         affichageMatieres(service);
-        
+
         JpaUtil.fermerFabriquePersistance();
     }
-    
-    public static void scenario6NormalEleve(){
+
+    public static void scenario6NormalEleve() {
         JpaUtil.creerFabriquePersistance();
         Service service = new Service();
         service.initialiserApplication();
-        //service.desactiverLog();
+        // service.desactiverLog();
         service.desactiverStackTrace();
-        
-       
+
         // inscription de deux éleves
         System.out.println("\n    INSCRIPTION DE L'ELEVE");
         String codeEtab1 = "0692155T";
-        Eleve e1 = new Eleve("Hugo","Victor","26/02/1802",4,"vhugo@paris.fr", "1234");
-        
-        service.inscrireEleve(e1,codeEtab1);
-        
+        Eleve e1 = new Eleve("Hugo", "Victor", "26/02/1802", 4, "vhugo@paris.fr", "1234");
+
+        service.inscrireEleve(e1, codeEtab1);
+
         // visio
         System.out.println("\n    ENVOI DE LA DEMANDE");
         Demande demande1 = testEnvoiDemande(e1, service, (long) 4, "Premiere demande");
         System.out.println("\n    RECUPERATION D L'INTERVENANT + LANCEMENT VISIO INTERVENANT");
         Intervenant intervenant1 = service.connecterIntervenant(demande1.getIntervenant().getLogin());
         service.lancerVisioIntervenant(intervenant1);
-        
+
         System.out.println("\n    DEBUT DE LA VISIO");
-        try{
+        try {
             TimeUnit.SECONDS.sleep(3);
-        } catch (Exception ex){
+        } catch (Exception ex) {
             System.out.println(ex);
         }
-        
+
         System.out.println("\n    FIN DE LA VISIO");
         service.raccrocherEleve(e1);
         service.evaluerVisio(e1, 2);
         service.envoyerBilan(intervenant1, "Tres bon travail");
-        
+
         System.out.println("\n    AFFICHAGE DES STATISTIQUES");
         affichageStatistiques(service);
         System.out.println("\n    AFFICHAGE HISTORIQUE D'UN ELEVE");
         affichageHistoEleve(e1, service);
         System.out.println("\n    AFFICHAGE HISTORIQUE D'UN INTERVENANT");
         affichageHistoIntervenant(intervenant1, service);
-        
-        
+
         JpaUtil.fermerFabriquePersistance();
-    }   
-    
-    public static void verificationConnexionEleve(Eleve e){
-        if (e == null)
-        {
+    }
+
+    public static void verificationConnexionEleve(Eleve e) {
+        if (e == null) {
             System.out.println("Connexion échouée : checker le mail ou le mot de passe");
-        }
-        else
-        {
-            System.out.println("Connexion réussie : " + e + " connecte"); // Pas d'affichage dans les servces et les DAO !
+        } else {
+            System.out.println("Connexion réussie : " + e + " connecte"); // Pas d'affichage dans les servces et les DAO
+                                                                          // !
         }
     }
-    
-    public static void verificationConnexionIntervenant(Intervenant intervenant){        
-        if (intervenant == null)
-        {
+
+    public static void verificationConnexionIntervenant(Intervenant intervenant) {
+        if (intervenant == null) {
             System.out.println("Connexion intervenant échouée : checker le login");
-        }
-        else
-        {
+        } else {
             System.out.println(intervenant);
         }
     }
-    
-    public static void affichageStatistiques(Service service){
+
+    public static void affichageStatistiques(Service service) {
         Matiere matiere = service.obtenirMatierePopulaire();
         System.out.println("Matiere la plus demandée : " + matiere);
-        
+
         Long[] tuple = service.obtenirStatsSoutienTotal();
         System.out.println("Nombre total de soutien : " + tuple[0]);
         System.out.println("Durée total des soutiens : " + tuple[1] + " s");
-        
+
         tuple = service.obtenirStatsSoutienEleve();
         System.out.println("Nombre moyen de soutien par élève : " + tuple[0]);
         System.out.println("Durée moyenne des soutiens par élève : " + tuple[1] + " s");
-        
+
         tuple = service.obtenirStatsSoutienEtablissement();
         System.out.println("Nombre moyen de soutien par établissement : " + tuple[0]);
         System.out.println("Durée moyenne des soutiens par établissement : " + tuple[1] + " s");
-        
+
     }
-    
-    public static void affichageHistoEleve(Eleve eleve, Service service){
+
+    public static void affichageHistoEleve(Eleve eleve, Service service) {
         List<Demande> listeDemandes = service.obtenirHistoriqueEleve(eleve);
-        for (Demande d : listeDemandes)
-        {
+        for (Demande d : listeDemandes) {
             System.out.println("- " + d);
         }
     }
-    
-    public static void affichageHistoIntervenant(Intervenant intervenant, Service service){
+
+    public static void affichageHistoIntervenant(Intervenant intervenant, Service service) {
         List<Demande> listeDemandes = service.obtenirHistoriqueIntervenant(intervenant);
-        for (Demande d : listeDemandes)
-        {
+        for (Demande d : listeDemandes) {
             System.out.println("- " + d);
         }
     }
-    
-    public static void affichageMatieres(Service service){
+
+    public static void affichageMatieres(Service service) {
         List<Matiere> listeMatieres = service.obtenirListeMatieres();
-        for (Matiere m : listeMatieres)
-        {
+        for (Matiere m : listeMatieres) {
             System.out.println("- " + m.getDenomination());
         }
-        
+
     }
-    
-    public static void affichageEtablissements(Service service){
-        List <Etablissement> listeEtablissements = service.obtenirListeEtablissements();
-         for (Etablissement d : listeEtablissements)
-        {
+
+    public static void affichageEtablissements(Service service) {
+        List<Etablissement> listeEtablissements = service.obtenirListeEtablissements();
+        for (Etablissement d : listeEtablissements) {
             System.out.println("- " + d);
         }
     }
-    
-    public static Demande testEnvoiDemande(Eleve eleve, Service service, Long id, String description){
+
+    public static Demande testEnvoiDemande(Eleve eleve, Service service, Long id, String description) {
         Matiere matiere = service.recupererMatiereParID(id);
         Demande demande = null;
-        if (matiere != null){
+        if (matiere != null) {
             demande = service.envoyerDemande(matiere, description, eleve);
-            if (demande == null){
+            if (demande == null) {
                 System.out.println("La demande n'a pas été envoyée.");
-            }
-            else{
+            } else {
                 System.out.println("La demande a été envoyée.");
             }
-        }
-        else {
+        } else {
             System.out.println("Id matiere non valide");
         }
-    return demande;
+        return demande;
     }
 }
 
-
-
 // ------------------- TIPS DU TD ------------------
-
 // Invoquer le "print" exécute automatiquement le ToString() de l'objet !
-// lorsqu'on fait un CREATE uniquement : ne veut pas insérer les clients car les mail sont uniques
-// ALors qu'en DROP AND CREATE, toutes les données sont effacées auparavant, donc tout est recréé avec succès
-
-// -------------- FONCTIONS SAISIES SUR LE TERMINAL  ----------------------------
-    
-    /*static public void inscription()
-    {   
-        Service service = new Service();
-                // Saisie a des métthodes statiques : pas besoin d'instancier un objet pour invoquer ces méthodes
-        String nom = Saisie.lireChaine("Entrez le nom : ");
-        String prenom = Saisie.lireChaine("Entrez le prenom : ");
-        String adresse = Saisie.lireChaine("Entrez l'adresse : ");
-        String mail = Saisie.lireChaine("Entrez le mail : ");
-        String mdp = Saisie.lireChaine("Entrez le mot de passe : ");
-        
-        Eleve client = new Eleve(nom, prenom, mail, adresse, mdp);
-        
-        service.inscrireClient(client);
-    }*/
-    
-    /*static public void authentification()
-    {   
-        Service service = new Service();
-        String mail = Saisie.lireChaine("Entrez le mail : ");
-        String mdp = Saisie.lireChaine("Entrez le mot de passe : ");
-        
-        Eleve c = service.authentifierClient(mail,mdp);
-        System.out.println(c); // Pas d'affichage dans les servces et les DAO !
-       
-    
-    }*/
+// lorsqu'on fait un CREATE uniquement : ne veut pas insérer les clients car les
+// mail sont uniques
+// ALors qu'en DROP AND CREATE, toutes les données sont effacées auparavant,
+// donc tout est recréé avec succès
+// -------------- FONCTIONS SAISIES SUR LE TERMINAL ----------------------------
+/*
+ * static public void inscription()
+ * {
+ * Service service = new Service();
+ * // Saisie a des métthodes statiques : pas besoin d'instancier un objet pour
+ * invoquer ces méthodes
+ * String nom = Saisie.lireChaine("Entrez le nom : ");
+ * String prenom = Saisie.lireChaine("Entrez le prenom : ");
+ * String adresse = Saisie.lireChaine("Entrez l'adresse : ");
+ * String mail = Saisie.lireChaine("Entrez le mail : ");
+ * String mdp = Saisie.lireChaine("Entrez le mot de passe : ");
+ * 
+ * Eleve client = new Eleve(nom, prenom, mail, adresse, mdp);
+ * 
+ * service.inscrireClient(client);
+ * }
+ */
+/*
+ * static public void authentification()
+ * {
+ * Service service = new Service();
+ * String mail = Saisie.lireChaine("Entrez le mail : ");
+ * String mdp = Saisie.lireChaine("Entrez le mot de passe : ");
+ * 
+ * Eleve c = service.authentifierClient(mail,mdp);
+ * System.out.println(c); // Pas d'affichage dans les servces et les DAO !
+ * 
+ * 
+ * }
+ */
