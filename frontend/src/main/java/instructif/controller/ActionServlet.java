@@ -1,16 +1,5 @@
 package instructif.controller;
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
-import instructif.vue.ProfilEleveSerialisation;
-import instructif.vue.ProfilIntervenantSerialisation;
-import instructif.action.AuthentifierEleveAction;
-import instructif.action.AuthentifierIntervenantAction;
-import instructif.dao.JpaUtil;
 import java.io.IOException;
 
 import javax.servlet.ServletException;
@@ -18,6 +7,12 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import instructif.action.AuthentifierEleveAction;
+import instructif.action.AuthentifierIntervenantAction;
+import instructif.dao.JpaUtil;
+import instructif.vue.ProfilEleveSerialisation;
+import instructif.vue.ProfilIntervenantSerialisation;
 
 /**
  *
@@ -57,22 +52,25 @@ public class ActionServlet extends HttpServlet {
             case "connecter-e":
 
                 AuthentifierEleveAction authentifierEleveAction = new AuthentifierEleveAction();
-                authentifierEleveAction.execute(request, response);
+                authentifierEleveAction.execute(request);
                 ProfilEleveSerialisation profilEleveSerialisation = new ProfilEleveSerialisation();
                 profilEleveSerialisation.serialize(request, response);
                 break;
 
             case "connecter-i":
                 AuthentifierIntervenantAction authentifierIntervenantAction = new AuthentifierIntervenantAction();
-                authentifierIntervenantAction.execute(request, response);
+                authentifierIntervenantAction.execute(request);
                 ProfilIntervenantSerialisation profilIntervenantSerialisation = new ProfilIntervenantSerialisation();
                 profilIntervenantSerialisation.serialize(request, response);
+                break;
+
+            case "signup-e":
+
                 break;
 
             default:
                 break;
         }
-
 
     }
 

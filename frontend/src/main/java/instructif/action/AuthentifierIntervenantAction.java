@@ -1,14 +1,14 @@
 package instructif.action;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+
 import instructif.metier.modele.Intervenant;
 import instructif.metier.service.Service;
 
 public class AuthentifierIntervenantAction extends Action {
 
     @Override
-    public void execute(HttpServletRequest request, HttpServletResponse response) {
+    public void execute(HttpServletRequest request) {
         // Authentification
         String login = request.getParameter("login");
 
