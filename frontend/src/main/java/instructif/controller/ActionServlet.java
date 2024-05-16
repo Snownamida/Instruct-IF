@@ -10,8 +10,10 @@ import javax.servlet.http.HttpServletResponse;
 
 import instructif.action.AuthentifierEleveAction;
 import instructif.action.AuthentifierIntervenantAction;
+import instructif.action.GetLoginStateAction;
 import instructif.action.SignupEAction;
 import instructif.dao.JpaUtil;
+import instructif.vue.MyinfoSerialisation;
 import instructif.vue.ProfilEleveSerialisation;
 import instructif.vue.ProfilIntervenantSerialisation;
 import instructif.vue.SignUpStateSerialisation;
@@ -55,21 +57,28 @@ public class ActionServlet extends HttpServlet {
                 AuthentifierEleveAction authentifierEleveAction = new AuthentifierEleveAction();
                 authentifierEleveAction.execute(request);
                 ProfilEleveSerialisation profilEleveSerialisation = new ProfilEleveSerialisation();
-                profilEleveSerialisation.serialize(request, response);
+                profilEleveSerialisation.execute(request, response);
                 break;
 
             case "connecter-i":
                 AuthentifierIntervenantAction authentifierIntervenantAction = new AuthentifierIntervenantAction();
                 authentifierIntervenantAction.execute(request);
                 ProfilIntervenantSerialisation profilIntervenantSerialisation = new ProfilIntervenantSerialisation();
-                profilIntervenantSerialisation.serialize(request, response);
+                profilIntervenantSerialisation.execute(request, response);
                 break;
 
             case "inscrire":
                 SignupEAction signupE = new SignupEAction();
                 signupE.execute(request);
                 SignUpStateSerialisation signUpStateSerialisation = new SignUpStateSerialisation();
-                signUpStateSerialisation.serialize(request, response);
+                signUpStateSerialisation.execute(request, response);
+                break;
+
+            case "my-info":
+                GetLoginStateAction getLoginStateAction = new GetLoginStateAction();
+                getLoginStateAction.execute(request);
+                MyinfoSerialisation myinfoSerialisation = new MyinfoSerialisation();
+                myinfoSerialisation.execute(request, response);
                 break;
 
             default:
