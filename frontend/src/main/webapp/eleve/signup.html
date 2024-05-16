@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inscription élève</title>
+    <link rel="stylesheet" href="signup.css">
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>INSCRIPTION ÉLÈVE</h1>
+            <a href="../index.html"> <button type="button" class="retour">Retour</button></a>
+        </div>
+        <h2>Informations personnelles</h2>
+        <div class="form-group">
+            <label for="nom">NOM </label>
+            <input id="champ-nom" type="text" placeholder="ex : DUFAUT" />
+        </div>
+        <div class="form-group">
+            <label for="prenom">Prenom </label>
+            <input id="champ-prenom" type="text" placeholder="ex : Marc" />
+        </div>
+        <div class="form-group date-group">
+            <label for="jour">Né(e) le </label>
+            <input id="champ-jour" type="text" placeholder="JJ" />
+            <input id="champ-mois" type="text" placeholder="MM" />
+            <input id="champ-annee" type="text" placeholder="AAAA" />
+        </div>
+        <h2>Cursus et établissement</h2>
+        <div class="form-group">
+            <label for="code">Code établissement </label>
+            <input id="champ-code" type="text" placeholder="ex : 0691664J" />
+        </div>
+        <div class="form-group">
+            <label for="classe">Classe </label>
+            <select id="champ-classe">
+                <option value="0">Terminale</option>
+                <option value="1">Première</option>
+                <option value="2">Seconde</option>
+                <option value="3">3ème</option>
+                <option value="4">4ème</option>
+                <option value="5">5ème</option>
+                <option value="6">6ème</option>
+            </select>
+        </div>
+        <h2>Accès au compte</h2>
+        <div class="form-group">
+            <label for="mail">Adresse mail </label>
+            <input id="champ-mail" type="text" placeholder="ex : dufaut.marc@gmail.com" />
+        </div>
+        <div class="form-group">
+            <label for="password">Mot de passe </label>
+            <input id="champ-password" type="password" placeholder="********" />
+        </div>
+        <div class="form-group">
+            <button type="button" class="btn" onclick="signup()">M'inscrire</button>
+        </div>
+    </div>
+
+    <script>
+        function signup() { // Fonction appelée lors du clic sur le bouton me connecter
+            // Récupération de la valeur des champs du formulaire
+            var champNom = $('#champ-nom').val();
+            var champPrenom = $('#champ-prenom').val();
+            var champJour = $('#champ-jour').val();
+            var champMois = $('#champ-mois').val();
+            var champAnnee = $('#champ-annee').val();
+            var champCode = $('#champ-code').val();
+            var champClasse = $('#champ-classe').val();
+            var champMail = $('#champ-mail').val();
+            var champPassword = $('#champ-password').val();
+            // Appel AJAX
+            $.ajax({
+                url: '../ActionServlet',
+                method: 'POST',
+                data: {
+                    todo: 'inscrire',
+                    nom: champNom,
+                    prenom: champPrenom,
+                    jour: champJour,
+                    mois: champMois,
+                    annee: champAnnee,
+                    code: champCode,
+                    classe: champClasse,
+                    mail: champMail,
+                    password: champPassword
+                },
+                dataType: 'json'
+            })
+            .done(function (response) { // Fonction appelée en cas d'appel AJAX réussi
+                console.log('Response', response); // LOG dans Console Javascript
+            })
+            .fail(function (error) { // Fonction appelée en cas d'erreur lors de l'appel AJAX
+                console.log('Error', error); // LOG dans Console Javascript
+                alert("Erreur lors de l'appel AJAX");
+            })
+            .always(function () { // Fonction toujours appelée
+            });
+        }
+    </script>
+</body>
+
+</html>

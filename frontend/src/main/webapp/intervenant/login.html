@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Connexion intervenant</title>
+  <link rel="stylesheet" href="login.css" />
+  <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+</head>
+
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>Connexion intervenant</h1>
+      <a href="../index.html"> <button type="button" class="retour">Retour</button></a>
+    </div>
+    <div class="form-group">
+      <label for="champ-login">Login</label>
+      <input id="champ-login" type="text" placeholder="pnom" />
+    </div>
+    <div class="form-group">
+      <button type="button" class="btn" onclick="login()">Se connecter</button>
+    </div>
+  </div>
+
+  <script>
+    function login() { // Fonction appelée lors du clic sur le bouton
+      // Récupération de la valeur des champs du formulaire
+      var champLogin = $('#champ-login').val();
+      // Appel AJAX
+      $.ajax({
+        url: '../ActionServlet',
+        method: 'POST',
+        data: {
+          todo: 'connecter-i',
+          login: champLogin,
+        },
+        dataType: 'json'
+      })
+        .done(function (response) { // Fonction appelée en cas d'appel AJAX réussi
+          console.log('Response', response); // LOG dans Console Javascript
+        })
+        .fail(function (error) { // Fonction appelée en cas d'erreur lors de l'appel AJAX
+          console.log('Error', error); // LOG dans Console Javascript
+          alert("Erreur lors de l'appel AJAX");
+        })
+        .always(function () { // Fonction toujours appelée
+        });
+    }
+  </script>
+</body>
+
+</html>

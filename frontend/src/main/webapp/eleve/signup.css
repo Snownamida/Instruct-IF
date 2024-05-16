@@ -1,0 +1,99 @@
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.container {
+    text-align: center;
+    border: 1px solid #ccc;
+    padding: 20px;
+    width: 500px;
+    position: relative;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+h1 {
+    font-size: 24px;
+    margin: 0;
+}
+
+h2 {
+    font-size: 20px;
+    text-align: left;
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+
+.form-group {
+    margin: 10px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+label {
+    font-size: 16px;
+    margin-right: 10px;
+    width: 150px;
+    text-align: left;
+}
+
+input[type="text"],
+input[type="password"],
+select {
+    padding: 8px;
+    font-size: 16px;
+    width: 250px;
+}
+
+input[type="text"]::placeholder,
+input[type="password"]::placeholder {
+    color: #aaa;
+}
+
+.date-group input[type="text"] {
+    width: 60px;
+    margin-right: 5px;
+}
+
+.date-group input[type="text"]:last-child {
+    margin-right: 0;
+}
+
+.btn {
+    background-color: #333;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 20px;
+    width: 100%;
+}
+
+.btn:hover {
+    background-color: #555;
+}
+
+.retour {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background-color: #ccc;
+    border: 1px solid #999;
+    padding: 5px 10px;
+}
+
+.retour:hover {
+    background-color: #ddd;
+}
