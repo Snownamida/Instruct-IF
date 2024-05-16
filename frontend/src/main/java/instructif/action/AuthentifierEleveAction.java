@@ -12,11 +12,10 @@ public class AuthentifierEleveAction extends Action {
         // Authentification
         String mail = request.getParameter("mail");
         String password = request.getParameter("password");
-
+        
         Service service = new Service();
 
         Eleve e = service.connecterEleve(mail, password);
-        System.out.println("\n" + e);
 
         request.setAttribute("utilisateur", e);
     }

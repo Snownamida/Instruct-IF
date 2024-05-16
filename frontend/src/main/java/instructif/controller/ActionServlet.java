@@ -10,9 +10,11 @@ import javax.servlet.http.HttpServletResponse;
 
 import instructif.action.AuthentifierEleveAction;
 import instructif.action.AuthentifierIntervenantAction;
+import instructif.action.SignupEAction;
 import instructif.dao.JpaUtil;
 import instructif.vue.ProfilEleveSerialisation;
 import instructif.vue.ProfilIntervenantSerialisation;
+import instructif.vue.SignUpStateSerialisation;
 
 /**
  *
@@ -50,7 +52,6 @@ public class ActionServlet extends HttpServlet {
 
         switch (todo) {
             case "connecter-e":
-
                 AuthentifierEleveAction authentifierEleveAction = new AuthentifierEleveAction();
                 authentifierEleveAction.execute(request);
                 ProfilEleveSerialisation profilEleveSerialisation = new ProfilEleveSerialisation();
@@ -65,7 +66,10 @@ public class ActionServlet extends HttpServlet {
                 break;
 
             case "signup-e":
-
+                SignupEAction signupE = new SignupEAction();
+                signupE.execute(request);
+                SignUpStateSerialisation signUpStateSerialisation = new SignUpStateSerialisation();
+                signUpStateSerialisation.serialize(request, response);
                 break;
 
             default:
