@@ -59,7 +59,6 @@ public class Service { // Tip :le service ne dépend pas de la persistence
         String expediteur = "contact@instruct.if";
         String pour = eleve.getMail();
         try {
-
             JpaUtil.creerContextePersistance(); // Tip : Mettre " créer contexte persistance" dans Service car essentiel pour manipuler des transactions dans le Service
             JpaUtil.ouvrirTransaction(); // Tip : pas dans les dao, car sinon que des transactions unitaires (un seul tuple échangé)
 

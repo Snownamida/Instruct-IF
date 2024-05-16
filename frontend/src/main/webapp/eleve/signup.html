@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inscription élève</title>
     <link rel="stylesheet" href="signup.css">
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 </head>
 
 <body>
@@ -62,7 +63,7 @@
     </div>
 
     <script>
-        function signup() { // Fonction appelée lors du clic sur le bouton me connecter
+        function signup() { // Fonction appelée lors du clic sur le bouton m'inscrire
             // Récupération de la valeur des champs du formulaire
             var champNom = $('#champ-nom').val();
             var champPrenom = $('#champ-prenom').val();
@@ -79,27 +80,25 @@
                 method: 'POST',
                 data: {
                     todo: 'inscrire',
-                    nom: champNom,
-                    prenom: champPrenom,
-                    jour: champJour,
-                    mois: champMois,
-                    annee: champAnnee,
-                    code: champCode,
-                    classe: champClasse,
+                    lastName: champNom,
+                    firstName: champPrenom,
+                    birthday: champJour + '/' + champMois + '/' + champAnnee,
+                    codeEtablissement: champCode,
+                    class: champClasse,
                     mail: champMail,
                     password: champPassword
                 },
                 dataType: 'json'
             })
-            .done(function (response) { // Fonction appelée en cas d'appel AJAX réussi
-                console.log('Response', response); // LOG dans Console Javascript
-            })
-            .fail(function (error) { // Fonction appelée en cas d'erreur lors de l'appel AJAX
-                console.log('Error', error); // LOG dans Console Javascript
-                alert("Erreur lors de l'appel AJAX");
-            })
-            .always(function () { // Fonction toujours appelée
-            });
+                .done(function (response) { // Fonction appelée en cas d'appel AJAX réussi
+                    console.log('Response', response); // LOG dans Console Javascript
+                })
+                .fail(function (error) { // Fonction appelée en cas d'erreur lors de l'appel AJAX
+                    console.log('Error', error); // LOG dans Console Javascript
+                    alert("Erreur lors de l'appel AJAX");
+                })
+                .always(function () { // Fonction toujours appelée
+                });
         }
     </script>
 </body>

@@ -22,6 +22,7 @@ public class AuthentifierEleveAction extends Action {
             HttpSession session = request.getSession(true);
             session.setAttribute("student", e);
         }
+        System.out.println(e);
 
         request.setAttribute("utilisateur", e);
     }
