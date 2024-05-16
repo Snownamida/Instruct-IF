@@ -1,10 +1,6 @@
 package instructif.vue;
 
-import java.io.IOException;
-import java.io.PrintWriter;
-
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
@@ -13,7 +9,7 @@ import instructif.metier.modele.Intervenant;
 
 public class ProfilIntervenantSerialisation extends Serialisation {
     @Override
-    public void serialize(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    public String serializeToJson(HttpServletRequest request) {
         // Création d'un objet JSON contenant la date
         JsonObject jsonObject = new JsonObject();
 
@@ -31,12 +27,7 @@ public class ProfilIntervenantSerialisation extends Serialisation {
             jsonObject.add("utilisateur", null);
         }
 
-        String json = new Gson().toJson(jsonObject);
-
-        response.setContentType("application/json;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            out.println(json);
-        }
+        return new Gson().toJson(jsonObject);
 
     }
 }
