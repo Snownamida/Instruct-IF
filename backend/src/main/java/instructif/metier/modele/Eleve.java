@@ -17,10 +17,10 @@ import javax.persistence.ManyToOne;
  * @author mbaratova
  */
 
-
 // POJO = Plain Old Java Object = Classe basique
 
-@Entity // Au début ça met une erreur. Il faut clic droit -> "fix imports" pour importer tout le nécessaire
+@Entity // Au début ça met une erreur. Il faut clic droit -> "fix imports" pour importer
+        // tout le nécessaire
 public class Eleve {
     // Les noms de types prennent des majuscules
     // Tout est en private !
@@ -29,30 +29,31 @@ public class Eleve {
     private Long id;
     private String nom;
     private String prenom;
-    
+
     @Column(unique = true)
     private String mail;
     private String motDePasse;
     private String dateNaissance;
     private int classe;
-    
+
     @ManyToOne
     private Etablissement etablissement;
 
-    // générer automatiquement
+    // Tip : On peut générer les constructeurs et getter/setter automatiquement avec
+    // clic drout + Insert code
+    // Tip : null par défaut dans les attributs
+
     @Override
     public String toString() {
-        
-        return "Eleve #" + id + ": " + nom + " " + prenom + " <" + mail + "> dans l'établissement " + etablissement.getNom() + " en classe de " + obtenirDenominationClasse();
-         
+        return "Eleve [id=" + id + ", nom=" + nom + ", prenom=" + prenom + ", mail=" + mail + ", motDePasse="
+                + motDePasse + ", dateNaissance=" + dateNaissance + ", classe=" + classe + ", etablissement="
+                + etablissement + "]";
     }
-    
-    // Tip : On peut générer les constructeurs et getter/setter automatiquement avec clic drout + Insert code
-    // Tip : null par défaut dans les attributs
-    
-    public Eleve(){} // Tip:  ON DOIT mettre un constructeur sans paramètre !!
 
-    public Eleve(String nom, String prenom, String dateNaissance,int classe, String mail, String motDePasse) {
+    public Eleve() {
+    } // Tip: ON DOIT mettre un constructeur sans paramètre !!
+
+    public Eleve(String nom, String prenom, String dateNaissance, int classe, String mail, String motDePasse) {
         this.nom = nom;
         this.prenom = prenom;
         this.mail = mail;
@@ -60,26 +61,26 @@ public class Eleve {
         this.dateNaissance = dateNaissance;
         this.classe = classe;
     }
-    
-    public String obtenirDenominationClasse(){
+
+    public String obtenirDenominationClasse() {
         String denomination;
-        switch(classe){
+        switch (classe) {
             case 0:
                 denomination = "Terminale";
                 break;
             case 1:
                 denomination = "Première";
                 break;
-            case 2 :
+            case 2:
                 denomination = "Seconde";
                 break;
-            default :
+            default:
                 denomination = classe + "ème";
-                
+
         }
         return denomination;
     }
-    
+
     public Long getId() {
         return id;
     }
