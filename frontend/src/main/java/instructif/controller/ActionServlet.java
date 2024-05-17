@@ -54,31 +54,23 @@ public class ActionServlet extends HttpServlet {
 
         switch (todo) {
             case "connecter-e":
-                AuthentifierEleveAction authentifierEleveAction = new AuthentifierEleveAction();
-                authentifierEleveAction.execute(request);
-                ProfilEleveSerialisation profilEleveSerialisation = new ProfilEleveSerialisation();
-                profilEleveSerialisation.execute(request, response);
+                new AuthentifierEleveAction().execute(request);
+                new ProfilEleveSerialisation().execute(request, response);
                 break;
 
             case "connecter-i":
-                AuthentifierIntervenantAction authentifierIntervenantAction = new AuthentifierIntervenantAction();
-                authentifierIntervenantAction.execute(request);
-                ProfilIntervenantSerialisation profilIntervenantSerialisation = new ProfilIntervenantSerialisation();
-                profilIntervenantSerialisation.execute(request, response);
+                new AuthentifierIntervenantAction().execute(request);
+                new ProfilIntervenantSerialisation().execute(request, response);
                 break;
 
             case "inscrire":
-                SignupEAction signupE = new SignupEAction();
-                signupE.execute(request);
-                SignUpStateSerialisation signUpStateSerialisation = new SignUpStateSerialisation();
-                signUpStateSerialisation.execute(request, response);
+                new SignupEAction().execute(request);
+                new SignUpStateSerialisation().execute(request, response);
                 break;
 
             case "my-info":
-                GetLoginStateAction getLoginStateAction = new GetLoginStateAction();
-                getLoginStateAction.execute(request);
-                MyinfoSerialisation myinfoSerialisation = new MyinfoSerialisation();
-                myinfoSerialisation.execute(request, response);
+                new GetLoginStateAction().execute(request);
+                new MyinfoSerialisation().execute(request, response);
                 break;
 
             default:
