@@ -14,9 +14,6 @@ import instructif.action.GetMyInfoAction;
 import instructif.action.SignupEAction;
 import instructif.dao.JpaUtil;
 import instructif.vue.DtoSerialisationJson;
-import instructif.vue.ProfilEleveSerialisation;
-import instructif.vue.ProfilIntervenantSerialisation;
-import instructif.vue.SignUpStateSerialisation;
 
 /**
  *
@@ -55,17 +52,17 @@ public class ActionServlet extends HttpServlet {
         switch (todo) {
             case "connecter-e":
                 new AuthentifierEleveAction().execute(request);
-                new ProfilEleveSerialisation().execute(request, response);
+                new DtoSerialisationJson().execute(request, response);
                 break;
 
             case "connecter-i":
                 new AuthentifierIntervenantAction().execute(request);
-                new ProfilIntervenantSerialisation().execute(request, response);
+                new DtoSerialisationJson().execute(request, response);
                 break;
 
             case "inscrire":
                 new SignupEAction().execute(request);
-                new SignUpStateSerialisation().execute(request, response);
+                new DtoSerialisationJson().execute(request, response);
                 break;
 
             case "my-info":

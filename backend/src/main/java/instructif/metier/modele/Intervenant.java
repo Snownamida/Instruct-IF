@@ -5,7 +5,6 @@
  */
 package instructif.metier.modele;
 
-import java.util.List;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;

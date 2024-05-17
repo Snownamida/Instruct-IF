@@ -3,6 +3,7 @@ package instructif.action;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import instructif.dto.EleveDto;
 import instructif.metier.modele.Eleve;
 
 public class AuthentifierEleveAction extends AbstractAction {
@@ -13,14 +14,13 @@ public class AuthentifierEleveAction extends AbstractAction {
         String mail = request.getParameter("mail");
         String password = request.getParameter("password");
 
-        Eleve e = this.service.connecterEleve(mail, password);
+        Eleve eleve = this.service.connecterEleve(mail, password);
 
-        if (e != null) {
+        if (eleve != null) {
             HttpSession session = request.getSession(true);
-            session.setAttribute("user", e);
+            session.setAttribute("user", eleve);
+            request.setAttribute("dto", new EleveDto(eleve));
         }
-        System.out.println(e);
 
-        request.setAttribute("utilisateur", e);
     }
 }

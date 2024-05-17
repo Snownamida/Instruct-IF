@@ -20,6 +20,6 @@ public class SignupEAction extends AbstractAction {
         System.out.println(eleve);
         Boolean signUpStatus = this.service.inscrireEleve(eleve, codeEtablissement);
 
-        request.setAttribute("signUpStatus", signUpStatus);
+        request.setAttribute("dto", signUpStatus);
     }
 }
