@@ -10,10 +10,10 @@ import javax.servlet.http.HttpServletResponse;
 
 import instructif.action.AuthentifierEleveAction;
 import instructif.action.AuthentifierIntervenantAction;
-import instructif.action.GetLoginStateAction;
+import instructif.action.GetMyInfoAction;
 import instructif.action.SignupEAction;
 import instructif.dao.JpaUtil;
-import instructif.vue.MyinfoSerialisation;
+import instructif.vue.DtoSerialisationJson;
 import instructif.vue.ProfilEleveSerialisation;
 import instructif.vue.ProfilIntervenantSerialisation;
 import instructif.vue.SignUpStateSerialisation;
@@ -69,8 +69,8 @@ public class ActionServlet extends HttpServlet {
                 break;
 
             case "my-info":
-                new GetLoginStateAction().execute(request);
-                new MyinfoSerialisation().execute(request, response);
+                new GetMyInfoAction().execute(request);
+                new DtoSerialisationJson().execute(request, response);
                 break;
 
             default:

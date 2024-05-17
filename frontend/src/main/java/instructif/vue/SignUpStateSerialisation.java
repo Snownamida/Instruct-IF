@@ -5,9 +5,9 @@ import javax.servlet.http.HttpServletRequest;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
-public class SignUpStateSerialisation extends Serialisation {
+public class SignUpStateSerialisation extends AbstractSerialisationJson {
     @Override
-    public String serializeToJson(HttpServletRequest request) {
+    public String serialize(HttpServletRequest request) {
         JsonObject jsonObject = new JsonObject();
 
         Boolean signUpStatus = (Boolean) request.getAttribute("signUpStatus");

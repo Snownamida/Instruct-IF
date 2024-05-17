@@ -6,13 +6,15 @@ import java.io.PrintWriter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public abstract class Serialisation {
-    abstract String serializeToJson(HttpServletRequest request);
+public abstract class AbstractSerialisation {
+    abstract String serialize(HttpServletRequest request);
+
+    abstract void setContentType(HttpServletResponse response);
 
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        response.setContentType("application/json;charset=UTF-8");
+        setContentType(response);
         PrintWriter out = response.getWriter();
-        out.println(serializeToJson(request));
+        out.println(serialize(request));
         out.close();
     }
 }

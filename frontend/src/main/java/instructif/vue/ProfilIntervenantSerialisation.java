@@ -7,9 +7,9 @@ import com.google.gson.JsonObject;
 
 import instructif.metier.modele.Intervenant;
 
-public class ProfilIntervenantSerialisation extends Serialisation {
+public class ProfilIntervenantSerialisation extends AbstractSerialisationJson {
     @Override
-    public String serializeToJson(HttpServletRequest request) {
+    public String serialize(HttpServletRequest request) {
         // Création d'un objet JSON contenant la date
         JsonObject jsonObject = new JsonObject();
 
