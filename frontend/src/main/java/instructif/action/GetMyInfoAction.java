@@ -12,6 +12,9 @@ public class GetMyInfoAction extends AbstractAction {
     @Override
     public void execute(HttpServletRequest request) {
         HttpSession session = request.getSession(false);
+        if (session == null) {
+            return;
+        }
 
         Object user = session.getAttribute("user");
 
