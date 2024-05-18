@@ -3,7 +3,7 @@ package instructif.action;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import instructif.dto.EleveDto;
+import instructif.dto.EleveDTO;
 import instructif.metier.modele.Eleve;
 
 public class AuthentifierEleveAction extends AbstractAction {
@@ -19,7 +19,7 @@ public class AuthentifierEleveAction extends AbstractAction {
         if (eleve != null) {
             HttpSession session = request.getSession(true);
             session.setAttribute("user", eleve);
-            request.setAttribute("dto", new EleveDto(eleve));
+            request.setAttribute("dto", new EleveDTO(eleve));
         }
 
     }

@@ -3,7 +3,7 @@ package instructif.action;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-public class GetLoginStateAction extends Action {
+public class GetLoginStateAction extends AbstractAction {
     @Override
     public void execute(HttpServletRequest request) {
         HttpSession session = request.getSession(false);

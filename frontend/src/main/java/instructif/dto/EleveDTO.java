@@ -3,7 +3,7 @@ package instructif.dto;
 import instructif.metier.modele.Eleve;
 import instructif.metier.modele.Etablissement;
 
-public class EleveDto {
+public class EleveDTO {
     private Long id;
     private String nom;
     private String prenom;
@@ -12,7 +12,7 @@ public class EleveDto {
     private int classe;
     private Etablissement etablissement;
 
-    public EleveDto(Long id, String nom, String prenom, String mail, String dateNaissance, int classe,
+    public EleveDTO(Long id, String nom, String prenom, String mail, String dateNaissance, int classe,
             Etablissement etablissement) {
         this.id = id;
         this.nom = nom;
@@ -23,7 +23,7 @@ public class EleveDto {
         this.etablissement = etablissement;
     }
 
-    public EleveDto(Eleve eleve) {
+    public EleveDTO(Eleve eleve) {
         this.id = eleve.getId();
         this.nom = eleve.getNom();
         this.prenom = eleve.getPrenom();

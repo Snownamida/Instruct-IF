@@ -5,7 +5,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import instructif.dto.DemandeDto;
+import instructif.dto.DemandeDTO;
 import instructif.metier.modele.Demande;
 import instructif.metier.modele.Eleve;
 import instructif.metier.modele.Matiere;
@@ -42,7 +42,7 @@ public class SendDemandeAction extends AbstractAction {
             return;
         }
 
-        request.setAttribute("dto", new DemandeDto(demande));
+        request.setAttribute("dto", new DemandeDTO(demande));
     }
 
 }
