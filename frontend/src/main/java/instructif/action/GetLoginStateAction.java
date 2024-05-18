@@ -21,7 +21,6 @@ public class GetLoginStateAction extends Action {
 
         request.setAttribute("logged-in", true);
         request.setAttribute("user", user);
-
     }
 
 }
