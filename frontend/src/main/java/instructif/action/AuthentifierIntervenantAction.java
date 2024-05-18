@@ -3,26 +3,23 @@ package instructif.action;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import instructif.dto.IntervenantDto;
 import instructif.metier.modele.Intervenant;
-import instructif.metier.service.Service;
 
-public class AuthentifierIntervenantAction extends Action {
+public class AuthentifierIntervenantAction extends AbstractAction {
 
     @Override
     public void execute(HttpServletRequest request) {
         // Authentification
         String login = request.getParameter("login");
 
-        Service service = new Service();
+        Intervenant intervenant = this.service.connecterIntervenant(login);
 
-        Intervenant i = service.connecterIntervenant(login);
-        System.out.println("\n" + i);
-
-        if (i != null) {
+        if (intervenant != null) {
             HttpSession session = request.getSession(true);
-            session.setAttribute("teacher", i);
+            session.setAttribute("user", intervenant);
+            request.setAttribute("dto", new IntervenantDto(intervenant));
         }
 
-        request.setAttribute("utilisateur", i);
     }
 }

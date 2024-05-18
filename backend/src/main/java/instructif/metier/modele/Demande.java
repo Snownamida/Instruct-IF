@@ -7,6 +7,7 @@ package instructif.metier.modele;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -20,12 +21,12 @@ import javax.persistence.TemporalType;
  * @author mbaratova
  */
 
-
 // POJO = Plain Old Java Object = Classe basique
 
-@Entity // Au début ça met une erreur. Il faut clic droit -> "fix imports" pour importer tout le nécessaire
+@Entity // Au début ça met une erreur. Il faut clic droit -> "fix imports" pour importer
+        // tout le nécessaire
 public class Demande {
-    
+
     // Les noms de types prennent des majuscules
     // Tout est en private !
     @Id
@@ -34,56 +35,49 @@ public class Demande {
     private String description;
     private int evaluation; // 1 = rien compris, 2 = moyennement compris, 3 = tout compris
     private String bilan;
-    
+
     @Temporal(TemporalType.TIMESTAMP)
     private Date dateDebut;
     @Temporal(TemporalType.TIMESTAMP)
     private Date dateFin;
     private Long duree; // temps en secondes
-    
+
     private Boolean fini; // true si la demande est complete, tous les champs sont remplis
-    
+
     @ManyToOne
     private Matiere matiere;
     @ManyToOne
     private Eleve eleve;
     @ManyToOne
     private Intervenant intervenant;
-  
-    // générer automatiquement
+
     @Override
     public String toString() {
-        
-        String resultat = "demande #" + id + " : Soutien en " + matiere.getDenomination() + " (\"" + description + "\")"
-                + ", demandé " + obtenirDateFormatee(dateDebut) + " par " + eleve.getNom() + " " + eleve.getPrenom()
-                + ", pris en charge par " + intervenant.getNom() + " " + intervenant.getPrenom() + ".";
-        if(fini == true){
-            resultat = resultat + "Soutien terminé " + obtenirDateFormatee(dateFin) + " : Evaluation \" " + evaluation + "\".";
-        }
-        
-        return resultat;
+        return "Demande [id=" + id + ", description=" + description + ", evaluation=" + evaluation + ", bilan=" + bilan
+                + ", dateDebut=" + dateDebut + ", dateFin=" + dateFin + ", duree=" + duree + ", fini=" + fini
+                + ", matiere=" + matiere + ", eleve=" + eleve + ", intervenant=" + intervenant + "]";
     }
-    
-    
-    // On peut générer les constructeurs et getter/setter automatiquement avec clic drout + Insert code
+
+    // On peut générer les constructeurs et getter/setter automatiquement avec clic
+    // drout + Insert code
     // null par défaut dans les attributs
-    public Demande(){
+    public Demande() {
     } // ON DOIT mettre un constructeur sans paramètre !!
 
-    public Demande(String description, Matiere matiere, Eleve eleve){
+    public Demande(String description, Matiere matiere, Eleve eleve) {
         this.description = description;
         this.matiere = matiere;
         this.eleve = eleve;
         this.fini = false;
     }
-    
-    public String obtenirDateFormatee(Date date){
+
+    public String obtenirDateFormatee(Date date) {
         SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy | HH:mmm:ss");
         String dateFormatee = format.format(date);
         return dateFormatee;
-        
+
     }
-    
+
     public String getDescription() {
         return description;
     }
@@ -123,7 +117,6 @@ public class Demande {
     public void setDateFin(Date dateFin) {
         this.dateFin = dateFin;
     }
-   
 
     public Matiere getMatiere() {
         return matiere;
@@ -168,6 +161,5 @@ public class Demande {
     public void setFini(Boolean fini) {
         this.fini = fini;
     }
-    
-    
+
 }

@@ -21,14 +21,14 @@ public class Matiere {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    
-    @Column(unique=true)
+
+    @Column(unique = true)
     private String denomination;
 
     public Matiere() {
     }
 
-    public Matiere(String denomination) {
+    public Matiere(final String denomination) {
         this.denomination = denomination;
     }
 
@@ -36,7 +36,7 @@ public class Matiere {
         return denomination;
     }
 
-    public void setDenomination(String denomination) {
+    public void setDenomination(final String denomination) {
         this.denomination = denomination;
     }
 
@@ -44,7 +44,13 @@ public class Matiere {
     public String toString() {
         return "Matière \"" + denomination + "\"";
     }
-    
-    
-    
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(final Long id) {
+        this.id = id;
+    }
+
 }

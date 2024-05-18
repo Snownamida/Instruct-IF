@@ -3,7 +3,8 @@ package instructif.dto;
 import instructif.metier.modele.Eleve;
 import instructif.metier.modele.Etablissement;
 
-public class EleveDTO {
+public class EleveDto {
+    private Long id;
     private String nom;
     private String prenom;
     private String mail;
@@ -11,8 +12,9 @@ public class EleveDTO {
     private int classe;
     private Etablissement etablissement;
 
-    public EleveDTO(String nom, String prenom, String mail, String dateNaissance, int classe,
+    public EleveDto(Long id, String nom, String prenom, String mail, String dateNaissance, int classe,
             Etablissement etablissement) {
+        this.id = id;
         this.nom = nom;
         this.prenom = prenom;
         this.mail = mail;
@@ -21,7 +23,8 @@ public class EleveDTO {
         this.etablissement = etablissement;
     }
 
-    public EleveDTO(Eleve eleve) {
+    public EleveDto(Eleve eleve) {
+        this.id = eleve.getId();
         this.nom = eleve.getNom();
         this.prenom = eleve.getPrenom();
         this.mail = eleve.getMail();
@@ -32,8 +35,8 @@ public class EleveDTO {
 
     @Override
     public String toString() {
-        return "EleveDTO [nom=" + nom + ", prenom=" + prenom + ", mail=" + mail + ", dateNaissance=" + dateNaissance
-                + ", classe=" + classe + ", etablissement=" + etablissement + "]";
+        return "EleveDto [id=" + id + ", nom=" + nom + ", prenom=" + prenom + ", mail=" + mail + ", dateNaissance="
+                + dateNaissance + ", classe=" + classe + ", etablissement=" + etablissement + "]";
     }
 
     public String getNom() {
@@ -82,6 +85,14 @@ public class EleveDTO {
 
     public void setEtablissement(Etablissement etablissement) {
         this.etablissement = etablissement;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
 }

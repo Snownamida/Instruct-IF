@@ -10,13 +10,16 @@ import javax.servlet.http.HttpServletResponse;
 
 import instructif.action.AuthentifierEleveAction;
 import instructif.action.AuthentifierIntervenantAction;
-import instructif.action.GetLoginStateAction;
+import instructif.action.EvaluateAction;
+import instructif.action.GetMatieresAction;
+import instructif.action.GetMyHistoryAction;
+import instructif.action.GetMyInfoAction;
+import instructif.action.GetStatsAction;
+import instructif.action.SendDemandeAction;
 import instructif.action.SignupEAction;
+import instructif.action.StartVideoAction;
 import instructif.dao.JpaUtil;
-import instructif.vue.MyinfoSerialisation;
-import instructif.vue.ProfilEleveSerialisation;
-import instructif.vue.ProfilIntervenantSerialisation;
-import instructif.vue.SignUpStateSerialisation;
+import instructif.vue.DtoSerialisationJson;
 
 /**
  *
@@ -46,44 +49,58 @@ public class ActionServlet extends HttpServlet {
         super.destroy();
     }
 
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+    protected void processRequest(final HttpServletRequest request, final HttpServletResponse response)
             throws ServletException, IOException {
 
         System.out.println("[TEST] Appel de l’ActionServlet ");
-        String todo = request.getParameter("todo");
+        final String todo = request.getParameter("todo");
 
         switch (todo) {
             case "connecter-e":
-                AuthentifierEleveAction authentifierEleveAction = new AuthentifierEleveAction();
-                authentifierEleveAction.execute(request);
-                ProfilEleveSerialisation profilEleveSerialisation = new ProfilEleveSerialisation();
-                profilEleveSerialisation.execute(request, response);
+                new AuthentifierEleveAction().execute(request);
                 break;
-
             case "connecter-i":
-                AuthentifierIntervenantAction authentifierIntervenantAction = new AuthentifierIntervenantAction();
-                authentifierIntervenantAction.execute(request);
-                ProfilIntervenantSerialisation profilIntervenantSerialisation = new ProfilIntervenantSerialisation();
-                profilIntervenantSerialisation.execute(request, response);
+                new AuthentifierIntervenantAction().execute(request);
                 break;
-
             case "inscrire":
-                SignupEAction signupE = new SignupEAction();
-                signupE.execute(request);
-                SignUpStateSerialisation signUpStateSerialisation = new SignUpStateSerialisation();
-                signUpStateSerialisation.execute(request, response);
+                new SignupEAction().execute(request);
                 break;
-
             case "my-info":
-                GetLoginStateAction getLoginStateAction = new GetLoginStateAction();
-                getLoginStateAction.execute(request);
-                MyinfoSerialisation myinfoSerialisation = new MyinfoSerialisation();
-                myinfoSerialisation.execute(request, response);
+                new GetMyInfoAction().execute(request);
                 break;
-
+            case "my-history":
+                new GetMyHistoryAction().execute(request);
+                break;
+            case "get-matieres":
+                new GetMatieresAction().execute(request);
+                break;
+            case "send-demande":
+                new SendDemandeAction().execute(request);
+                break;
+            case "end-video":
+                new EvaluateAction().execute(request);
+                break;
+            case "evaluate":
+                new EvaluateAction().execute(request);
+                break;
+            case "current-demande":
+                new GetMyInfoAction().execute(request);
+                break;
+            case "stats":
+                new GetStatsAction().execute(request);
+                break;
+            case "etabs":
+                new GetStatsAction().execute(request);
+                break;
+            case "start-video":
+                new StartVideoAction().execute(request);
+                break;
+            case "send-bilan":
+                new SendDemandeAction().execute(request);
             default:
                 break;
         }
+        new DtoSerialisationJson().execute(request, response);
 
     }
 
@@ -98,7 +115,7 @@ public class ActionServlet extends HttpServlet {
      * @throws IOException      if an I/O error occurs
      */
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+    protected void doGet(final HttpServletRequest request, final HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
     }
@@ -112,7 +129,7 @@ public class ActionServlet extends HttpServlet {
      * @throws IOException      if an I/O error occurs
      */
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+    protected void doPost(final HttpServletRequest request, final HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
     }
