@@ -13,6 +13,7 @@ import instructif.action.AuthentifierIntervenantAction;
 import instructif.action.GetMatieresAction;
 import instructif.action.GetMyHistoryAction;
 import instructif.action.GetMyInfoAction;
+import instructif.action.SendDemandeAction;
 import instructif.action.SignupEAction;
 import instructif.dao.JpaUtil;
 import instructif.vue.DtoSerialisationJson;
@@ -45,11 +46,11 @@ public class ActionServlet extends HttpServlet {
         super.destroy();
     }
 
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+    protected void processRequest(final HttpServletRequest request, final HttpServletResponse response)
             throws ServletException, IOException {
 
         System.out.println("[TEST] Appel de l’ActionServlet ");
-        String todo = request.getParameter("todo");
+        final String todo = request.getParameter("todo");
 
         switch (todo) {
             case "connecter-e":
@@ -82,6 +83,11 @@ public class ActionServlet extends HttpServlet {
                 new DtoSerialisationJson().execute(request, response);
                 break;
 
+            case "send-demande":
+                new SendDemandeAction().execute(request);
+                new DtoSerialisationJson().execute(request, response);
+                break;
+
             default:
                 break;
         }
@@ -99,7 +105,7 @@ public class ActionServlet extends HttpServlet {
      * @throws IOException      if an I/O error occurs
      */
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+    protected void doGet(final HttpServletRequest request, final HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
     }
@@ -113,7 +119,7 @@ public class ActionServlet extends HttpServlet {
      * @throws IOException      if an I/O error occurs
      */
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+    protected void doPost(final HttpServletRequest request, final HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
     }
