@@ -19,7 +19,7 @@ public class DemandeDto {
     private Boolean fini;
 
     private Matiere matiere;
-    private EleveDto eleveDto;
+    private EleveDTO eleveDto;
     private IntervenantDto intervenantDto;
 
     public DemandeDto(Demande demande) {
@@ -34,11 +34,10 @@ public class DemandeDto {
         this.matiere = demande.getMatiere();
         
         if (demande.getEleve() != null) {
-            this.eleveDto = new EleveDto(demande.getEleve());
+            this.eleveDto = new EleveDTO(demande.getEleve());
         }
         if (demande.getIntervenant() != null) {
             this.intervenantDto = new IntervenantDto(demande.getIntervenant());
         }
     }
-
 }

@@ -3,7 +3,7 @@ package instructif.action;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import instructif.dto.DemandeDTO;
+import instructif.dto.DemandeDto;
 import instructif.metier.modele.Demande;
 import instructif.metier.modele.Intervenant;
 
@@ -26,7 +26,7 @@ public class GetCurrentDemandeAction extends AbstractAction {
             return;
         }
 
-        request.setAttribute("dto", new DemandeDTO(demande));
+        request.setAttribute("dto", new DemandeDto(demande));
 
     }
 
