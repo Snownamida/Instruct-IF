@@ -10,22 +10,22 @@ import instructif.metier.modele.Intervenant;
 
 public class GetMyInfoAction extends AbstractAction {
     @Override
-    public void execute(HttpServletRequest request) {
-        HttpSession session = request.getSession(false);
+    public void execute(final HttpServletRequest request) {
+        final HttpSession session = request.getSession(false);
         if (session == null) {
             return;
         }
 
-        Object user = session.getAttribute("user");
+        final Object user = session.getAttribute("user");
 
         if (user instanceof Eleve) {
-            EleveDto eleveDTO = new EleveDto((Eleve) user);
+            final EleveDto eleveDTO = new EleveDto((Eleve) user);
             request.setAttribute("dto", eleveDTO);
             return;
         }
 
         if (user instanceof Intervenant) {
-            IntervenantDto intervenantDTO = new IntervenantDto((Intervenant) user);
+            final IntervenantDto intervenantDTO = new IntervenantDto((Intervenant) user);
             request.setAttribute("dto", intervenantDTO);
             return;
         }

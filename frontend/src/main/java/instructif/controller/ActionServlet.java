@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import instructif.action.AuthentifierEleveAction;
 import instructif.action.AuthentifierIntervenantAction;
+import instructif.action.EvaluateAction;
 import instructif.action.GetMatieresAction;
 import instructif.action.GetMyHistoryAction;
 import instructif.action.GetMyInfoAction;
@@ -85,6 +86,16 @@ public class ActionServlet extends HttpServlet {
 
             case "send-demande":
                 new SendDemandeAction().execute(request);
+                new DtoSerialisationJson().execute(request, response);
+                break;
+
+            case "end-video":
+                new EvaluateAction().execute(request);
+                new DtoSerialisationJson().execute(request, response);
+                break;
+
+            case "evaluate":
+                new EvaluateAction().execute(request);
                 new DtoSerialisationJson().execute(request, response);
                 break;
 
