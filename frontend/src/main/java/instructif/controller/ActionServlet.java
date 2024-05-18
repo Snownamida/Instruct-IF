@@ -65,7 +65,7 @@ public class ActionServlet extends HttpServlet {
                 profilIntervenantSerialisation.serialize(request, response);
                 break;
 
-            case "signup-e":
+            case "inscrire":
                 SignupEAction signupE = new SignupEAction();
                 signupE.execute(request);
                 SignUpStateSerialisation signUpStateSerialisation = new SignUpStateSerialisation();

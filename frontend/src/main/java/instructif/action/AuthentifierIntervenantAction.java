@@ -1,6 +1,7 @@
 package instructif.action;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import instructif.metier.modele.Intervenant;
 import instructif.metier.service.Service;
@@ -14,9 +15,13 @@ public class AuthentifierIntervenantAction extends Action {
 
         Service service = new Service();
 
-        System.out.println(login);
         Intervenant i = service.connecterIntervenant(login);
         System.out.println("\n" + i);
+
+        if (i != null) {
+            HttpSession session = request.getSession(true);
+            session.setAttribute("teacher", i);
+        }
 
         request.setAttribute("utilisateur", i);
     }

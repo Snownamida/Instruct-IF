@@ -139,13 +139,4 @@ public class Eleve {
     public void setEtablissement(Etablissement etablissement) {
         this.etablissement = etablissement;
     }
-    
-
-    
-    
-    
-    
-    
-   
-    
 }
