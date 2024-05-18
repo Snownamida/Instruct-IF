@@ -101,7 +101,6 @@ public class ActionServlet extends HttpServlet {
                 break;
         }
         new DtoSerialisationJson().execute(request, response);
-
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the
