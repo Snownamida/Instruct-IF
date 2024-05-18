@@ -3,7 +3,6 @@ package instructif.dto;
 import java.util.Date;
 
 import instructif.metier.modele.Demande;
-import instructif.metier.modele.Intervenant;
 import instructif.metier.modele.Matiere;
 
 public class DemandeDto {
