@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import instructif.action.AuthentifierEleveAction;
 import instructif.action.AuthentifierIntervenantAction;
+import instructif.action.GetMyHistoryAction;
 import instructif.action.GetMyInfoAction;
 import instructif.action.SignupEAction;
 import instructif.dao.JpaUtil;
@@ -67,6 +68,11 @@ public class ActionServlet extends HttpServlet {
 
             case "my-info":
                 new GetMyInfoAction().execute(request);
+                new DtoSerialisationJson().execute(request, response);
+                break;
+
+            case "my-history":
+                new GetMyHistoryAction().execute(request);
                 new DtoSerialisationJson().execute(request, response);
                 break;
 
