@@ -17,6 +17,7 @@ import instructif.action.GetMyInfoAction;
 import instructif.action.GetStatsAction;
 import instructif.action.SendDemandeAction;
 import instructif.action.SignupEAction;
+import instructif.action.StartVideoAction;
 import instructif.dao.JpaUtil;
 import instructif.vue.DtoSerialisationJson;
 
@@ -90,6 +91,9 @@ public class ActionServlet extends HttpServlet {
                 break;
             case "etabs":
                 new GetStatsAction().execute(request);
+                break;
+            case "start-video":
+                new StartVideoAction().execute(request);
                 break;
             default:
                 break;
