@@ -27,7 +27,7 @@
         .done(function (response) {
           // Afficher les informations de l'élève dans la page
           var userDetailsDiv = document.getElementById('userDetails');
-          userDetailsDiv.innerHTML = '<p>Nom: ' + response.lasstName + '</p>' +
+          userDetailsDiv.innerHTML = '<p>Nom: ' + response.lastName + '</p>' +
             '<p>Prénom: ' + response.firstName + '</p>' +
             '<p>Email: ' + response.mail + '</p>'; // Remplacez avec les propriétés appropriées de l'élève
         })
