@@ -95,6 +95,8 @@ public class ActionServlet extends HttpServlet {
             case "start-video":
                 new StartVideoAction().execute(request);
                 break;
+            case "send-bilan":
+                new SendDemandeAction().execute(request);
             default:
                 break;
         }
