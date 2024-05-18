@@ -14,6 +14,7 @@ import instructif.action.EvaluateAction;
 import instructif.action.GetMatieresAction;
 import instructif.action.GetMyHistoryAction;
 import instructif.action.GetMyInfoAction;
+import instructif.action.GetStatsAction;
 import instructif.action.SendDemandeAction;
 import instructif.action.SignupEAction;
 import instructif.dao.JpaUtil;
@@ -80,6 +81,13 @@ public class ActionServlet extends HttpServlet {
                 break;
             case "evaluate":
                 new EvaluateAction().execute(request);
+                break;
+            case "current-demande":
+                break;
+            case "stats":
+                new GetStatsAction().execute(request);
+                break;
+            case "etab":
                 break;
             default:
                 break;
