@@ -83,11 +83,13 @@ public class ActionServlet extends HttpServlet {
                 new EvaluateAction().execute(request);
                 break;
             case "current-demande":
+                new GetMyInfoAction().execute(request);
                 break;
             case "stats":
                 new GetStatsAction().execute(request);
                 break;
-            case "etab":
+            case "etabs":
+                new GetStatsAction().execute(request);
                 break;
             default:
                 break;
