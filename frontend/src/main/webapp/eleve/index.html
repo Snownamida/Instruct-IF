@@ -20,16 +20,18 @@
     function getUserDetails() {
       // Appel AJAX pour récupérer les informations de l'élève
       $.ajax({
-        url: '../ActionServlet', // Remplacez avec l'URL de votre servlet
-        method: 'GET',
+        url: '../ActionServlet',
+        method: 'POST',
+        data: {
+          todo: 'my-info',
+        },
         dataType: 'json'
       })
         .done(function (response) {
           // Afficher les informations de l'élève dans la page
           var userDetailsDiv = document.getElementById('userDetails');
-          userDetailsDiv.innerHTML = '<p>Nom: ' + response.lastName + '</p>' +
-            '<p>Prénom: ' + response.firstName + '</p>' +
-            '<p>Email: ' + response.mail + '</p>'; // Remplacez avec les propriétés appropriées de l'élève
+          userDetailsDiv.innerHTML = '<p>Nom: ' + response.dto.getNom() + '</p>' +
+            '<p>Prénom: ' + response.dto.getPreom() + '</p>'
         })
         .fail(function (error) {
           console.error('Erreur lors de la récupération des informations de l\'élève:', error);
