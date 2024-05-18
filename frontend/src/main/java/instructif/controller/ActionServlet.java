@@ -62,17 +62,8 @@ public class ActionServlet extends HttpServlet {
             case "connecter-i":
                 new AuthentifierIntervenantAction().execute(request);
                 break;
-<<<<<<< HEAD
-
-            case "inscrire":
-                SignupEAction signupE = new SignupEAction();
-                signupE.execute(request);
-                SignUpStateSerialisation signUpStateSerialisation = new SignUpStateSerialisation();
-                signUpStateSerialisation.serialize(request, response);
-=======
             case "inscrire":
                 new SignupEAction().execute(request);
->>>>>>> 2cf4c1523bb7ddefd267b0ac72aa8619355994ea
                 break;
             case "my-info":
                 new GetMyInfoAction().execute(request);
