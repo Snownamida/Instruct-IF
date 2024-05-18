@@ -56,52 +56,35 @@ public class ActionServlet extends HttpServlet {
         switch (todo) {
             case "connecter-e":
                 new AuthentifierEleveAction().execute(request);
-                new DtoSerialisationJson().execute(request, response);
                 break;
-
             case "connecter-i":
                 new AuthentifierIntervenantAction().execute(request);
-                new DtoSerialisationJson().execute(request, response);
                 break;
-
             case "inscrire":
                 new SignupEAction().execute(request);
-                new DtoSerialisationJson().execute(request, response);
                 break;
-
             case "my-info":
                 new GetMyInfoAction().execute(request);
-                new DtoSerialisationJson().execute(request, response);
                 break;
-
             case "my-history":
                 new GetMyHistoryAction().execute(request);
-                new DtoSerialisationJson().execute(request, response);
                 break;
-
             case "get-matieres":
                 new GetMatieresAction().execute(request);
-                new DtoSerialisationJson().execute(request, response);
                 break;
-
             case "send-demande":
                 new SendDemandeAction().execute(request);
-                new DtoSerialisationJson().execute(request, response);
                 break;
-
             case "end-video":
                 new EvaluateAction().execute(request);
-                new DtoSerialisationJson().execute(request, response);
                 break;
-
             case "evaluate":
                 new EvaluateAction().execute(request);
-                new DtoSerialisationJson().execute(request, response);
                 break;
-
             default:
                 break;
         }
+        new DtoSerialisationJson().execute(request, response);
 
     }
 
