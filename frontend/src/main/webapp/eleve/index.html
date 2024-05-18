@@ -10,8 +10,36 @@
 <body>
   <div>
     <h1>Bienvenue</h1>
+    <div id="userDetails">
+      <!-- Les détails de l'élève seront affichés ici -->
+    </div>
     <button type="button">Me déconnecter</button>
   </div>
+  <script>
+    // Fonction pour récupérer les informations de l'élève depuis le serveur
+    function getUserDetails() {
+      // Appel AJAX pour récupérer les informations de l'élève
+      $.ajax({
+        url: '../ActionServlet', // Remplacez avec l'URL de votre servlet
+        method: 'GET',
+        dataType: 'json'
+      })
+        .done(function (response) {
+          // Afficher les informations de l'élève dans la page
+          var userDetailsDiv = document.getElementById('userDetails');
+          userDetailsDiv.innerHTML = '<p>Nom: ' + response.lasstName + '</p>' +
+            '<p>Prénom: ' + response.firstName + '</p>' +
+            '<p>Email: ' + response.mail + '</p>'; // Remplacez avec les propriétés appropriées de l'élève
+        })
+        .fail(function (error) {
+          console.error('Erreur lors de la récupération des informations de l\'élève:', error);
+        });
+    }
+    // Appeler la fonction pour récupérer les informations de l'élève lorsque la page est chargée
+    window.onload = function () {
+      getUserDetails();
+    };
+  </script>
 </body>
 
 </html>
