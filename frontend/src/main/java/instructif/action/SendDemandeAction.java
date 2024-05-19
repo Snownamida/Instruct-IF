@@ -41,8 +41,6 @@ public class SendDemandeAction extends AbstractAction {
         if (demande == null) {
             return;
         }
-
         request.setAttribute("dto", new DemandeDto(demande));
     }
-
 }
