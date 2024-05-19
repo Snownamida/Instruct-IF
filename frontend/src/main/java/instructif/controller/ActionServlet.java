@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import instructif.action.AuthentifierEleveAction;
 import instructif.action.AuthentifierIntervenantAction;
+import instructif.action.EndVideoAction;
 import instructif.action.EvaluateAction;
 import instructif.action.GetMatieresAction;
 import instructif.action.GetMyHistoryAction;
@@ -78,7 +79,7 @@ public class ActionServlet extends HttpServlet {
                 new SendDemandeAction().execute(request);
                 break;
             case "end-video":
-                new EvaluateAction().execute(request);
+                new EndVideoAction().execute(request);
                 break;
             case "evaluate":
                 new EvaluateAction().execute(request);
@@ -92,7 +93,7 @@ public class ActionServlet extends HttpServlet {
             case "etabs":
                 new GetStatsAction().execute(request);
                 break;
-            case "start-video":
+            case "start-video-i":
                 new StartVideoAction().execute(request);
                 break;
             case "send-bilan":

@@ -1,0 +1,93 @@
+/* evaluate.css */
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f5f5f5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.container {
+    background-color: #fff;
+    padding: 20px;
+    border: 1px solid #ddd;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    max-width: 400px;
+    text-align: center;
+}
+
+.header h1 {
+    margin: 0;
+    padding-bottom: 10px;
+    font-size: 24px;
+    border-bottom: 1px solid #ddd;
+}
+
+.question h2 {
+    font-size: 16px;
+    margin: 20px 0;
+}
+
+.evaluation-form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.evaluation-option {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: #f9f9f9;
+}
+
+.evaluation-option input {
+    display: none;
+}
+
+.evaluation-option img {
+    width: 30px;
+    height: 30px;
+    margin-right: 10px;
+}
+
+.evaluation-option span {
+    flex-grow: 1;
+    text-align: left;
+}
+
+.evaluation-option:hover {
+    background-color: #e0e0e0;
+}
+
+.evaluation-option.selected {
+    background-color: #d1e7dd;
+    border-color: #0f5132;
+}
+
+.submit-button {
+    background-color: #333;
+    color: #fff;
+    border: none;
+    padding: 10px;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 20px;
+    border-radius: 5px;
+}
+
+.submit-button:disabled {
+    background-color: #999;
+    cursor: not-allowed;
+}
+
+.submit-button:hover:not(:disabled) {
+    background-color: #555;
+}
