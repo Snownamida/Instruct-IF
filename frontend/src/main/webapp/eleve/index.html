@@ -1,167 +1,167 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Tableau de bord élève</title>
-  <link rel="stylesheet" href="index.css" />
-  <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-</head>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Tableau de bord élève</title>
+        <link rel="stylesheet" href="index.css" />
+        <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    </head>
 
 
-<body>
-  <div class="container">
-    <div class="header">
-      <h1>Tableau de bord élève</h1>
-      <a href="../index.html"><button type="button" id="logoutButton">Me déconnecter</button></a>
-    </div>
-    <div class="welcome">
-      <h2>BIENVENUE, <span id="userFullName">[NOM] [Prénom]</span></h2>
-    </div>
-    <div class="new-request">
-      <h3>Nouvelle demande de soutien</h3>
-      <form id="newRequestForm">
-        <div class="form-group">
-          <label for="matiereSelect">Matière concernée</label>
-          <select id="matiereSelect" name="matiere">
-            <option value="">Choisir...</option>
-          </select>
+    <body>
+        <div class="container">
+            <div class="header">
+                <h1>Tableau de bord élève</h1>
+                <a href="../index.html"><button type="button" id="logoutButton">Me déconnecter</button></a>
+            </div>
+            <div class="welcome">
+                <h2>BIENVENUE, <span id="userFullName">[NOM] [Prénom]</span></h2>
+            </div>
+            <div class="new-request">
+                <h3>Nouvelle demande de soutien</h3>
+                <form id="newRequestForm">
+                    <div class="form-group">
+                        <label for="matiereSelect">Matière concernée</label>
+                        <select id="matiereSelect" name="matiere">
+                            <option value="">Choisir...</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="description">Brève description de ma demande</label>
+                        <input id="description" name="description" type="text" placeholder="Écrivez ici..." />
+                    </div>
+                    <button type="button" id="submitRequestButton" disabled onclick="sendRequest()">Envoyer ma demande</button>
+                </form>
+            </div>
+            <div class="history">
+                <h3>Mes demandes</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Matière</th>
+                            <th>Intervenant</th>
+                            <th>Durée</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody id="requestsTableBody">
+                        <!-- Les demandes seront insérées ici -->
+                    </tbody>
+                </table>
+            </div>
         </div>
-        <div class="form-group">
-          <label for="description">Brève description de ma demande</label>
-          <input id="description" name="description" type="text" placeholder="Écrivez ici..." />
-        </div>
-        <button type="button" id="submitRequestButton" disabled onclick="sendRequest()">Envoyer ma demande</button>
-      </form>
-    </div>
-    <div class="history">
-      <h3>Mes demandes</h3>
-      <table>
-        <thead>
-          <tr>
-            <th>Date</th>
-            <th>Matière</th>
-            <th>Intervenant</th>
-            <th>Durée</th>
-            <th>Description</th>
-          </tr>
-        </thead>
-        <tbody id="requestsTableBody">
-          <!-- Les demandes seront insérées ici -->
-        </tbody>
-      </table>
-    </div>
-  </div>
-  <script>
-    // Fonction pour récupérer les informations de l'élève depuis le serveur
-    function getUserDetails() {
-      $.ajax({
-        url: '../ActionServlet',
-        method: 'POST',
-        data: { todo: 'my-info' },
-        dataType: 'json'
-      })
+        <script>
+            // Fonction pour récupérer les informations de l'élève depuis le serveur
+            function getUserDetails() {
+                $.ajax({
+                    url: '../ActionServlet',
+                    method: 'POST',
+                    data: {todo: 'my-info'},
+                    dataType: 'json'
+                })
 
-        .done(function (response) {
-          $('#userFullName').text(response.nom + ' ' + response.prenom);
-        })
-        .fail(function (error) {
-          console.error('Erreur lors de la récupération des informations de l\'élève:', error);
-        });
-    }
+                        .done(function (response) {
+                            $('#userFullName').text(response.nom + ' ' + response.prenom);
+                        })
+                        .fail(function (error) {
+                            console.error('Erreur lors de la récupération des informations de l\'élève:', error);
+                        });
+            }
 
-    // Fonction pour récupérer les matières depuis le serveur
-    function getMatieres() {
-      $.ajax({
-        url: '../ActionServlet',
-        method: 'POST',
-        data: { todo: 'get-matieres' },
-        dataType: 'json'
-      })
-        .done(function (response) {
-          var matiereSelect = $('#matiereSelect');
-          response.forEach(function (matiere) {
-            matiereSelect.append('<option value="' + matiere.id + '">' + matiere.denomination + '</option>');
-          });
-        })
-        .fail(function (error) {
-          console.error('Erreur lors de la récupération des matières:', error);
-        });
-    }
+            // Fonction pour récupérer les matières depuis le serveur
+            function getMatieres() {
+                $.ajax({
+                    url: '../ActionServlet',
+                    method: 'POST',
+                    data: {todo: 'get-matieres'},
+                    dataType: 'json'
+                })
+                        .done(function (response) {
+                            var matiereSelect = $('#matiereSelect');
+                            response.forEach(function (matiere) {
+                                matiereSelect.append('<option value="' + matiere.id + '">' + matiere.denomination + '</option>');
+                            });
+                        })
+                        .fail(function (error) {
+                            console.error('Erreur lors de la récupération des matières:', error);
+                        });
+            }
 
-    // Fonction pour récupérer l'historique des demandes depuis le serveur
-    function getRequestsHistory() {
-      $.ajax({
-        url: '../ActionServlet',
-        method: 'POST',
-        data: { todo: 'my-history' },
-        dataType: 'json'
-      })
-        .done(function (response) {
-          var requestsTableBody = $('#requestsTableBody');
-          response.forEach(function (demande) {
-            var row = '<tr>' +
-              '<td>' + new Date(demande.dateDebut).toLocaleDateString() + '</td>' +
-              '<td>' + demande.matiere.denomination + '</td>' +
-              '<td>' + demande.intervenantDto.nom + ' ' + demande.intervenantDto.prenom + '</td>' +
-              '<td>' + formatDuration(demande.duree) + '</td>' +
-              '<td>' + demande.description + '</td>' +
-              '</tr>';
-            requestsTableBody.append(row);
-          });
-        })
-        .fail(function (error) {
-          console.error('Erreur lors de la récupération de l\'historique des demandes:', error);
-        });
-    }
-    // Fonction pour envoyer la demande de soutien au serveur
-    function sendRequest() {
-      var matiereId = $('#matiereSelect').val();
-      var description = $('#description').val();
-      $.ajax({
-        url: '../ActionServlet',
-        method: 'POST',
-        data: { todo: 'send-demande', matiereId: matiereId, description: description },
-      })
-        .done(function (response) {
-          if (response.dto !== null) {
-            window.open('visio.html', 'visio', 'width=600,height=400,scrollbars=yes');
-          } else {
-            alert('Demande de soutien refusée');
-          }
-        })
-        .fail(function (error) {
-          alert('Erreur lors de l\'envoi de la demande');
-        });
-    }
-    // Fonction pour formater la durée en heures, minutes et secondes
-    function formatDuration(duration) {
-      var seconds = parseInt(duration, 10);
-      var hours = Math.floor(seconds / 3600);
-      var minutes = Math.floor((seconds % 3600) / 60);
-      seconds = seconds % 60;
+            // Fonction pour récupérer l'historique des demandes depuis le serveur
+            function getRequestsHistory() {
+                $.ajax({
+                    url: '../ActionServlet',
+                    method: 'POST',
+                    data: {todo: 'my-history'},
+                    dataType: 'json'
+                })
+                        .done(function (response) {
+                            var requestsTableBody = $('#requestsTableBody');
+                            response.forEach(function (demande) {
+                                var row = '<tr>' +
+                                        '<td>' + new Date(demande.dateDebut).toLocaleDateString() + '</td>' +
+                                        '<td>' + demande.matiere.denomination + '</td>' +
+                                        '<td>' + demande.intervenantDto.nom + ' ' + demande.intervenantDto.prenom + '</td>' +
+                                        '<td>' + formatDuration(demande.duree) + '</td>' +
+                                        '<td>' + demande.description + '</td>' +
+                                        '</tr>';
+                                requestsTableBody.append(row);
+                            });
+                        })
+                        .fail(function (error) {
+                            console.error('Erreur lors de la récupération de l\'historique des demandes:', error);
+                        });
+            }
+            // Fonction pour envoyer la demande de soutien au serveur
+            function sendRequest() {
+                var matiereId = $('#matiereSelect').val();
+                var description = $('#description').val();
+                $.ajax({
+                    url: '../ActionServlet',
+                    method: 'POST',
+                    data: {todo: 'send-demande', matiereId: matiereId, description: description},
+                })
+                        .done(function (response) {
+                            if (response !== null) {
+                                window.open('visio.html', 'visio', 'width=600,height=400,scrollbars=yes');
+                            } else {
+                                alert('Demande de soutien refusée');
+                            }
+                        })
+                        .fail(function (error) {
+                            alert('Erreur lors de l\'envoi de la demande');
+                        });
+            }
+            // Fonction pour formater la durée en heures, minutes et secondes
+            function formatDuration(duration) {
+                var seconds = parseInt(duration, 10);
+                var hours = Math.floor(seconds / 3600);
+                var minutes = Math.floor((seconds % 3600) / 60);
+                seconds = seconds % 60;
 
-      return hours + 'h' + (minutes < 10 ? '0' : '') + minutes + 'min' + (seconds < 10 ? '0' : '') + seconds + 's';
-    }
+                return hours + 'h' + (minutes < 10 ? '0' : '') + minutes + 'min' + (seconds < 10 ? '0' : '') + seconds + 's';
+            }
 
-    // Fonction pour vérifier l'état des champs et activer/désactiver le bouton
-    function checkFormFields() {
-      var matiereSelected = $('#matiereSelect').val() !== '';
-      var descriptionFilled = $('#description').val().trim() !== '';
-      $('#submitRequestButton').prop('disabled', !(matiereSelected && descriptionFilled));
-    }
+            // Fonction pour vérifier l'état des champs et activer/désactiver le bouton
+            function checkFormFields() {
+                var matiereSelected = $('#matiereSelect').val() !== '';
+                var descriptionFilled = $('#description').val().trim() !== '';
+                $('#submitRequestButton').prop('disabled', !(matiereSelected && descriptionFilled));
+            }
 
-    // Appeler les fonctions pour récupérer les informations de l'élève, les matières et l'historique des demandes lorsque la page est chargée
-    $(document).ready(function () {
-      getUserDetails();
-      getMatieres();
-      getRequestsHistory();
+            // Appeler les fonctions pour récupérer les informations de l'élève, les matières et l'historique des demandes lorsque la page est chargée
+            $(document).ready(function () {
+                getUserDetails();
+                getMatieres();
+                getRequestsHistory();
 
-      // Ajouter les gestionnaires d'événements pour vérifier les champs de formulaire
-      $('#matiereSelect, #description').on('input change', checkFormFields);
-    });
-  </script>
-</body>
+                // Ajouter les gestionnaires d'événements pour vérifier les champs de formulaire
+                $('#matiereSelect, #description').on('input change', checkFormFields);
+            });
+        </script>
+    </body>
 
 </html>
