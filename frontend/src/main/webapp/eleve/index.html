@@ -9,6 +9,7 @@
   <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 </head>
 
+
 <body>
   <div class="container">
     <div class="header">
@@ -61,7 +62,7 @@
         data: { todo: 'my-info' },
         dataType: 'json'
       })
-      
+
         .done(function (response) {
           $('#userFullName').text(response.nom + ' ' + response.prenom);
         })
