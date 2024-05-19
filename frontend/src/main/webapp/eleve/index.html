@@ -1,46 +1,124 @@
 <!DOCTYPE html>
 <html lang="en">
 
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Tableau de bord élève</title>
-    </head>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tableau de bord élève</title>
+  <link rel="stylesheet" href="styles.css" />
+  <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+</head>
 
-    <body>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>Tableau de bord élève</h1>
+    </div>
+    <div class="welcome">
+      <h2>Bienvenue, <span id="userFullName"></span></h2>
+    </div>
+    <div class="new-request">
+      <h3>Nouvelle demande de soutien</h3>
+      <form id="newRequestForm">
+        <button type="button" id="submitRequestButton">Envoyer ma demande</button>
         <div>
-            <h1>Bienvenue</h1>
-            <div id="userDetails">
-                <!-- Les détails de l'élève seront affichés ici -->
-            </div>
-            <button type="button">Me déconnecter</button>
+          <label for="matiereSelect">Matière concernée</label>
+          <select id="matiereSelect" name="matiere"></select>
         </div>
-        <script>
-            // Fonction pour récupérer les informations de l'élève depuis le serveur
-            function getUserDetails() {
-                // Appel AJAX pour récupérer les informations de l'élève
-                $.ajax({
-                    url: '../ActionServlet',
-                    method: 'POST',
-                    data: {
-                        todo: 'my-info',
-                    },
-                    dataType: 'json'
-                })
-                        .done(function (response) {
-                            // Afficher les informations de l'élève dans la page
-                            var userDetailsDiv = document.getElementById('userDetails');
-                            userDetailsDiv.innerHTML = '<p>Nom: ' + response.dto.getNom() + '</p>' +
-                                    '<p>Prénom: ' + response.dto.getPreom() + '</p>'
-                        })
-                        .fail(function (error) {
-                            console.error('Erreur lors de la récupération des informations de l\'élève:', error);
-                        });
-            }
-            // Appeler la fonction pour récupérer les informations de l'élève lorsque la page est chargée
-            window.onload = function () {
-                getUserDetails();
-            };
-        </script>
-    </body>
+        <div>
+          <label for="description">Brève description de ma demande</label>
+          <input id="description" name="description" type="text" placeholder="Écrivez ici..."/>
+        </div>
+      </form>
+    </div>
+    <div class="history">
+      <h3>Mes demandes</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Matière</th>
+            <th>Intervenant</th>
+            <th>Durée</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody id="requestsTableBody">
+          <!-- Les demandes seront insérées ici -->
+        </tbody>
+      </table>
+    </div>
+    <button type="button" id="logoutButton">Me déconnecter</button>
+  </div>
+  <script>
+    // Fonction pour récupérer les informations de l'élève depuis le serveur
+    function getUserDetails() {
+      $.ajax({
+        url: '../ActionServlet',
+        method: 'POST',
+        data: { todo: 'my-info' },
+        dataType: 'json'
+      })
+      .done(function (response) {
+        $('#userFullName').text(response.nom + ' ' + response.prenom);
+      })
+      .fail(function (error) {
+        console.error('Erreur lors de la récupération des informations de l\'élève:', error);
+      });
+    }
+
+    // Fonction pour récupérer les matières depuis le serveur
+    function getMatieres() {
+      $.ajax({
+        url: '../ActionServlet',
+        method: 'POST',
+        data: { todo: 'get-matieres' },
+        dataType: 'json'
+      })
+      .done(function (response) {
+        var matiereSelect = $('#matiereSelect');
+        response.forEach(function (matiere) {
+          matiereSelect.append('<option value="' + matiere.id + '">' + matiere.denomination + '</option>');
+        });
+      })
+      .fail(function (error) {
+        console.error('Erreur lors de la récupération des matières:', error);
+      });
+    }
+
+    // Fonction pour récupérer l'historique des demandes depuis le serveur
+    function getRequestsHistory() {
+      $.ajax({
+        url: '../ActionServlet',
+        method: 'POST',
+        data: { todo: 'my-history' },
+        dataType: 'json'
+      })
+      .done(function (response) {
+        var requestsTableBody = $('#requestsTableBody');
+        response.forEach(function (demande) {
+          var row = '<tr>' +
+            '<td>' + demande.dateDebut + '</td>' +
+            '<td>' + demande.matiere.denomination + '</td>' +
+            '<td>' + demande.intervenantDto.nom + ' ' + demande.intervenantDto.prenom + '</td>' +
+            '<td>' + demande.duree + '</td>' +
+            '<td>' + demande.description + '</td>' +
+            '</tr>';
+          requestsTableBody.append(row);
+        });
+      })
+      .fail(function (error) {
+        console.error('Erreur lors de la récupération de l\'historique des demandes:', error);
+      });
+    }
+
+    // Appeler les fonctions pour récupérer les informations de l'élève, les matières et l'historique des demandes lorsque la page est chargée
+    $(document).ready(function () {
+      getUserDetails();
+      getMatieres();
+      getRequestsHistory();
+    });
+  </script>
+</body>
+
 </html>
