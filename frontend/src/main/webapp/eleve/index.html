@@ -124,7 +124,7 @@
         data: { todo: 'send-demande', matiereId: matiereId, description: description },
       })
         .done(function (response) {
-          if (reponse.dto !== null) {
+          if (response.dto !== null) {
             window.open('visio.html', 'visio', 'width=600,height=400,scrollbars=yes');
           } else {
             alert('Demande de soutien refusée');

@@ -21,5 +21,8 @@ public class AuthentifierEleveAction extends AbstractAction {
             session.setAttribute("user", eleve);
             request.setAttribute("dto", new EleveDTO(eleve));
         }
+        else {
+            request.setAttribute("dto", null);
+        }
     }
 }
