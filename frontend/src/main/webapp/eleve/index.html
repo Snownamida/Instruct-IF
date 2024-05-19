@@ -13,9 +13,10 @@
   <div class="container">
     <div class="header">
       <h1>Tableau de bord élève</h1>
+      <button type="button" id="logoutButton">Me déconnecter</button>
     </div>
     <div class="welcome">
-      <h2>Bienvenue, <span id="userFullName"></span></h2>
+      <h2>BIENVENUE, <span id="userFullName">[NOM] [Prénom]</span></h2>
     </div>
     <div class="new-request">
       <h3>Nouvelle demande de soutien</h3>
@@ -23,7 +24,9 @@
         <button type="button" id="submitRequestButton">Envoyer ma demande</button>
         <div>
           <label for="matiereSelect">Matière concernée</label>
-          <select id="matiereSelect" name="matiere"></select>
+          <select id="matiereSelect" name="matiere">
+            <option value="">Choisir...</option>
+          </select>
         </div>
         <div>
           <label for="description">Brève description de ma demande</label>
@@ -48,7 +51,6 @@
         </tbody>
       </table>
     </div>
-    <button type="button" id="logoutButton">Me déconnecter</button>
   </div>
   <script>
     // Fonction pour récupérer les informations de l'élève depuis le serveur
@@ -98,10 +100,10 @@
         var requestsTableBody = $('#requestsTableBody');
         response.forEach(function (demande) {
           var row = '<tr>' +
-            '<td>' + demande.dateDebut + '</td>' +
+            '<td>' + new Date(demande.dateDebut).toLocaleDateString() + '</td>' +
             '<td>' + demande.matiere.denomination + '</td>' +
             '<td>' + demande.intervenantDto.nom + ' ' + demande.intervenantDto.prenom + '</td>' +
-            '<td>' + demande.duree + '</td>' +
+            '<td>' + formatDuration(demande.duree) + '</td>' +
             '<td>' + demande.description + '</td>' +
             '</tr>';
           requestsTableBody.append(row);
@@ -110,6 +112,16 @@
       .fail(function (error) {
         console.error('Erreur lors de la récupération de l\'historique des demandes:', error);
       });
+    }
+
+    // Fonction pour formater la durée en heures, minutes et secondes
+    function formatDuration(duration) {
+      var seconds = parseInt(duration, 10);
+      var hours = Math.floor(seconds / 3600);
+      var minutes = Math.floor((seconds % 3600) / 60);
+      var seconds = seconds % 60;
+
+      return hours + 'h' + (minutes < 10 ? '0' : '') + minutes + 'min' + (seconds < 10 ? '0' : '') + seconds + 's';
     }
 
     // Appeler les fonctions pour récupérer les informations de l'élève, les matières et l'historique des demandes lorsque la page est chargée
