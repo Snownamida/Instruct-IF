@@ -32,7 +32,7 @@
           <label for="description">Brève description de ma demande</label>
           <input id="description" name="description" type="text" placeholder="Écrivez ici..." />
         </div>
-        <button type="button" id="submitRequestButton" disabled>Envoyer ma demande</button>
+        <button type="button" id="submitRequestButton" disabled onclick="sendRequest()">Envoyer ma demande</button>
       </form>
     </div>
     <div class="history">
@@ -134,6 +134,7 @@
         .fail(function (error) {
           alert('Erreur lors de l\'envoi de la demande');
         });
+    }
     // Fonction pour formater la durée en heures, minutes et secondes
     function formatDuration(duration) {
       var seconds = parseInt(duration, 10);
