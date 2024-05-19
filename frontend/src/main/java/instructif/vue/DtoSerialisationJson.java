@@ -10,5 +10,4 @@ public class DtoSerialisationJson extends AbstractSerialisationJson {
         Object dto = request.getAttribute("dto");
         return new Gson().toJson(dto);
     }
-
 }

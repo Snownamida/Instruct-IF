@@ -1,0 +1,117 @@
+/* styles.css */
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f5f5f5;
+  }
+  
+  .container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .header {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .header h1 {
+    margin: 0;
+    padding: 20px 0;
+    font-size: 24px;
+    background-color: #333;
+    color: #fff;
+  }
+  
+  .welcome {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .welcome h2 {
+    margin: 0;
+    font-size: 22px;
+  }
+  
+  .new-request,
+  .history {
+    margin-bottom: 20px;
+  }
+  
+  .new-request h3,
+  .history h3 {
+    font-size: 20px;
+    border-bottom: 2px solid #333;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+  }
+  
+  #newRequestForm {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  #newRequestForm label {
+    font-weight: bold;
+  }
+  
+  #newRequestForm input,
+  #newRequestForm select {
+    padding: 10px;
+    font-size: 16px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+  
+  #submitRequestButton {
+    background-color: #28a745;
+    color: #fff;
+    border: none;
+    padding: 10px 15px;
+    font-size: 16px;
+    cursor: pointer;
+    align-self: flex-start;
+  }
+  
+  #submitRequestButton:hover {
+    background-color: #218838;
+  }
+  
+  .history table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .history table th,
+  .history table td {
+    padding: 10px;
+    border: 1px solid #ddd;
+    text-align: left;
+  }
+  
+  .history table th {
+    background-color: #f8f9fa;
+  }
+  
+  #logoutButton {
+    background-color: #dc3545;
+    color: #fff;
+    border: none;
+    padding: 10px 15px;
+    font-size: 16px;
+    cursor: pointer;
+    display: block;
+    margin: 20px auto 0;
+    width: 200px;
+  }
+  
+  #logoutButton:hover {
+    background-color: #c82333;
+  }
+  
