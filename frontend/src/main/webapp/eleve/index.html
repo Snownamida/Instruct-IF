@@ -13,7 +13,7 @@
   <div class="container">
     <div class="header">
       <h1>Tableau de bord élève</h1>
-      <button type="button" id="logoutButton">Me déconnecter</button>
+      <a href="../index.html"><button type="button" id="logoutButton">Me déconnecter</button></a>
     </div>
     <div class="welcome">
       <h2>BIENVENUE, <span id="userFullName">[NOM] [Prénom]</span></h2>
@@ -21,17 +21,17 @@
     <div class="new-request">
       <h3>Nouvelle demande de soutien</h3>
       <form id="newRequestForm">
-        <button type="button" id="submitRequestButton">Envoyer ma demande</button>
-        <div>
+        <div class="form-group">
           <label for="matiereSelect">Matière concernée</label>
           <select id="matiereSelect" name="matiere">
             <option value="">Choisir...</option>
           </select>
         </div>
-        <div>
+        <div class="form-group">
           <label for="description">Brève description de ma demande</label>
-          <input id="description" name="description" type="text" placeholder="Écrivez ici..."/>
+          <input id="description" name="description" type="text" placeholder="Écrivez ici..." />
         </div>
+        <button type="button" id="submitRequestButton" disabled>Envoyer ma demande</button>
       </form>
     </div>
     <div class="history">
@@ -61,12 +61,12 @@
         data: { todo: 'my-info' },
         dataType: 'json'
       })
-      .done(function (response) {
-        $('#userFullName').text(response.nom + ' ' + response.prenom);
-      })
-      .fail(function (error) {
-        console.error('Erreur lors de la récupération des informations de l\'élève:', error);
-      });
+        .done(function (response) {
+          $('#userFullName').text(response.nom + ' ' + response.prenom);
+        })
+        .fail(function (error) {
+          console.error('Erreur lors de la récupération des informations de l\'élève:', error);
+        });
     }
 
     // Fonction pour récupérer les matières depuis le serveur
@@ -77,15 +77,15 @@
         data: { todo: 'get-matieres' },
         dataType: 'json'
       })
-      .done(function (response) {
-        var matiereSelect = $('#matiereSelect');
-        response.forEach(function (matiere) {
-          matiereSelect.append('<option value="' + matiere.id + '">' + matiere.denomination + '</option>');
+        .done(function (response) {
+          var matiereSelect = $('#matiereSelect');
+          response.forEach(function (matiere) {
+            matiereSelect.append('<option value="' + matiere.id + '">' + matiere.denomination + '</option>');
+          });
+        })
+        .fail(function (error) {
+          console.error('Erreur lors de la récupération des matières:', error);
         });
-      })
-      .fail(function (error) {
-        console.error('Erreur lors de la récupération des matières:', error);
-      });
     }
 
     // Fonction pour récupérer l'historique des demandes depuis le serveur
@@ -96,22 +96,22 @@
         data: { todo: 'my-history' },
         dataType: 'json'
       })
-      .done(function (response) {
-        var requestsTableBody = $('#requestsTableBody');
-        response.forEach(function (demande) {
-          var row = '<tr>' +
-            '<td>' + new Date(demande.dateDebut).toLocaleDateString() + '</td>' +
-            '<td>' + demande.matiere.denomination + '</td>' +
-            '<td>' + demande.intervenantDto.nom + ' ' + demande.intervenantDto.prenom + '</td>' +
-            '<td>' + formatDuration(demande.duree) + '</td>' +
-            '<td>' + demande.description + '</td>' +
-            '</tr>';
-          requestsTableBody.append(row);
+        .done(function (response) {
+          var requestsTableBody = $('#requestsTableBody');
+          response.forEach(function (demande) {
+            var row = '<tr>' +
+              '<td>' + new Date(demande.dateDebut).toLocaleDateString() + '</td>' +
+              '<td>' + demande.matiere.denomination + '</td>' +
+              '<td>' + demande.intervenantDto.nom + ' ' + demande.intervenantDto.prenom + '</td>' +
+              '<td>' + formatDuration(demande.duree) + '</td>' +
+              '<td>' + demande.description + '</td>' +
+              '</tr>';
+            requestsTableBody.append(row);
+          });
+        })
+        .fail(function (error) {
+          console.error('Erreur lors de la récupération de l\'historique des demandes:', error);
         });
-      })
-      .fail(function (error) {
-        console.error('Erreur lors de la récupération de l\'historique des demandes:', error);
-      });
     }
 
     // Fonction pour formater la durée en heures, minutes et secondes
@@ -119,9 +119,16 @@
       var seconds = parseInt(duration, 10);
       var hours = Math.floor(seconds / 3600);
       var minutes = Math.floor((seconds % 3600) / 60);
-      var seconds = seconds % 60;
+      seconds = seconds % 60;
 
       return hours + 'h' + (minutes < 10 ? '0' : '') + minutes + 'min' + (seconds < 10 ? '0' : '') + seconds + 's';
+    }
+
+    // Fonction pour vérifier l'état des champs et activer/désactiver le bouton
+    function checkFormFields() {
+      var matiereSelected = $('#matiereSelect').val() !== '';
+      var descriptionFilled = $('#description').val().trim() !== '';
+      $('#submitRequestButton').prop('disabled', !(matiereSelected && descriptionFilled));
     }
 
     // Appeler les fonctions pour récupérer les informations de l'élève, les matières et l'historique des demandes lorsque la page est chargée
@@ -129,6 +136,9 @@
       getUserDetails();
       getMatieres();
       getRequestsHistory();
+
+      // Ajouter les gestionnaires d'événements pour vérifier les champs de formulaire
+      $('#matiereSelect, #description').on('input change', checkFormFields);
     });
   </script>
 </body>

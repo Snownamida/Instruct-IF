@@ -1,5 +1,3 @@
-/* styles.css */
-
 body {
     font-family: Arial, sans-serif;
     margin: 0;
@@ -55,7 +53,7 @@ body {
     justify-content: space-between;
   }
   
-  #newRequestForm div {
+  #newRequestForm .form-group {
     flex: 1;
     margin-right: 10px;
   }
@@ -82,10 +80,12 @@ body {
     cursor: pointer;
     height: fit-content;
     align-self: flex-start;
+    margin-top: 20px;
   }
   
-  #submitRequestButton:hover {
-    background-color: #218838;
+  #submitRequestButton:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
   }
   
   .history table {
