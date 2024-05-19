@@ -114,7 +114,25 @@
           console.error('Erreur lors de la récupération de l\'historique des demandes:', error);
         });
     }
-
+    // Fonction pour envoyer la demande de soutien au serveur
+    function sendRequest() {
+      var matiereId = $('#matiereSelect').val();
+      var description = $('#description').val();
+      $.ajax({
+        url: '../ActionServlet',
+        method: 'POST',
+        data: { todo: 'send-demande', matiereId: matiereId, description: description },
+      })
+        .done(function (response) {
+          if (reponse.dto !== null) {
+            window.open('visio.html', 'visio', 'width=600,height=400,scrollbars=yes');
+          } else {
+            alert('Demande de soutien refusée');
+          }
+        })
+        .fail(function (error) {
+          alert('Erreur lors de l\'envoi de la demande');
+        });
     // Fonction pour formater la durée en heures, minutes et secondes
     function formatDuration(duration) {
       var seconds = parseInt(duration, 10);
