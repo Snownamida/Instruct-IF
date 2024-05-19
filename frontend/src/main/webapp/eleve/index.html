@@ -61,6 +61,7 @@
         data: { todo: 'my-info' },
         dataType: 'json'
       })
+      
         .done(function (response) {
           $('#userFullName').text(response.nom + ' ' + response.prenom);
         })
