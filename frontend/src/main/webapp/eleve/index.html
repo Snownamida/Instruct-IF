@@ -10,7 +10,7 @@
 </head>
 
 <body>
-    <dialog open="False">
+    <dialog id="visio-dialog" open="false">
         <div class="container">
             <div class="header">
                 <h1>Visio</h1>
@@ -26,6 +26,39 @@
             </div>
         </div>
     </dialog>
+    <dialog id="evaluate-dialog" open="false">
+        <div class="container">
+            <div class="header">
+                <h1>Auto-évaluation</h1>
+            </div>
+            <div class="question">
+                <h2>
+                    Quel est votre niveau de compréhension à l’issue de ce soutien ?
+                </h2>
+            </div>
+            <form class="evaluation-form">
+                <label class="evaluation-option">
+                    <input type="radio" name="evaluation" value="3" />
+                    <img src="../images/happy.png" alt="Happy" />
+                    <span>J’ai tout compris !</span>
+                </label>
+                <label class="evaluation-option">
+                    <input type="radio" name="evaluation" value="2" />
+                    <img src="../images/mid.png" alt="Mid" />
+                    <span>Quelques points sont encore flous.</span>
+                </label>
+                <label class="evaluation-option">
+                    <input type="radio" name="evaluation" value="1" />
+                    <img src="../images/sad.png" alt="Sad" />
+                    <span>Je n’ai toujours pas compris...</span>
+                </label>
+                <button type="button" class="submit-button" id="submitButton" disabled>
+                    Valider
+                </button>
+            </form>
+        </div>
+    </dialog>
+
     <div class="container">
         <div class="header">
             <h1>Tableau de bord élève</h1>
@@ -142,7 +175,7 @@
             })
                 .done(function (response) {
                     if (response !== null) {
-                        var dialog = document.querySelector('dialog');
+                        var dialog = document.getElementById('visio-dialog');
                         dialog.open = true;
                         $('#TeacherFullName').text(response.intervenantDto.prenom + ' ' + response.intervenantDto.nom);
                     } else {
@@ -165,7 +198,10 @@
                 .done(function (response) {
                     console.log('Response', response);
                     alert("Visio terminée");
-                    window.location.href = 'evaluate.html';
+                    var dialog_visio = document.querySelector('#visio-dialog');
+                    var dialog_evaluate = document.getElementById('evaluate-dialog');
+                    dialog_visio.open = false;
+                    dialog_evaluate.open = true;
                 })
                 .fail(function (error) {
                     console.error('Erreur lors de la fin de la visio:', error);
@@ -197,6 +233,26 @@
 
             // Ajouter les gestionnaires d'événements pour vérifier les champs de formulaire
             $('#matiereSelect, #description').on('input change', checkFormFields);
+        });
+
+        document.addEventListener("DOMContentLoaded", function () {
+            const evaluationOptions = document.querySelectorAll(
+                'input[name="evaluation"]'
+            );
+            const submitButton = document.getElementById("submitButton");
+
+            evaluationOptions.forEach((option) => {
+                option.addEventListener("change", function () {
+                    submitButton.disabled = false;
+                    evaluationOptions.forEach((opt) => {
+                        if (opt.checked) {
+                            opt.parentNode.classList.add("selected");
+                        } else {
+                            opt.parentNode.classList.remove("selected");
+                        }
+                    });
+                });
+            });
         });
     </script>
 </body>

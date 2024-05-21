@@ -115,3 +115,148 @@ body {
 #logoutButton:hover {
   background-color: #c82333;
 }
+
+/* visio dialog */
+
+dialog#visio-dialog .container {
+  max-width: 600px;
+  margin: 50px auto;
+  padding: 20px;
+  background-color: #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+dialog#visio-dialog .header {
+  padding-bottom: 20px;
+  border-bottom: 1px solid #ddd;
+}
+
+dialog#visio-dialog .header h1 {
+  margin: 0;
+  font-size: 24px;
+}
+
+dialog#visio-dialog .details-intervenant {
+  margin: 20px 0;
+}
+
+dialog#visio-dialog .details-intervenant h2 {
+  margin: 0;
+  font-size: 18px;
+}
+
+dialog#visio-dialog .image-container {
+  margin: 20px 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+dialog#visio-dialog .image-container img {
+  max-width: 100%;
+  height: auto;
+  border: 1px solid #ddd;
+  padding: 10px;
+  background-color: #f9f9f9;
+}
+
+dialog#visio-dialog .form-group {
+  margin: 20px 0;
+}
+
+dialog#visio-dialog .btn {
+  background-color: #ff2b2b;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+dialog#visio-dialog .btn:hover {
+  background-color: #ff5959;
+}
+
+/* evaluate dialog */
+
+dialog#evaluate-dialog .container {
+  background-color: #fff;
+  padding: 20px;
+  border: 1px solid #ddd;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  max-width: 400px;
+  text-align: center;
+}
+
+dialog#evaluate-dialog .header h1 {
+  margin: 0;
+  padding-bottom: 10px;
+  font-size: 24px;
+  border-bottom: 1px solid #ddd;
+}
+
+dialog#evaluate-dialog .question h2 {
+  font-size: 16px;
+  margin: 20px 0;
+}
+
+dialog#evaluate-dialog .evaluation-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+dialog#evaluate-dialog .evaluation-option {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  cursor: pointer;
+  background-color: #f9f9f9;
+}
+
+dialog#evaluate-dialog .evaluation-option input {
+  display: none;
+}
+
+dialog#evaluate-dialog .evaluation-option img {
+  width: 30px;
+  height: 30px;
+  margin-right: 10px;
+}
+
+dialog#evaluate-dialog .evaluation-option span {
+  flex-grow: 1;
+  text-align: left;
+}
+
+dialog#evaluate-dialog .evaluation-option:hover {
+  background-color: #e0e0e0;
+}
+
+dialog#evaluate-dialog .evaluation-option.selected {
+  background-color: #d1e7dd;
+  border-color: #0f5132;
+}
+
+dialog#evaluate-dialog .submit-button {
+  background-color: #333;
+  color: #fff;
+  border: none;
+  padding: 10px;
+  font-size: 16px;
+  cursor: pointer;
+  margin-top: 20px;
+  border-radius: 5px;
+}
+
+dialog#evaluate-dialog .submit-button:disabled {
+  background-color: #999;
+  cursor: not-allowed;
+}
+
+dialog#evaluate-dialog .submit-button:hover:not(:disabled) {
+  background-color: #555;
+}
