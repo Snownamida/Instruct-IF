@@ -16,7 +16,7 @@
                 <h1>Visio</h1>
             </div>
             <div class="details-intervenant">
-                <h2>Visio avec : <span id="TeacherFullName">[NOM] [Prénom]</span></h2>
+                <h2>Visio avec : <span id="teacherFullName">[NOM] [Prénom]</span></h2>
             </div>
             <div class="image-container">
                 <img src="..\images\visio.png" alt="Image" />
@@ -132,7 +132,6 @@
                     console.error('Erreur lors de la récupération des informations de l\'élève:', error);
                 });
         }
-
         // Fonction pour récupérer les matières depuis le serveur
         function getMatieres() {
             $.ajax({
@@ -190,7 +189,7 @@
                     if (response !== null) {
                         const dialog = document.getElementById('visio-dialog');
                         dialog.open = true;
-                        $('#TeacherFullName').text(response.intervenantDto.prenom + ' ' + response.intervenantDto.nom);
+                        $('#teacherFullName').text(response.intervenantDto.prenom + ' ' + response.intervenantDto.nom);
                     } else {
                         alert('Demande de soutien refusée');
                     }

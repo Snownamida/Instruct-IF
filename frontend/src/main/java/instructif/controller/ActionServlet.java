@@ -17,6 +17,7 @@ import instructif.action.GetMatieresAction;
 import instructif.action.GetMyHistoryAction;
 import instructif.action.GetMyInfoAction;
 import instructif.action.GetStatsAction;
+import instructif.action.SendBilanAction;
 import instructif.action.SendDemandeAction;
 import instructif.action.SignoutAction;
 import instructif.action.SignupEAction;
@@ -99,7 +100,7 @@ public class ActionServlet extends HttpServlet {
                 new StartVideoAction().execute(request);
                 break;
             case "send-bilan":
-                new SendDemandeAction().execute(request);
+                new SendBilanAction().execute(request);
             case "signout":
                 new SignoutAction().execute(request);
                 break;

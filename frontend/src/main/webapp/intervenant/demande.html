@@ -10,6 +10,28 @@
 </head>
 
 <body>
+  <dialog id="visio-dialog">
+    <div class="container">
+      <div class="header">
+        <h1>Visio</h1>
+      </div>
+      <div class="details-eleve">
+        <h2>Visio avec : <span id="studentFullName">[NOM] [Prénom]</span></h2>
+      </div>
+      <div class="image-container">
+        <img id="visio-img" src="../images/visio.png" alt="Image" />
+      </div>
+      <div class="form-group">
+        <button type="button" class="btn" onclick="endVisio()">Quitter la visio</button>
+      </div>
+      <div class="form-group">
+        <textarea id="bilan" placeholder="Écrivez le bilan ici sur plusieurs lignes si besoin"></textarea>
+      </div>
+      <div class="form-group">
+        <button type="button" class="btn secondary" id="send-button" onclick="sendBilan()" disabled>Envoyer le bilan</button>
+      </div>
+    </div>
+  </dialog>
   <div class="navbar">
     <a href="./demande.html">
       <button type="button" class="nav-button active">Demande de cours</button>
@@ -27,24 +49,11 @@
   </div>
   <div class="content" id="content-div">
     <!-- inserer details de la demande s'il y en a une, "aucune demande en cours sinon" -->
-    <h1>Demande de cours</h1>
-    <div class="details">
-      <div class="left-column">
-        <p><strong>Demande de cours :</strong></p>
-        <p id="eleve">Élève :</p>
-        <p id="classe">Classe :</p>
-        <p id="etablissement">Établissement :</p>
-      </div>
-      <div class="right-column">
-        <p>Cours :</p>
-        <p id="matiere">Matière :</p>
-        <p id="description">Description :</p>
-      </div>
-    </div>
-    <button type="button" class="launch-button" onclick="launchVisio()">Lancer Visio</button>
   </div>
 </body>
 <script>
+  let nom_eleve = "";
+  let prenom_eleve = "";
   function checkCurrentDemande() {
     $.ajax({
       url: "../ActionServlet",
@@ -58,9 +67,11 @@
           contentdiv.innerHTML = "<h1>Aucune demande de cours</h1>";
         }
         else {
+          nom_eleve = response.eleve.nom;
+          prenom_eleve = response.eleve.prenom;
           contentdiv.innerHTML = `<h1>Demande de cours</h1><div class='details'>
             <div class='left-column'><p><strong>Demande de cours :</strong></p>
-              <p>Élève : ${' ' + response.eleve.nom + ' ' + response.eleve.prenom}</p>
+              <p>Élève : ${' ' + nom_eleve + ' ' + prenom_eleve}</p>
               <p>Classe : ${' ' + response.eleve.classe}</p>
               <p>Établissement : ${' ' + response.eleve.etablissement}</p></div>
               <div class='right-column'>
@@ -79,16 +90,44 @@
     $.ajax({
       url: "../ActionServlet",
       method: "POST",
-      data: { todo: "launch-video" },
+      data: { todo: "start-video" },
       dataType: "json",
     })
       .done(function (response) {
-        console.log("Response", response);
+        console.log("start video intervenat : ", response);
+        const dialog = document.getElementById("visio-dialog");
+        dialog.open = true;
       })
       .fail(function (error) {
-        console.error("Erreur lors du lancement de la visio:", error);
+        console.error("Erreur lors du lancement de la visio intervenant:", error);
       });
   }
+  function endVisio(){
+    senButton = document.getElementById("send-button");
+    visioImg = document.getElementById("visio-img");
+    visioImg.src = "../images/visio_off.png";
+    senButton.disabled = false;
+  }
+  
+  function sendBilan(){
+    const bilan = document.getElementById("bilan").value;
+    $.ajax({
+      url: "../ActionServlet",
+      method: "POST",
+      data: { todo: "send-bilan", bilan: bilan},
+      dataType: "json",
+    })
+      .done(function (response) {
+        console.log("send bilan : ", response);
+        const dialog = document.getElementById("visio-dialog");
+        dialog.open = false;
+        checkCurrentDemande();
+      })
+      .fail(function (error) {
+        console.error("Erreur lors de l'envoi du bilan:", error);
+      });
+  }
+
   document.addEventListener("DOMContentLoaded", function () {
     checkCurrentDemande();
   });

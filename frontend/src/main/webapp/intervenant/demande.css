@@ -5,73 +5,152 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-  }
-  
-  .navbar {
+}
+
+.navbar {
     width: 100%;
     display: flex;
     justify-content: space-around;
     background-color: #f0f0f0;
     padding: 10px 0;
     border-bottom: 1px solid #ccc;
-  }
-  
-  .nav-button {
+}
+
+.nav-button {
     background-color: #f0f0f0;
     border: 1px solid #ccc;
     padding: 10px 20px;
     cursor: pointer;
-  }
-  
-  .nav-button.active {
+}
+
+.nav-button.active {
     background-color: #ccc;
-  }
-  
-  .nav-button:hover {
+}
+
+.nav-button:hover {
     background-color: #ddd;
-  }
-  
-  h1 {
+}
+
+h1 {
     margin: 20px 0;
-  }
-  
-  .content {
+}
+
+.content {
     width: 80%;
     max-width: 900px;
     display: flex;
     flex-direction: column;
     align-items: center;
-  }
-  
-  .details {
+}
+
+.details {
     width: 100%;
     display: flex;
     justify-content: space-between;
     border: 1px solid #ccc;
     padding: 20px;
     margin-bottom: 20px;
-  }
-  
-  .left-column,
-  .right-column {
+}
+
+.left-column,
+.right-column {
     width: 45%;
-  }
-  
-  .left-column p,
-  .right-column p {
+}
+
+.left-column p,
+.right-column p {
     margin: 10px 0;
-  }
-  
-  .launch-button {
+}
+
+.launch-button {
     padding: 10px 20px;
     font-size: 16px;
     background-color: #333;
     color: white;
     border: none;
     cursor: pointer;
-  }
-  
-  .launch-button:hover {
+}
+
+.launch-button:hover {
     background-color: #555;
-  }
-  
+}
+
+/* visio dialog */
+
+dialog#visio-dialog .container {
+    max-width: 600px;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+dialog#visio-dialog .header {
+    padding-bottom: 20px;
+    border-bottom: 1px solid #ddd;
+}
+
+dialog#visio-dialog .header h1 {
+    margin: 0;
+    font-size: 24px;
+}
+
+dialog#visio-dialog .details-eleve {
+    margin: 20px 0;
+}
+
+dialog#visio-dialog .details-eleve h2 {
+    margin: 0;
+    font-size: 18px;
+}
+
+dialog#visio-dialog .image-container {
+    margin: 20px 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+dialog#visio-dialog .image-container img {
+    max-width: 100%;
+    height: auto;
+    border: 1px solid #ddd;
+    padding: 10px;
+    background-color: #f9f9f9;
+}
+
+dialog#visio-dialog .form-group {
+    margin: 20px 0;
+}
+
+dialog#visio-dialog .btn {
+    background-color: #ff2b2b;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+dialog#visio-dialog .btn:hover {
+    background-color: #ff5959;
+}
+
+dialog#visio-dialog .btn.secondary {
+    background-color: #333;
+}
+
+dialog#visio-dialog .btn.secondary:hover {
+    background-color: #555;
+}
+
+dialog#visio-dialog textarea {
+    width: 100%;
+    height: 100px;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ddd;
+    box-sizing: border-box;
+    resize: none;
+}
