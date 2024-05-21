@@ -40,6 +40,11 @@
       })
         .done(function (response) { // Fonction appelée en cas d'appel AJAX réussi
           console.log('Response', response); // LOG dans Console Javascript
+          if (response !== null) { // Si la connexion a réussi
+            window.location.href = 'demande.html'; // Redirection vers la page d'accueil élève
+          } else { // Si la connexion a échoué
+            alert("Login incorrect"); // Affichage d'une alerte
+          }
         })
         .fail(function (error) { // Fonction appelée en cas d'erreur lors de l'appel AJAX
           console.log('Error', error); // LOG dans Console Javascript
