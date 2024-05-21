@@ -12,6 +12,7 @@ import instructif.action.AuthentifierEleveAction;
 import instructif.action.AuthentifierIntervenantAction;
 import instructif.action.EndVideoAction;
 import instructif.action.EvaluateAction;
+import instructif.action.GetCurrentDemandeAction;
 import instructif.action.GetMatieresAction;
 import instructif.action.GetMyHistoryAction;
 import instructif.action.GetMyInfoAction;
@@ -86,7 +87,7 @@ public class ActionServlet extends HttpServlet {
                 new EvaluateAction().execute(request);
                 break;
             case "current-demande":
-                new GetMyInfoAction().execute(request);
+                new GetCurrentDemandeAction().execute(request);
                 break;
             case "stats":
                 new GetStatsAction().execute(request);
@@ -94,7 +95,7 @@ public class ActionServlet extends HttpServlet {
             case "etabs":
                 new GetStatsAction().execute(request);
                 break;
-            case "start-video-i":
+            case "start-video":
                 new StartVideoAction().execute(request);
                 break;
             case "send-bilan":

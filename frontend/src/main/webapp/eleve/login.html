@@ -31,8 +31,8 @@
   <script>
     function login() { // Fonction appelée lors du clic sur le bouton me connecter
       // Récupération de la valeur des champs du formulaire
-      var champMail = $('#champ-mail').val();
-      var champPassword = $('#champ-password').val();
+      const champMail = $('#champ-mail').val();
+      const champPassword = $('#champ-password').val();
       // Appel AJAX
       $.ajax({
         url: '../ActionServlet',
