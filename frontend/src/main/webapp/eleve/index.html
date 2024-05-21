@@ -10,7 +10,7 @@
 </head>
 
 <body>
-    <dialog id="visio-dialog" >
+    <dialog id="visio-dialog">
         <div class="container">
             <div class="header">
                 <h1>Visio</h1>
@@ -26,7 +26,7 @@
             </div>
         </div>
     </dialog>
-    <dialog id="evaluate-dialog" open="true">
+    <dialog id="evaluate-dialog">
         <div class="container">
             <div class="header">
                 <h1>Auto-évaluation</h1>
@@ -52,7 +52,7 @@
                     <img src="../images/sad.png" alt="Sad" />
                     <span>Je n’ai toujours pas compris...</span>
                 </label>
-                <button type="button" class="submit-button" id="submitButton" disabled>
+                <button type="button" class="submit-button" onclick="evaluate()" id="submitButton" disabled>
                     Valider
                 </button>
             </form>
@@ -184,6 +184,24 @@
                 })
                 .fail(function (error) {
                     alert('Erreur lors de l\'envoi de la demande');
+                });
+        }
+
+        // Fonction pour envoyer l'évaluation au serveur
+        function evaluate() {
+            var evaluation = $('input[name="evaluation"]:checked').val();
+            $.ajax({
+                url: '../ActionServlet',
+                method: 'POST',
+                data: { todo: 'evaluate', evaluation: evaluation },
+            })
+                .done(function (response) {
+                    console.log('Evaluation envoyée');
+                    var dialog = document.getElementById('evaluate-dialog');
+                    dialog.open = false;
+                })
+                .fail(function (error) {
+                    alert('Erreur lors de l\'envoi de l\'évaluation');
                 });
         }
 
