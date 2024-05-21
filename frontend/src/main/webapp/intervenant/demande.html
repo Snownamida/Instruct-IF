@@ -67,13 +67,13 @@
           contentdiv.innerHTML = "<h1>Aucune demande de cours</h1>";
         }
         else {
-          nom_eleve = response.eleve.nom;
-          prenom_eleve = response.eleve.prenom;
+          nom_eleve = response.eleveDto.nom;
+          prenom_eleve = response.eleveDto.prenom;
           contentdiv.innerHTML = `<h1>Demande de cours</h1><div class='details'>
             <div class='left-column'><p><strong>Demande de cours :</strong></p>
               <p>Élève : ${' ' + nom_eleve + ' ' + prenom_eleve}</p>
-              <p>Classe : ${' ' + response.eleve.classe}</p>
-              <p>Établissement : ${' ' + response.eleve.etablissement}</p></div>
+              <p>Classe : ${' ' + response.eleveDto.classe}</p>
+              <p>Établissement : ${' ' + response.eleveDto.etablissement}</p></div>
               <div class='right-column'>
               <p>Cours :</p>
               <p>Matière : ${' ' + response.matiere}</p>
