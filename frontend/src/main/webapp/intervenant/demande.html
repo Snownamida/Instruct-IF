@@ -10,7 +10,7 @@
 </head>
 
 <body>
-  <dialog id="visio-dialog">
+  <dialog id="visio-dialog" open="true">
     <div class="container">
       <div class="header">
         <h1>Visio</h1>
@@ -22,10 +22,10 @@
         <img id="visio-img" src="../images/visio.png" alt="Image" />
       </div>
       <div class="form-group">
-        <button type="button" class="btn" onclick="endVisio()">Quitter la visio</button>
+        <button type="button" class="btn" id="end-visio-button" onclick="endVisio()">Quitter la visio</button>
       </div>
       <div class="form-group">
-        <textarea id="bilan" placeholder="Écrivez le bilan ici sur plusieurs lignes si besoin"></textarea>
+        <textarea id="bilan" placeholder="Écrivez le bilan ici sur plusieurs lignes si besoin" oninput="checkBilan()"></textarea>
       </div>
       <div class="form-group">
         <button type="button" class="btn secondary" id="send-button" onclick="sendBilan()" disabled>Envoyer le bilan</button>
@@ -54,6 +54,7 @@
 <script>
   let nom_eleve = "";
   let prenom_eleve = "";
+
   function checkCurrentDemande() {
     $.ajax({
       url: "../ActionServlet",
@@ -65,8 +66,7 @@
         const contentdiv = document.getElementById("content-div");
         if (response === null) {
           contentdiv.innerHTML = "<h1>Aucune demande de cours</h1>";
-        }
-        else {
+        } else {
           nom_eleve = response.eleve.nom;
           prenom_eleve = response.eleve.prenom;
           contentdiv.innerHTML = `<h1>Demande de cours</h1><div class='details'>
@@ -86,6 +86,7 @@
         console.error("Erreur lors de la récupération de la demande:", error);
       });
   }
+
   function launchVisio() {
     $.ajax({
       url: "../ActionServlet",
@@ -102,19 +103,23 @@
         console.error("Erreur lors du lancement de la visio intervenant:", error);
       });
   }
-  function endVisio(){
-    senButton = document.getElementById("send-button");
-    visioImg = document.getElementById("visio-img");
+
+  function endVisio() {
+    const endButton = document.getElementById("end-visio-button");
+    const sendButton = document.getElementById("send-button");
+    const visioImg = document.getElementById("visio-img");
     visioImg.src = "../images/visio_off.png";
-    senButton.disabled = false;
+    sendButton.disabled = false;
+    endButton.disabled = true;
+    checkBilan();
   }
-  
-  function sendBilan(){
+
+  function sendBilan() {
     const bilan = document.getElementById("bilan").value;
     $.ajax({
       url: "../ActionServlet",
       method: "POST",
-      data: { todo: "send-bilan", bilan: bilan},
+      data: { todo: "send-bilan", bilan: bilan },
       dataType: "json",
     })
       .done(function (response) {
@@ -126,6 +131,13 @@
       .fail(function (error) {
         console.error("Erreur lors de l'envoi du bilan:", error);
       });
+  }
+
+  function checkBilan() {
+    const sendButton = document.getElementById("send-button");
+    const bilan = document.getElementById("bilan").value;
+    const endButton = document.getElementById("end-visio-button");
+    sendButton.disabled = bilan.trim() === "" || !endButton.disabled;
   }
 
   document.addEventListener("DOMContentLoaded", function () {

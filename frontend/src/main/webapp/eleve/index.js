@@ -84,7 +84,7 @@ function sendRequest() {
 }
 
 // Fonction pour envoyer l'évaluation au serveur
-function evaluate() {
+function send_evaluate() {
     const evaluation = $('input[name="evaluation"]:checked').val();
     $.ajax({
         url: '../ActionServlet',
