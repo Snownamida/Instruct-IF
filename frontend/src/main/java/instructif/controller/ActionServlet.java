@@ -17,6 +17,7 @@ import instructif.action.GetMyHistoryAction;
 import instructif.action.GetMyInfoAction;
 import instructif.action.GetStatsAction;
 import instructif.action.SendDemandeAction;
+import instructif.action.SignoutAction;
 import instructif.action.SignupEAction;
 import instructif.action.StartVideoAction;
 import instructif.dao.JpaUtil;
@@ -98,6 +99,9 @@ public class ActionServlet extends HttpServlet {
                 break;
             case "send-bilan":
                 new SendDemandeAction().execute(request);
+            case "signout":
+                new SignoutAction().execute(request);
+                break;
             default:
                 break;
         }
