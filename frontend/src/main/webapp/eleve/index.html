@@ -62,7 +62,20 @@
     <div class="container">
         <div class="header">
             <h1>Tableau de bord élève</h1>
-            <a href="../index.html"><button type="button" id="logoutButton">Me déconnecter</button></a>
+           <button
+          type="button"
+          id="logoutButton"
+          onclick=" $.ajax({
+                url: '../ActionServlet',
+                method: 'POST',
+                data: { todo: 'signout' },
+                dataType: 'json'
+            }).done((response)=>{
+                window.location.href = '../index.html';
+            })"
+        >
+          Me déconnecter
+        </button>
         </div>
         <div class="welcome">
             <h2>BIENVENUE, <span id="userFullName">[NOM] [Prénom]</span></h2>
