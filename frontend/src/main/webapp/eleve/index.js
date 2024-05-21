@@ -86,7 +86,7 @@ function sendRequest() {
         .done(function (response) {
             if (response !== null) {
                 const dialog = document.getElementById('visio-dialog');
-                dialog.open = true;
+                dialog.showModal();
                 $('#TeacherFullName').text(response.intervenantDto.prenom + ' ' + response.intervenantDto.nom);
             } else {
                 alert('Demande de soutien refusée');
@@ -108,7 +108,7 @@ function send_evaluate() {
         .done(function (response) {
             console.log('Evaluation envoyée');
             const dialog = document.getElementById('evaluate-dialog');
-            dialog.open = false;
+            dialog.close();
         })
         .fail(function (error) {
             alert('Erreur lors de l\'envoi de l\'évaluation');
@@ -128,8 +128,8 @@ function EndVisio() {
             alert("Visio terminée");
             const dialog_visio = document.querySelector('#visio-dialog');
             const dialog_evaluate = document.getElementById('evaluate-dialog');
-            dialog_visio.open = false;
-            dialog_evaluate.open = true;
+            dialog_visio.close();
+            dialog_evaluate.showModal();
         })
         .fail(function (error) {
             console.error('Erreur lors de la fin de la visio:', error);
