@@ -7,5 +7,4 @@ public class SignoutAction extends AbstractAction {
     public void execute(HttpServletRequest request) {
         request.getSession().invalidate();
     }
-
 }

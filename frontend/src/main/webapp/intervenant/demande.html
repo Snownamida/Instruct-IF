@@ -10,7 +10,7 @@
 </head>
 
 <body>
-  <dialog id="visio-dialog" open="true">
+  <dialog id="visio-dialog">
     <div class="container">
       <div class="header">
         <h1>Visio</h1>
@@ -25,27 +25,29 @@
         <button type="button" class="btn" id="end-visio-button" onclick="endVisio()">Quitter la visio</button>
       </div>
       <div class="form-group">
-        <textarea id="bilan" placeholder="Écrivez le bilan ici sur plusieurs lignes si besoin" oninput="checkBilan()"></textarea>
+        <textarea id="bilan" placeholder="Écrivez le bilan ici sur plusieurs lignes si besoin"
+          oninput="checkBilan()"></textarea>
       </div>
       <div class="form-group">
-        <button type="button" class="btn secondary" id="send-button" onclick="sendBilan()" disabled>Envoyer le bilan</button>
+        <button type="button" class="btn secondary" id="send-button" onclick="sendBilan()" disabled>Envoyer le
+          bilan</button>
       </div>
     </div>
   </dialog>
   <div class="navbar">
-    <a href="./demande.html">
+    <a href="demande.html">
       <button type="button" class="nav-button active">Demande de cours</button>
     </a>
-    <a href="./history.html">
+    <a href="history.html">
       <button type="button" class="nav-button">Historique</button>
     </a>
-    <a href="stat.html">
+    <a href="stats.html">
       <button type="button" class="nav-button">Statistiques</button>
     </a>
     <a href="profile.html">
       <button type="button" class="nav-button">Profil</button>
     </a>
-    <button type="button" class="nav-button">Déconnexion</button>
+    <button type="button" class="nav-button" onclick="logout()">Déconnexion</button>
   </div>
   <div class="content" id="content-div">
     <!-- inserer details de la demande s'il y en a une, "aucune demande en cours sinon" -->
@@ -70,7 +72,7 @@
         else {
           nom_eleve = response.eleveDto.nom;
           prenom_eleve = response.eleveDto.prenom;
-          contentdiv.innerHTML = `<h1>Demande de cours</h1><div class='details'>
+          contentdiv.innerHTML = `<h1>Demande de cours:</h1><div class='details'>
             <div class='left-column'><p><strong>Demande de cours :</strong></p>
               <p>Élève : ${' ' + nom_eleve + ' ' + prenom_eleve}</p>
               <p>Classe : ${' ' + response.eleveDto.classe}</p>
@@ -139,6 +141,21 @@
     const bilan = document.getElementById("bilan").value;
     const endButton = document.getElementById("end-visio-button");
     sendButton.disabled = bilan.trim() === "" || !endButton.disabled;
+  }
+
+  function logout() {
+    $.ajax({
+      url: '../ActionServlet',
+      method: 'POST',
+      data: { todo: 'signout' },
+      dataType: 'json'
+    })
+      .done((response) => {
+        window.location.href = '../index.html';
+      })
+      .fail((error) => {
+        console.error('Erreur lors de la déconnexion:', error);
+      });
   }
 
   document.addEventListener("DOMContentLoaded", function () {

@@ -15,6 +15,20 @@ function getUserDetails() {
         });
 }
 
+function logout() {
+    $.ajax({
+        url: '../ActionServlet',
+        method: 'POST',
+        data: { todo: 'signout' },
+        dataType: 'json'
+    })
+        .done((response) => {
+            window.location.href = '../index.html';
+        })
+        .fail((error) => {
+            console.error('Erreur lors de la déconnexion:', error);
+        });
+}
 // Fonction pour récupérer les matières depuis le serveur
 function getMatieres() {
     $.ajax({
