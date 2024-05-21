@@ -65,15 +65,15 @@
     <script>
         function signup() { // Fonction appelée lors du clic sur le bouton m'inscrire
             // Récupération de la valeur des champs du formulaire
-            var champNom = $('#champ-nom').val();
-            var champPrenom = $('#champ-prenom').val();
-            var champJour = $('#champ-jour').val();
-            var champMois = $('#champ-mois').val();
-            var champAnnee = $('#champ-annee').val();
-            var champCode = $('#champ-code').val();
-            var champClasse = $('#champ-classe').val();
-            var champMail = $('#champ-mail').val();
-            var champPassword = $('#champ-password').val();
+            const champNom = $('#champ-nom').val();
+            const champPrenom = $('#champ-prenom').val();
+            const champJour = $('#champ-jour').val();
+            const champMois = $('#champ-mois').val();
+            const champAnnee = $('#champ-annee').val();
+            const champCode = $('#champ-code').val();
+            const champClasse = $('#champ-classe').val();
+            const champMail = $('#champ-mail').val();
+            const champPassword = $('#champ-password').val();
             // Appel AJAX
             $.ajax({
                 url: '../ActionServlet',

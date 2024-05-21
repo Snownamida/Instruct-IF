@@ -1,26 +1,95 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-  </head>
-  <body>
-    <div>
-      <a href="./demande.html">
-        <button type="button">Demande de cours</button>
-      </a>
-      <a href="./history.html">
-        <button type="button">Historique</button>
-      </a>
-      <a href="stat.html">
-        <button type="button">Statistiques</button>
-      </a>
-      <a href="profile.html">
-        <button type="button">Profil</button>
-      </a>
-      <button type="button">Déconnexion</button>
-    </div>
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Demande</title>
+  <link rel="stylesheet" href="demande.css" />
+  <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+</head>
+
+<body>
+  <div class="navbar">
+    <a href="./demande.html">
+      <button type="button" class="nav-button active">Demande de cours</button>
+    </a>
+    <a href="./history.html">
+      <button type="button" class="nav-button">Historique</button>
+    </a>
+    <a href="stat.html">
+      <button type="button" class="nav-button">Statistiques</button>
+    </a>
+    <a href="profile.html">
+      <button type="button" class="nav-button">Profil</button>
+    </a>
+    <button type="button" class="nav-button">Déconnexion</button>
+  </div>
+  <div class="content" id="content-div">
+    <!-- inserer details de la demande s'il y en a une, "aucune demande en cours sinon" -->
     <h1>Demande de cours</h1>
-  </body>
+    <div class="details">
+      <div class="left-column">
+        <p><strong>Demande de cours :</strong></p>
+        <p id="eleve">Élève :</p>
+        <p id="classe">Classe :</p>
+        <p id="etablissement">Établissement :</p>
+      </div>
+      <div class="right-column">
+        <p>Cours :</p>
+        <p id="matiere">Matière :</p>
+        <p id="description">Description :</p>
+      </div>
+    </div>
+    <button type="button" class="launch-button" onclick="launchVisio()">Lancer Visio</button>
+  </div>
+</body>
+<script>
+  function checkCurrentDemande() {
+    $.ajax({
+      url: "../ActionServlet",
+      method: "POST",
+      data: { todo: "current-demande" },
+      dataType: "json",
+    })
+      .done(function (response) {
+        const contentdiv = document.getElementById("content-div");
+        if (response === null) {
+          contentdiv.innerHTML = "<h1>Aucune demande de cours</h1>";
+        }
+        else {
+          contentdiv.innerHTML = `<h1>Demande de cours</h1><div class='details'>
+            <div class='left-column'><p><strong>Demande de cours :</strong></p>
+              <p>Élève : ${' ' + response.eleve.nom + ' ' + response.eleve.prenom}</p>
+              <p>Classe : ${' ' + response.eleve.classe}</p>
+              <p>Établissement : ${' ' + response.eleve.etablissement}</p></div>
+              <div class='right-column'>
+              <p>Cours :</p>
+              <p>Matière : ${' ' + response.matiere}</p>
+              <p>Description : ${' ' + response.description}</p>
+            </div>
+            </div><button type='button' class='launch-button' onclick='launchVisio()'>Lancer Visio</button>`;
+        }
+      })
+      .fail(function (error) {
+        console.error("Erreur lors de la récupération de la demande:", error);
+      });
+  }
+  function launchVisio() {
+    $.ajax({
+      url: "../ActionServlet",
+      method: "POST",
+      data: { todo: "launch-video" },
+      dataType: "json",
+    })
+      .done(function (response) {
+        console.log("Response", response);
+      })
+      .fail(function (error) {
+        console.error("Erreur lors du lancement de la visio:", error);
+      });
+  }
+
+</script>
+
 </html>
