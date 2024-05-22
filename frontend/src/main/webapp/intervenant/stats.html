@@ -27,7 +27,9 @@
   </div>
   <h1>Tableau de bord global, statistiques sur l'application:</h1>
   <div class="stats">
-
+    <div class="content" id="content-div">
+      <!-- Les stats seront insérées ici -->
+    </div>
     <table>
       <thead>
         <tr>
@@ -39,14 +41,40 @@
           <th>Durée moyenne</th>
         </tr>
       </thead>
-      <tbody id="statsTableBody">
-        <!-- Les demandes seront insérées ici -->
+      <tbody id="etabs">
+        <!-- Les etablissements seront insérées ici -->
       </tbody>
     </table>
   </div>
 </body>
 <script>
-  $(document).ready(() => {
+  function getStatsTable() {
+    $.ajax({
+      url: '../ActionServlet',
+      method: 'POST',
+      data: { todo: 'etabs' },
+      dataType: 'json'
+    })
+      .done(function (response) {
+        const etabs = $('#etabs');
+        response.forEach(function (etab) {
+          const row = '<tr>' +
+            '<td>' + etab.nom + '</td>' +
+            '<td>' + etab.codeDepartement + '</td>' +
+            '<td>' + etab.nomCommune + '</td>' +
+            '<td>' + etab.ips + '</td>' +
+            '<td>' + etab.nbDemandes + '</td>' +
+            '<td>' + etab.dureeMoyenne + '</td>' +
+            '</tr>';
+          etabs.append(row);
+        });
+      })
+      .fail(function (error) {
+        console.error('Erreur lors de la récupération du tableau de stats :', error);
+        alert('Erreur lors de la récupération du tableau de stats');
+      });
+  }
+  function getStats() {
     $.ajax({
       url: '../ActionServlet',
       method: 'POST',
@@ -54,23 +82,18 @@
       dataType: 'json'
     })
       .done(function (response) {
-        const statsTableBody = $('#statsTableBody');
-        response.forEach(function (demande) {
-          const row = '<tr>' +
-            '<td>' + new Date(demande.dateDebut).toLocaleDateString() + '</td>' +
-            '<td>' + demande.matiere.denomination + '</td>' +
-            '<td>' + demande.eleveDto.nom + ' ' + demande.eleveDto.prenom + '</td>' +
-            '<td>' + formatDuration(demande.duree) + '</td>' +
-            '<td><button type="button" class="btn secondary" onclick="showBilan(\'' + demande.bilan + '\')">Voir bilan</button></td>' +
-            '</tr>';
-          statsTableBody.append(row);
-
-        });
+        const aRemplir = $('#content-div');
+        aRemplir.innerHTML = `<p>Matière la plus demandée : ${reponse.populate_matiere.denomination}</p>
+          <p>Au total : ${nb_soutien} soutiens pour une durée totale de ${time_total_soutien} minutes</p>
+          <p>Par eleve, en moyenne : ${nb_average_soutien_per_eleve} soutiens pour une durée moyenne de ${time_average_soutien_per_eleve} minutes</p>
+          <p>Par établissement, en moyenne : ${nb_average_soutien_per_etab} soutiens pour une durée moyenne de ${time_average_soutien_per_etab} minutes</p>`
       })
       .fail(function (error) {
-        console.error('Erreur lors de la récupération de l\'historique des demandes:', error);
+        console.error('Erreur lors de la récupération des stats :', error);
+        alert('Erreur lors de la récupération des stats');
       });
-  });
+  }
+
 
   // Fonction pour formater la durée en heures, minutes et secondes
   function formatDuration(duration) {
@@ -94,6 +117,10 @@
         console.error('Erreur lors de la déconnexion:', error);
       });
   }
+  $(document).ready(() => {
+    getStats();
+    getStatsTable();
+  });
 </script>
 
 </html>
