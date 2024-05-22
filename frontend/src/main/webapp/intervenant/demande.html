@@ -100,7 +100,7 @@
       .done(function (response) {
         console.log("start video intervenat : ", response);
         const dialog = document.getElementById("visio-dialog");
-        dialog.open = true;
+        dialog.showModal();
       })
       .fail(function (error) {
         console.error("Erreur lors du lancement de la visio intervenant:", error);
@@ -128,7 +128,7 @@
       .done(function (response) {
         console.log("send bilan : ", response);
         const dialog = document.getElementById("visio-dialog");
-        dialog.open = false;
+        dialog.close();
         checkCurrentDemande();
       })
       .fail(function (error) {

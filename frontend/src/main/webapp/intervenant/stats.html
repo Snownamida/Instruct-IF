@@ -1,26 +1,99 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-  </head>
-  <body>
-    <div>
-      <a href="./demande.html">
-        <button type="button">Demande de cours</button>
-      </a>
-      <a href="./history.html">
-        <button type="button">Historique</button>
-      </a>
-      <a href="stats.html">
-        <button type="button">Statistiques</button>
-      </a>
-      <a href="profile.html">
-        <button type="button">Profil</button>
-      </a>
-      <button type="button">Déconnexion</button>
-    </div>
-    <h1>Tableau de bord global, statistiques sur l'application</h1>
-  </body>
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Statistiques</title>
+  <link rel="stylesheet" href="stats.css" />
+  <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+</head>
+
+<body>
+  <div class="navbar">
+    <a href="demande.html">
+      <button type="button" class="nav-button">Demande de cours</button>
+    </a>
+    <a href="history.html">
+      <button type="button" class="nav-button">Historique</button>
+    </a>
+    <a href="stats.html">
+      <button type="button" class="nav-button active">Statistiques</button>
+    </a>
+    <a href="profile.html">
+      <button type="button" class="nav-button">Profil</button>
+    </a>
+    <button type="button" class="nav-button" onlclick="logout()">Déconnexion</button>
+  </div>
+  <h1>Tableau de bord global, statistiques sur l'application:</h1>
+  <div class="stats">
+
+    <table>
+      <thead>
+        <tr>
+          <th>Nom de l'établissement</th>
+          <th>Département</th>
+          <th>Commune</th>
+          <th>IPS</th>
+          <th>Nombre de soutiens</th>
+          <th>Durée moyenne</th>
+        </tr>
+      </thead>
+      <tbody id="statsTableBody">
+        <!-- Les demandes seront insérées ici -->
+      </tbody>
+    </table>
+  </div>
+</body>
+<script>
+  $(document).ready(() => {
+    $.ajax({
+      url: '../ActionServlet',
+      method: 'POST',
+      data: { todo: 'stats' },
+      dataType: 'json'
+    })
+      .done(function (response) {
+        const statsTableBody = $('#statsTableBody');
+        response.forEach(function (demande) {
+          const row = '<tr>' +
+            '<td>' + new Date(demande.dateDebut).toLocaleDateString() + '</td>' +
+            '<td>' + demande.matiere.denomination + '</td>' +
+            '<td>' + demande.eleveDto.nom + ' ' + demande.eleveDto.prenom + '</td>' +
+            '<td>' + formatDuration(demande.duree) + '</td>' +
+            '<td><button type="button" class="btn secondary" onclick="showBilan(\'' + demande.bilan + '\')">Voir bilan</button></td>' +
+            '</tr>';
+          statsTableBody.append(row);
+
+        });
+      })
+      .fail(function (error) {
+        console.error('Erreur lors de la récupération de l\'historique des demandes:', error);
+      });
+  });
+
+  // Fonction pour formater la durée en heures, minutes et secondes
+  function formatDuration(duration) {
+    const seconds = parseInt(duration, 10) % 60;
+    const hours = Math.floor(seconds / 3600);
+    const minutes = Math.floor((seconds % 3600) / 60);
+    return hours + 'h' + (minutes < 10 ? '0' : '') + minutes + 'min' + (seconds < 10 ? '0' : '') + seconds + 's';
+  }
+
+  function logout() {
+    $.ajax({
+      url: '../ActionServlet',
+      method: 'POST',
+      data: { todo: 'signout' },
+      dataType: 'json'
+    })
+      .done((response) => {
+        window.location.href = '../index.html';
+      })
+      .fail((error) => {
+        console.error('Erreur lors de la déconnexion:', error);
+      });
+  }
+</script>
+
 </html>
