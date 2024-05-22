@@ -86,7 +86,7 @@ public class JpaUtil {
         if (!JPAUTIL_LOG_ACTIVE) {
             propertyMap.put("eclipselink.logging.level", "OFF");
         }
-        entityManagerFactory = Persistence.createEntityManagerFactory(PERSISTENCE_UNIT_NAME,propertyMap);
+        entityManagerFactory = Persistence.createEntityManagerFactory(PERSISTENCE_UNIT_NAME, propertyMap);
     }
 
     /**
