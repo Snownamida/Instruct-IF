@@ -42,6 +42,19 @@
       </tbody>
     </table>
   </div>
+  <dialog id="bilan-dialog">
+    <div class="container">
+      <div class="header">
+        <h1>Bilan</h1>
+      </div>
+      <div class="bilan-content">
+        <p id="bilan-text"></p>
+      </div>
+      <div class="form-group">
+        <button type="button" class="btn secondary" onclick="closeBilan()">Fermer</button>
+      </div>
+    </div>
+  </dialog>
 </body>
 <script>
   $(document).ready(() => {
@@ -59,7 +72,7 @@
             '<td>' + demande.matiere.denomination + '</td>' +
             '<td>' + demande.eleveDto.nom + ' ' + demande.eleveDto.prenom + '</td>' +
             '<td>' + formatDuration(demande.duree) + '</td>' +
-            '<td>' + demande.description + '</td>' +
+            '<td><button type="button" class="btn secondary" onclick="showBilan(\'' + demande.bilan + '\')">Voir bilan</button></td>' +
             '</tr>';
           historyTableBody.append(row);
 
@@ -69,13 +82,25 @@
         console.error('Erreur lors de la récupération de l\'historique des demandes:', error);
       });
   });
-  
+
   // Fonction pour formater la durée en heures, minutes et secondes
   function formatDuration(duration) {
     const seconds = parseInt(duration, 10) % 60;
     const hours = Math.floor(seconds / 3600);
     const minutes = Math.floor((seconds % 3600) / 60);
     return hours + 'h' + (minutes < 10 ? '0' : '') + minutes + 'min' + (seconds < 10 ? '0' : '') + seconds + 's';
+  }
+
+  function showBilan(bilan) {
+    const dialog = document.getElementById('bilan-dialog');
+    const bilanText = document.getElementById('bilan-text');
+    bilanText.textContent = bilan;
+    dialog.showModal();
+  }
+
+  function closeBilan() {
+    const dialog = document.getElementById('bilan-dialog');
+    dialog.close();
   }
 
   function logout() {
