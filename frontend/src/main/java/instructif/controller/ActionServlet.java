@@ -13,6 +13,7 @@ import instructif.action.AuthentifierIntervenantAction;
 import instructif.action.EndVideoAction;
 import instructif.action.EvaluateAction;
 import instructif.action.GetCurrentDemandeAction;
+import instructif.action.GetEtabsAction;
 import instructif.action.GetMatieresAction;
 import instructif.action.GetMyHistoryAction;
 import instructif.action.GetMyInfoAction;
@@ -94,7 +95,7 @@ public class ActionServlet extends HttpServlet {
                 new GetStatsAction().execute(request);
                 break;
             case "etabs":
-                new GetStatsAction().execute(request);
+                new GetEtabsAction().execute(request);
                 break;
             case "start-video":
                 new StartVideoAction().execute(request);
