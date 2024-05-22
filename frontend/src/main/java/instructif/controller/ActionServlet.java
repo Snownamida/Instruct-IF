@@ -24,6 +24,7 @@ import instructif.action.SignoutAction;
 import instructif.action.SignupEAction;
 import instructif.action.StartVideoAction;
 import instructif.dao.JpaUtil;
+import instructif.metier.service.Service;
 import instructif.vue.DtoSerialisationJson;
 
 /**
@@ -46,6 +47,7 @@ public class ActionServlet extends HttpServlet {
     public void init() throws ServletException {
         super.init();
         JpaUtil.creerFabriquePersistance();
+        new Service().initialiserApplication();
     }
 
     @Override
