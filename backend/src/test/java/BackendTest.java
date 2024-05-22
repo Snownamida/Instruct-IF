@@ -3,11 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package instructif;
 
-import instructif.dao.JpaUtil;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+
+import instructif.dao.JpaUtil;
 import instructif.metier.modele.Demande;
 import instructif.metier.modele.Eleve;
 import instructif.metier.modele.Etablissement;
@@ -21,12 +21,13 @@ import instructif.metier.service.Service;
  */
 // Pour refresh la vue de la BD, il faut refresh la BD mais AUSSI réexécuter
 // l'instruction SQL qui permet d'afficher les premières lignes !
-public class TestBack {
+public class BackendTest {
+    static Service service = new Service();
 
-    /**
-     * @param args the command line arguments
-     */
     public static void main(String[] args) {
+
+        JpaUtil.creerFabriquePersistance();
+        service.initialiserApplication();
 
         // scenario1BeaucoupDeTests();
         // scenario2Intervenants();
@@ -35,16 +36,12 @@ public class TestBack {
         // scenario5Visio();
         scenario6NormalEleve();
 
+        JpaUtil.fermerFabriquePersistance();
+
     }
 
     // ce scénario regroupe beaucoup de testsen tout genre
     public static void scenario1BeaucoupDeTests() {
-        // initialisation de l'application
-        JpaUtil.creerFabriquePersistance();
-        Service service = new Service();
-        service.initialiserApplication();
-        // service.desactiverLog();
-        service.desactiverStackTrace();
 
         // inscription de trois éleves
         System.out.println("\n    INSCRIPTION DE TROIS ELEVES");
@@ -129,16 +126,10 @@ public class TestBack {
         System.out.println("\n    AFFICHAGE MATIERES");
         affichageMatieres(service);
 
-        JpaUtil.fermerFabriquePersistance();
     }
 
     // ce scénario teste l'allocation des intervenants
     public static void scenario2Intervenants() {
-        JpaUtil.creerFabriquePersistance();
-        Service service = new Service();
-        service.initialiserApplication();
-        service.desactiverLog();
-        service.desactiverStackTrace();
 
         /**
          * On a trois intervenants, avec leurs niveaux enseignés respectifs:
@@ -168,16 +159,10 @@ public class TestBack {
         System.out.println("\n  PAS D'INTERVENANT EN 1ere " + e3);
         testEnvoiDemande(e3, service, id, "Je suis en première.");
 
-        JpaUtil.fermerFabriquePersistance();
     }
 
     // ce scnéario teste les connexions à 'application
     public static void scenario3Connexions() {
-        JpaUtil.creerFabriquePersistance();
-        Service service = new Service();
-        service.initialiserApplication();
-        // service.desactiverLog();
-        service.desactiverStackTrace();
 
         // inscription de trois éleves
         System.out.println("\n    INSCRIPTION D'ELEVES");
@@ -204,15 +189,9 @@ public class TestBack {
         System.out.println("\n    CONNEXION ECHOUEE");
         service.connecterIntervenant("Malika");
 
-        JpaUtil.fermerFabriquePersistance();
     }
 
     public static void scenario4EnvoiDeDemandes() {
-        JpaUtil.creerFabriquePersistance();
-        Service service = new Service();
-        service.initialiserApplication();
-        // service.desactiverLog();
-        service.desactiverStackTrace();
 
         // inscription de deux éleves
         System.out.println("\n    INSCRIPTION DE DEUX ELEVES");
@@ -225,21 +204,14 @@ public class TestBack {
 
         // envoi de demandes
         System.out.println("\n    ENVOI REUSSI");
-        Demande demande1 = testEnvoiDemande(e1, service, (long) 4, "Première demande");
+        testEnvoiDemande(e1, service, (long) 4, "Première demande");
         System.out.println("\n    ENVOI NON REUSSI");
         testEnvoiDemande(e1, service, (long) 4, "Deuxième demande invalide");
         System.out.println("\n    ENVOI NON REUSSI");
         testEnvoiDemande(e1, service, (long) 10, "Troisieme demande invalide");
-        JpaUtil.fermerFabriquePersistance();
     }
 
     public static void scenario5Visio() {
-        JpaUtil.creerFabriquePersistance();
-        Service service = new Service();
-        service.initialiserApplication();
-        // service.desactiverLog();
-        service.desactiverStackTrace();
-
         // inscription de deux éleves
         System.out.println("\n    INSCRIPTION DE DEUX ELEVES");
         String codeEtab1 = "0692155T";
@@ -278,16 +250,9 @@ public class TestBack {
         System.out.println("\n    AFFICHAGE MATIERES");
         affichageMatieres(service);
 
-        JpaUtil.fermerFabriquePersistance();
     }
 
     public static void scenario6NormalEleve() {
-        JpaUtil.creerFabriquePersistance();
-        Service service = new Service();
-        service.initialiserApplication();
-        // service.desactiverLog();
-        service.desactiverStackTrace();
-
         // inscription de deux éleves
         System.out.println("\n    INSCRIPTION DE L'ELEVE");
         String codeEtab1 = "0692155T";
@@ -321,7 +286,6 @@ public class TestBack {
         System.out.println("\n    AFFICHAGE HISTORIQUE D'UN INTERVENANT");
         affichageHistoIntervenant(intervenant1, service);
 
-        JpaUtil.fermerFabriquePersistance();
     }
 
     public static void verificationConnexionEleve(Eleve e) {
@@ -404,41 +368,3 @@ public class TestBack {
         return demande;
     }
 }
-
-// ------------------- TIPS DU TD ------------------
-// Invoquer le "print" exécute automatiquement le ToString() de l'objet !
-// lorsqu'on fait un CREATE uniquement : ne veut pas insérer les clients car les
-// mail sont uniques
-// ALors qu'en DROP AND CREATE, toutes les données sont effacées auparavant,
-// donc tout est recréé avec succès
-// -------------- FONCTIONS SAISIES SUR LE TERMINAL ----------------------------
-/*
- * static public void inscription()
- * {
- * Service service = new Service();
- * // Saisie a des métthodes statiques : pas besoin d'instancier un objet pour
- * invoquer ces méthodes
- * String nom = Saisie.lireChaine("Entrez le nom : ");
- * String prenom = Saisie.lireChaine("Entrez le prenom : ");
- * String adresse = Saisie.lireChaine("Entrez l'adresse : ");
- * String mail = Saisie.lireChaine("Entrez le mail : ");
- * String mdp = Saisie.lireChaine("Entrez le mot de passe : ");
- * 
- * Eleve client = new Eleve(nom, prenom, mail, adresse, mdp);
- * 
- * service.inscrireClient(client);
- * }
- */
-/*
- * static public void authentification()
- * {
- * Service service = new Service();
- * String mail = Saisie.lireChaine("Entrez le mail : ");
- * String mdp = Saisie.lireChaine("Entrez le mot de passe : ");
- * 
- * Eleve c = service.authentifierClient(mail,mdp);
- * System.out.println(c); // Pas d'affichage dans les servces et les DAO !
- * 
- * 
- * }
- */
