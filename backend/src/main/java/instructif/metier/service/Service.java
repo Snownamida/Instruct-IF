@@ -50,6 +50,7 @@ public class Service { // Tip :le service ne dépend pas de la persistence
     public void initialiserApplication() {
         initialiserIntervenants();
         initialiserMatieres();
+        initialiserEleves();
     }
 
     // Persiste un élève (ainsi que son établissement is celui-ci n'est pas déjà
@@ -1034,6 +1035,15 @@ public class Service { // Tip :le service ne dépend pas de la persistence
         } finally {
             JpaUtil.fermerContextePersistance();
         }
+
+    }
+
+    private void initialiserEleves() {
+
+        String codeEtab1 = "0692155T";
+        Eleve e1 = new Eleve("Hugo", "Victor", "26/02/1802", 4, "vhugo@paris.fr", "1234");
+
+        inscrireEleve(e1, codeEtab1);
 
     }
 
