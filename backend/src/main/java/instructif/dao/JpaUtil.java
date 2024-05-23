@@ -2,10 +2,13 @@ package instructif.dao;
 
 import java.util.HashMap;
 import java.util.Map;
+
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.persistence.RollbackException;
+
+import instructif.util.ColorUtil;
 
 /**
  * Cette classe fournit des méthodes statiques utiles pour accéder aux
@@ -18,11 +21,13 @@ import javax.persistence.RollbackException;
 public class JpaUtil {
 
     // *************************************************************************************
-    // * TODO: IMPORTANT -- Adapter le nom de l'Unité de Persistance (cf. persistence.xml) *
+    // * TODO: IMPORTANT -- Adapter le nom de l'Unité de Persistance (cf.
+    // persistence.xml) *
     // *************************************************************************************
     /**
      * Nom de l'unité de persistance utilisée par la Factory de Entity Manager.
-     * <br><strong>Vérifier le nom de l'unité de persistance
+     * <br>
+     * <strong>Vérifier le nom de l'unité de persistance
      * (cf.&nbsp;persistence.xml)</strong>
      */
     public static final String PERSISTENCE_UNIT_NAME = "td1PU";
@@ -48,32 +53,35 @@ public class JpaUtil {
     /**
      * Indicateur d'affichage du Log de JpaUtil.
      * Par défaut, le Log de JpaUtil s'affiche dans la console.
-     * Utiliser la méthode <code>desactiverLog()</code> pour désactiver cet affichage.
+     * Utiliser la méthode <code>desactiverLog()</code> pour désactiver cet
+     * affichage.
      */
     private static boolean JPAUTIL_LOG_ACTIVE = true;
 
     /**
      * Méthode privée d'affichage du Log sur la console.
+     * 
      * @param message Message à afficher dans le Log
      */
     private static void log(String message) {
         if (JPAUTIL_LOG_ACTIVE) {
-            System.out.println("[JpaUtil:Log] " + message);
+            System.out.println(ColorUtil.ANSI_PURPLE + "[JpaUtil:Log] " + message + ColorUtil.ANSI_RESET);
         }
     }
-    
+
     /**
      * Méthode pour désactiver l'affichage du Log de JpaUtil.
      * À utiliser avant la méthode <code>creerFabriquePersistance()</code> pour
      * également désactiver le Log de la librairie EclipseLink.
-     */    
+     */
     public static void desactiverLog() {
         JPAUTIL_LOG_ACTIVE = false;
     }
 
     /**
      * Initialise la Fabrique (Factory) de Contexte de Persistance (Entity Manager).
-     * <br><strong>À utiliser uniquement au début de la méthode main() [projet
+     * <br>
+     * <strong>À utiliser uniquement au début de la méthode main() [projet
      * Java Application] ou dans la méthode init() de la Servlet Contrôleur
      * (ActionServlet) [projet Web Application].</strong>
      */
@@ -91,7 +99,8 @@ public class JpaUtil {
 
     /**
      * Libère la Fabrique (Factory) de Contexte de Persistance (Entity Manager).
-     * <br><strong>À utiliser uniquement à la fin de la méthode main() [projet
+     * <br>
+     * <strong>À utiliser uniquement à la fin de la méthode main() [projet
      * Java Application] ou dans la méthode destroy() de la Servlet Contrôleur
      * (ActionServlet) [projet Web Application].</strong>
      */
@@ -104,8 +113,10 @@ public class JpaUtil {
     }
 
     /**
-     * Créée l'instance courante du Contexte de Persistance (Entity Manager), liée à ce Thread.
-     * <br><strong>À utiliser uniquement au niveau Service.</strong>
+     * Créée l'instance courante du Contexte de Persistance (Entity Manager), liée à
+     * ce Thread.
+     * <br>
+     * <strong>À utiliser uniquement au niveau Service.</strong>
      */
     public static void creerContextePersistance() {
         log("Création du contexte de persistance");
@@ -113,8 +124,10 @@ public class JpaUtil {
     }
 
     /**
-     * Ferme l'instance courante du Contexte de Persistance (Entity Manager), liée à ce Thread.
-     * <br><strong>À utiliser uniquement au niveau Service.</strong>
+     * Ferme l'instance courante du Contexte de Persistance (Entity Manager), liée à
+     * ce Thread.
+     * <br>
+     * <strong>À utiliser uniquement au niveau Service.</strong>
      */
     public static void fermerContextePersistance() {
         log("Fermeture du contexte de persistance");
@@ -124,8 +137,10 @@ public class JpaUtil {
     }
 
     /**
-     * Démarre une transaction sur l'instance courante du Contexte de Persistance (Entity Manager).
-     * <br><strong>À utiliser uniquement au niveau Service.</strong>
+     * Démarre une transaction sur l'instance courante du Contexte de Persistance
+     * (Entity Manager).
+     * <br>
+     * <strong>À utiliser uniquement au niveau Service.</strong>
      */
     public static void ouvrirTransaction() throws Exception {
         log("Ouverture de la transaction (begin)");
@@ -139,8 +154,10 @@ public class JpaUtil {
     }
 
     /**
-     * Valide la transaction courante sur l'instance courante du Contexte de Persistance (Entity Manager).
-     * <br><strong>À utiliser uniquement au niveau Service.</strong>
+     * Valide la transaction courante sur l'instance courante du Contexte de
+     * Persistance (Entity Manager).
+     * <br>
+     * <strong>À utiliser uniquement au niveau Service.</strong>
      *
      * @exception RollbackException lorsque le <em>commit</em> n'a pas réussi.
      */
@@ -156,10 +173,12 @@ public class JpaUtil {
     }
 
     /**
-     * Annule la transaction courante sur l'instance courante du Contexte de Persistance (Entity Manager).
+     * Annule la transaction courante sur l'instance courante du Contexte de
+     * Persistance (Entity Manager).
      * Si la transaction courante n'est pas démarrée, cette méthode n'effectue
      * aucune opération.
-     * <br><strong>À utiliser uniquement au niveau Service.</strong>
+     * <br>
+     * <strong>À utiliser uniquement au niveau Service.</strong>
      */
     public static void annulerTransaction() {
         try {
@@ -178,7 +197,8 @@ public class JpaUtil {
 
     /**
      * Retourne l'instance courante de Entity Manager.
-     * <br><strong>À utiliser uniquement au niveau DAO.</strong>
+     * <br>
+     * <strong>À utiliser uniquement au niveau DAO.</strong>
      *
      * @return instance de Entity Manager
      */

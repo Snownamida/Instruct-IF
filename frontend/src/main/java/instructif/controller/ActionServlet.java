@@ -25,6 +25,7 @@ import instructif.action.SignupEAction;
 import instructif.action.StartVideoAction;
 import instructif.dao.JpaUtil;
 import instructif.metier.service.Service;
+import instructif.util.ColorUtil;
 import instructif.vue.DtoSerialisationJson;
 
 /**
@@ -33,6 +34,21 @@ import instructif.vue.DtoSerialisationJson;
  */
 @WebServlet(urlPatterns = { "/ActionServlet" })
 public class ActionServlet extends HttpServlet {
+
+    @Override
+    public void init() throws ServletException {
+        console_log("init()");
+        super.init();
+        JpaUtil.creerFabriquePersistance();
+        new Service().initialiserApplication();
+    }
+
+    @Override
+    public void destroy() {
+        console_log("destroy()");
+        JpaUtil.fermerFabriquePersistance();
+        super.destroy();
+    }
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -43,24 +59,13 @@ public class ActionServlet extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException      if an I/O error occurs
      */
-    @Override
-    public void init() throws ServletException {
-        super.init();
-        JpaUtil.creerFabriquePersistance();
-        new Service().initialiserApplication();
-    }
-
-    @Override
-    public void destroy() {
-        JpaUtil.fermerFabriquePersistance();
-        super.destroy();
-    }
-
     protected void processRequest(final HttpServletRequest request, final HttpServletResponse response)
             throws ServletException, IOException {
 
-        System.out.println("[TEST] Appel de l’ActionServlet ");
+        console_log("processRequest()");
         final String todo = request.getParameter("todo");
+        if (todo == null)
+            return;
 
         switch (todo) {
             case "connecter-e":
@@ -153,4 +158,7 @@ public class ActionServlet extends HttpServlet {
         return "Short description";
     }// </editor-fold>
 
+    private static void console_log(final String message) {
+        System.out.println(ColorUtil.ANSI_GREEN + "[ActionServlet:Log] " + message + ColorUtil.ANSI_RESET);
+    }
 }
