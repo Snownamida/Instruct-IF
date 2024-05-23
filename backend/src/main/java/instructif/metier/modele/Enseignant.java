@@ -5,7 +5,6 @@
  */
 package instructif.metier.modele;
 
-import java.util.List;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 
@@ -21,13 +20,12 @@ public class Enseignant extends Intervenant {
     public Enseignant() {
     }
 
-    public Enseignant(String login,String nom, String prenom, String telephone, int niveauMin, int niveauMax, String typeEtablissementExercice) {
-        super(login,nom, prenom, telephone, niveauMin, niveauMax);
+    public Enseignant(String login, String nom, String prenom, String telephone, int niveauMin, int niveauMax,
+            String typeEtablissementExercice) {
+        super(login, nom, prenom, telephone, niveauMin, niveauMax);
         this.typeEtablissementExercice = typeEtablissementExercice;
     }
 
-    
-    
     public String getTypeEtablissementExercice() {
         return typeEtablissementExercice;
     }
@@ -35,6 +33,5 @@ public class Enseignant extends Intervenant {
     public void setTypeEtablissementExercice(String typeEtablissementExercice) {
         this.typeEtablissementExercice = typeEtablissementExercice;
     }
-    
-    
+
 }

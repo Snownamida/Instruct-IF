@@ -67,6 +67,8 @@ public class ActionServlet extends HttpServlet {
         if (todo == null)
             return;
 
+        console_log("todo : " + todo);
+
         switch (todo) {
             case "connecter-e":
                 new AuthentifierEleveAction().execute(request);
@@ -109,12 +111,14 @@ public class ActionServlet extends HttpServlet {
                 break;
             case "send-bilan":
                 new SendBilanAction().execute(request);
+                break;
             case "signout":
                 new SignoutAction().execute(request);
                 break;
             default:
                 break;
         }
+
         new DtoSerialisationJson().execute(request, response);
     }
 

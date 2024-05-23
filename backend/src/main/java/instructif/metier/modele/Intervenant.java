@@ -18,11 +18,11 @@ import javax.persistence.InheritanceType;
  * @author mbaratova
  */
 @Entity
-@Inheritance (strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name="type_intervenant")
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "type_intervenant")
 public class Intervenant {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)    
+    @GeneratedValue(strategy = GenerationType.AUTO)
     protected Long id;
     protected String login;
     protected String nom;
@@ -43,15 +43,17 @@ public class Intervenant {
         this.telephone = telephone;
         this.niveauMin = niveauMin;
         this.niveauMax = niveauMax;
-        
+
         this.nombreInterventions = 0;
         this.disponible = true;
     }
 
     @Override
     public String toString() {
-        return "Intervenant #" + id + " : " + nom + " " + prenom + ". Tél : " + telephone + ". Classes d'enseignement : " + niveauMin + "-" + niveauMax
-                + ". Disponibilité actuelle : " + disponible + ". Nombre d'interventions : " + nombreInterventions + ". Login : " + login;
+        return "Intervenant #" + id + " : " + nom + " " + prenom + ". Tél : " + telephone
+                + ". Classes d'enseignement : " + niveauMin + "-" + niveauMax
+                + ". Disponibilité actuelle : " + disponible + ". Nombre d'interventions : " + nombreInterventions
+                + ". Login : " + login;
     }
 
     public Long getId() {
@@ -78,7 +80,6 @@ public class Intervenant {
         return telephone;
     }
 
-
     public int getNombreInterventions() {
         return nombreInterventions;
     }
@@ -98,7 +99,6 @@ public class Intervenant {
     public void setTelephone(String telephone) {
         this.telephone = telephone;
     }
-
 
     public void setNombreInterventions(int nombreInterventions) {
         this.nombreInterventions = nombreInterventions;
@@ -123,7 +123,5 @@ public class Intervenant {
     public void setNiveauMax(int niveauMax) {
         this.niveauMax = niveauMax;
     }
-    
-    
-    
+
 }
