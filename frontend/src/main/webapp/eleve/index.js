@@ -133,10 +133,12 @@ function send_evaluate() {
   $.ajax({
     url: "../ActionServlet",
     method: "POST",
-    data: { todo: "evaluate", evaluation: evaluation },
+    data: { todo: "evaluate", score: evaluation },
   })
     .done(function (response) {
       console.log("Evaluation envoyée");
+      if (response) alert("Evaluation envoyée avec succès");
+      else alert("Erreur lors de l'envoi de l'évaluation");
       const dialog = document.getElementById("evaluate-dialog");
       dialog.close();
     })
