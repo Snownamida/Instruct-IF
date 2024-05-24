@@ -20,11 +20,11 @@ function checkCurrentDemande() {
               <p>Élève : ${" " + nom_eleve + " " + prenom_eleve}</p>
               <p>Classe : ${" " + response.eleveDto.classe}</p>
               <p>Établissement : ${
-                " " + response.eleveDto.etablissement
+                " " + response.eleveDto?.etablissement?.nom
               }</p></div>
               <div class='right-column'>
               <p>Cours :</p>
-              <p>Matière : ${" " + response.matiere}</p>
+              <p>Matière : ${" " + response.matiere?.denomination}</p>
               <p>Description : ${" " + response.description}</p>
             </div>
             </div><button type='button' class='launch-button' onclick='launchVisio()'>Lancer Visio</button>`;
