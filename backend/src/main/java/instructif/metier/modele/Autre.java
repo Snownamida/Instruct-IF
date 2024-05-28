@@ -5,7 +5,6 @@
  */
 package instructif.metier.modele;
 
-import java.util.List;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 
@@ -15,18 +14,18 @@ import javax.persistence.Entity;
  */
 @Entity
 @DiscriminatorValue("Autre")
-public class Autre extends Intervenant{
+public class Autre extends Intervenant {
     private String activite;
 
     public Autre() {
     }
 
-    public Autre( String login,String nom, String prenom, String telephone, int niveauMin, int niveauMax, String activite) {
-        super(login,nom, prenom, telephone, niveauMin, niveauMax);
+    public Autre(String login, String nom, String prenom, String telephone, int niveauMin, int niveauMax,
+            String activite) {
+        super(login, nom, prenom, telephone, niveauMin, niveauMax);
         this.activite = activite;
     }
 
-    
     public String getActivite() {
         return activite;
     }
@@ -34,6 +33,5 @@ public class Autre extends Intervenant{
     public void setActivite(String activite) {
         this.activite = activite;
     }
-    
-    
+
 }

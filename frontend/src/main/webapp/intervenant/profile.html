@@ -1,74 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Profile</title>
+    <link rel="stylesheet" href="profile.css" />
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+  </head>
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Profile</title>
-  <link rel="stylesheet" href="profile.css" />
-  <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-
-</head>
-
-<body>
-  <div class="navbar">
-    <a href="demande.html">
-      <button type="button" class="nav-button">Demande de cours</button>
-    </a>
-    <a href="history.html">
-      <button type="button" class="nav-button">Historique</button>
-    </a>
-    <a href="stats.html">
-      <button type="button" class="nav-button">Statistiques</button>
-    </a>
-    <a href="profile.html">
-      <button type="button" class="nav-button active">Profil</button>
-    </a>
-    <button type="button" class="nav-button" onlclick="logout()">Déconnexion</button>
-  </div>
-  <h1>Profil :</h1>
-  <div class="content" id="content-div">
-    <!-- Les détails seront insérées ici -->
-  </div>
-</body>
-<script>
-  $(document).ready(() => {
-    $.ajax({
-      url: '../ActionServlet',
-      method: 'POST',
-      data: { todo: 'my-info' },
-      dataType: 'json'
-    })
-      .done(function (response) {
-        const aRemplir = $('#content-div');
-        aRemplir.innerHTML = `<p>${reponse.nom} ${reponse.prenom}</p>
-            <p>Téléphone : ${reponse.telephone}</p>
-            <p>Type : ????</p>;
-            <p>Université : ????</p>
-            <p>Specialité : ????</p>
-            <p>Type d'établissement d'exercice : ????</p>
-            <p>Activité : ????</p>`;
-      })
-      .fail(function (error) {
-        console.error('Erreur lors de la récupération des données :', error);
-        alert('Erreur lors de la récupération des données');
-      });
-  });
-
-  function logout() {
-    $.ajax({
-      url: '../ActionServlet',
-      method: 'POST',
-      data: { todo: 'signout' },
-      dataType: 'json'
-    })
-      .done((response) => {
-        window.location.href = '../index.html';
-      })
-      .fail((error) => {
-        console.error('Erreur lors de la déconnexion:', error);
-      });
-  }
-</script>
-
+  <body>
+    <div class="navbar">
+      <a href="demande.html">
+        <button type="button" class="nav-button">Demande de cours</button>
+      </a>
+      <a href="history.html">
+        <button type="button" class="nav-button">Historique</button>
+      </a>
+      <a href="stats.html">
+        <button type="button" class="nav-button">Statistiques</button>
+      </a>
+      <a href="profile.html">
+        <button type="button" class="nav-button active">Profil</button>
+      </a>
+      <button type="button" class="nav-button" onclick="logout()">
+        Déconnexion
+      </button>
+    </div>
+    <h1>Profil :</h1>
+    <div class="content" id="content-div">
+      <!-- Les détails seront insérées ici -->
+    </div>
+  </body>
+  <script src="profile.js"></script>
 </html>

@@ -5,16 +5,17 @@
  */
 package instructif.metier.service;
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
+
 import instructif.dao.DemandeDAO;
 import instructif.dao.EleveDAO;
 import instructif.dao.EtablissementDAO;
 import instructif.dao.IntervenantDAO;
 import instructif.dao.JpaUtil;
 import instructif.dao.MatiereDAO;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.concurrent.TimeUnit;
 import instructif.metier.modele.Autre;
 import instructif.metier.modele.Demande;
 import instructif.metier.modele.Eleve;
@@ -23,6 +24,7 @@ import instructif.metier.modele.Etablissement;
 import instructif.metier.modele.Etudiant;
 import instructif.metier.modele.Intervenant;
 import instructif.metier.modele.Matiere;
+import instructif.util.ColorUtil;
 import instructif.util.EducNetApi;
 import instructif.util.Message;
 
@@ -48,6 +50,7 @@ public class Service { // Tip :le service ne dépend pas de la persistence
     public void initialiserApplication() {
         initialiserIntervenants();
         initialiserMatieres();
+        initialiserEleves();
     }
 
     // Persiste un élève (ainsi que son établissement is celui-ci n'est pas déjà
@@ -71,7 +74,7 @@ public class Service { // Tip :le service ne dépend pas de la persistence
             if (etablissement == null) { // Si l'établissement n'est pas encore dans la BD, on l'ajoute et on le
                                          // persiste :
                 if (afficherLog == true) {
-                    System.out.println("Etablissement rechercheParCode)) Etablissement non trouvé.");
+                    log("Etablissement rechercheParCode)) Etablissement non trouvé.");
                 }
                 etablissement = chercherInfosEtablissement(codeEtablissement, eleve.getClasse());
                 etablissementDAO.creerEtablissement(etablissement);
@@ -81,7 +84,7 @@ public class Service { // Tip :le service ne dépend pas de la persistence
 
             JpaUtil.validerTransaction();
             if (afficherLog == true) {
-                System.out.print("Service inscrireEleve)) Inscription réussie de l'élève : " + eleve + "\n");
+                log("inscrireEleve)) Inscription réussie de l'élève : " + eleve + "");
             }
 
             corps = "Bonjour " + eleve.getPrenom()
@@ -91,7 +94,7 @@ public class Service { // Tip :le service ne dépend pas de la persistence
         } catch (final Exception ex) { // Si le code de l'établissement est invalide, ou s'il y a eu une erreur de
                                        // persistence de l'élève / établissement :
             if (afficherLog == true) {
-                System.out.print("Service inscrireEleve)) Inscription échouée pour l'élève : " + eleve + ">\n");
+                log("inscrireEleve)) Inscription échouée pour l'élève : " + eleve + ">");
             }
 
             JpaUtil.annulerTransaction();
@@ -130,7 +133,7 @@ public class Service { // Tip :le service ne dépend pas de la persistence
                                                                                                   // intervenant
             if (intervenant == null) {
                 if (afficherLog == true) {
-                    System.out.println("Intervenant trouverIntervenant)) Intervenant non trouvé.");
+                    log("Intervenant trouverIntervenant)) Intervenant non trouvé.");
                 }
             }
 
@@ -140,8 +143,8 @@ public class Service { // Tip :le service ne dépend pas de la persistence
                                                                   // trouvé un intervenant et que toutes les demandes de
                                                                   // soutien de l'élèves sont bien terminées.
                 if (afficherLog == true) {
-                    System.out.print(
-                            "Service envoyerDemande)) Succès de la recherche d'un intervenant : " + intervenant + "\n");
+                    log(
+                            "envoyerDemande)) Succès de la recherche d'un intervenant : " + intervenant + "");
                 }
 
                 demande.setIntervenant(intervenant);
@@ -163,16 +166,16 @@ public class Service { // Tip :le service ne dépend pas de la persistence
                 demande = null;
                 JpaUtil.annulerTransaction();
                 if (afficherLog == true) {
-                    System.out.print(
-                            "Service envoyerDemande)) Echec de la prise en compte de la demande : pas d'intervenant disponible, ou demande de soutien inachevée déjà en cours.\n");
+                    log(
+                            "envoyerDemande)) Echec de la prise en compte de la demande : pas d'intervenant disponible, ou demande de soutien inachevée déjà en cours.");
                 }
 
             }
 
         } catch (final Exception ex) { // Erreur de persistance / mise à jour de la demande
             if (afficherLog == true) {
-                System.out.print(
-                        "Service envoyerDemande)) Echec de la prise en compte de la demande (échec d'enregistrement de la demande)\n");
+                log(
+                        "envoyerDemande)) Echec de la prise en compte de la demande (échec d'enregistrement de la demande)");
             }
 
             if (afficherTraceErreur == true) {
@@ -202,25 +205,25 @@ public class Service { // Tip :le service ne dépend pas de la persistence
             eleve = eleveDAO.rechercheParMail(mail); // Chercher si un élève correspondant au mail existe dans la BD
             if (eleve == null) {
                 if (afficherLog == true) {
-                    System.out.println("Eleve rechercheParMail)) Eleve non trouvé.");
+                    log("Eleve rechercheParMail)) Eleve non trouvé.");
                 }
             }
             if (!(eleve.getMotDePasse().equals(motDePasse))) { // Puis, vérifier que le mot de passe correspond bien
                 eleve = null;
                 if (afficherLog == true) {
-                    System.out.print("Service connecterEleve)) Echec de l'authentification de l'élève.\n");
+                    log("connecterEleve)) Echec de l'authentification de l'élève.");
                 }
             } else {
                 if (afficherLog == true) {
-                    System.out.print(
-                            "Service connecterEleve)) Succès de l'authentification de l'élève : " + eleve + "\n");
+                    log(
+                            "connecterEleve)) Succès de l'authentification de l'élève : " + eleve + "");
                 }
 
             }
         } catch (final Exception ex) {
             if (afficherLog == true) {
-                System.out.print(
-                        "Service connecterEleve)) Echec de l'authentification de l'élève : mail et/ou mot de passe invalide(s).\n");
+                log(
+                        "connecterEleve)) Echec de l'authentification de l'élève : mail et/ou mot de passe invalide(s).");
             }
 
             if (afficherTraceErreur == true) {
@@ -245,21 +248,21 @@ public class Service { // Tip :le service ne dépend pas de la persistence
                                                                    // dans la BD
             if (intervenant == null) {
                 if (afficherLog == true) {
-                    System.out.println("Intervenant rechercheParLogin)) Intervenant non trouvé.");
+                    log("Intervenant rechercheParLogin)) Intervenant non trouvé.");
                 }
             }
 
             else {
                 if (afficherLog == true) {
-                    System.out.print("Service connecterIntervenant)) Succès de l'authentification de l'intervenant : "
-                            + intervenant + "\n");
+                    log("connecterIntervenant)) Succès de l'authentification de l'intervenant : "
+                            + intervenant + "");
                 }
             }
 
         } catch (final Exception ex) {
             if (afficherLog == true) {
-                System.out.print(
-                        "Service connecterIntervenant)) Echec de l'authentification de l'intervenant : erreur système.\n");
+                log(
+                        "connecterIntervenant)) Echec de l'authentification de l'intervenant : erreur système.");
             }
 
             if (afficherTraceErreur == true) {
@@ -289,14 +292,14 @@ public class Service { // Tip :le service ne dépend pas de la persistence
             demande.setDateDebut(dateDebut);
             demandeDAO.majDemande(demande); // On met à jour la date de début de la demande, de NULL à l'instant actuel.
             if (afficherLog == true) {
-                System.out.print(
-                        "Service lancerVisioEleve)) Succès du lancement de la visio par l'éleve " + eleve + "\n");
+                log(
+                        "lancerVisioEleve)) Succès du lancement de la visio par l'éleve " + eleve + "");
             }
 
         } catch (final Exception ex) {
             if (afficherLog == true) {
                 System.out
-                        .print("Service lancerVisioEleve)) Echec du lancement de la visio par l'éleve " + eleve + "\n");
+                        .print("lancerVisioEleve)) Echec du lancement de la visio par l'éleve " + eleve + "");
             }
 
             if (afficherTraceErreur == true) {
@@ -323,14 +326,14 @@ public class Service { // Tip :le service ne dépend pas de la persistence
             intervenantDAO.majIntervenant(intervenant); // Incrémenter puis mettre à jour le nombre d'interventions
 
             if (afficherLog == true) {
-                System.out.print("Service lancerVisioIntervenant)) Succès  : l'intervenant " + intervenant
-                        + " a pu rejoindre la visio.\n");
+                log("lancerVisioIntervenant)) Succès  : l'intervenant " + intervenant
+                        + " a pu rejoindre la visio.");
             }
 
         } catch (final Exception ex) { // En cas d'échec de la mise à jour de l'intervenant
             if (afficherLog == true) {
-                System.out.print("Service lancerVisioIntervenant)) Succès  : l'intervenant " + intervenant
-                        + " a pu rejoindre la visio.\n");
+                log("lancerVisioIntervenant)) Succès  : l'intervenant " + intervenant
+                        + " a pu rejoindre la visio.");
             }
 
             if (afficherTraceErreur == true) {
@@ -391,14 +394,14 @@ public class Service { // Tip :le service ne dépend pas de la persistence
 
             JpaUtil.validerTransaction();
             if (afficherLog == true) {
-                System.out.print("Service raccrocherEleve)) Succès de l'arrêt de la visio par l'éleve : " + eleve
-                        + ". Durée : " + duree + " |  Terminée le " + dateFin + "\n");
+                log("raccrocherEleve)) Succès de l'arrêt de la visio par l'éleve : " + eleve
+                        + ". Durée : " + duree + " |  Terminée le " + dateFin + "");
             }
 
         } catch (final Exception ex) { // Si erreur dans la mise à jour de l'objet Demande
             if (afficherLog == true) {
                 System.out
-                        .print("Service raccrocherEleve)) Echec de l'arrêt de la visio par l'élève : " + eleve + "\n");
+                        .print("raccrocherEleve)) Echec de l'arrêt de la visio par l'élève : " + eleve + "");
             }
 
             if (afficherTraceErreur == true) {
@@ -439,13 +442,13 @@ public class Service { // Tip :le service ne dépend pas de la persistence
             demandeDAO.majDemande(demande); // Mettre à jour les modifications
             JpaUtil.validerTransaction();
             if (afficherLog == true) {
-                System.out.print("Service evaluerVisio)) Succès de l'évaluation : l'élève " + eleve
-                        + " a choisi la note '" + eval + "'.\n");
+                log("evaluerVisio)) Succès de l'évaluation : l'élève " + eleve
+                        + " a choisi la note '" + eval + "'.");
             }
 
         } catch (final Exception ex) { // En cas d'erreur de mise à jour de la demande
             if (afficherLog == true) {
-                System.out.print("Service evaluerVisio)) Echec de l'évaluation par l'élève " + eleve + ".\n");
+                log("evaluerVisio)) Echec de l'évaluation par l'élève " + eleve);
             }
 
             if (afficherTraceErreur == true) {
@@ -492,18 +495,18 @@ public class Service { // Tip :le service ne dépend pas de la persistence
             JpaUtil.validerTransaction();
 
             sujet = "Bilan après ta visio sur Instruct'IF";
-            corps = "Voici le message de la part de " + demande.getIntervenant().getPrenom() + "\n" + bilan;
+            corps = "Voici le message de la part de " + demande.getIntervenant().getPrenom() + "" + bilan;
             Message.envoyerMail(expediteur, pour, sujet, corps);
 
             if (afficherLog == true) {
-                System.out.print(
-                        "Service envoyerBilan)) Succès de l'envoi du bilan par l'intervenant : " + intervenant + ".\n");
+                log(
+                        "envoyerBilan)) Succès de l'envoi du bilan par l'intervenant : " + intervenant);
             }
 
         } catch (final Exception ex) { // EN cas d'erreur de mise à jour de la demande
             if (afficherLog == true) {
-                System.out.print(
-                        "Service envoyerBilan)) Echec de l'envoi du bilan par l'intervenant : " + intervenant + ".\n");
+                log(
+                        "envoyerBilan)) Echec de l'envoi du bilan par l'intervenant : " + intervenant);
             }
 
             if (afficherTraceErreur == true) {
@@ -532,15 +535,15 @@ public class Service { // Tip :le service ne dépend pas de la persistence
             JpaUtil.creerContextePersistance();
             demande = demandeDAO.rechercheParIntervenant(intervenant);
             if (afficherLog == true) {
-                System.out.print(
-                        "Service obtenirDemandeIntervenant)) Succès de l'obtention détails de la demande en cours : "
-                                + demande + "\n");
+                log(
+                        "obtenirDemandeIntervenant)) Succès de l'obtention détails de la demande en cours : "
+                                + demande + "");
             }
 
         } catch (final Exception ex) { // Erreur interne dans la recherche de la demande
             if (afficherLog == true) {
-                System.out.print(
-                        "Service obtenirDemandeIntervenant)) Echec de l'obtention détails de la demande en cours");
+                log(
+                        "obtenirDemandeIntervenant)) Echec de l'obtention détails de la demande en cours");
             }
 
             if (afficherTraceErreur == true) {
@@ -565,14 +568,14 @@ public class Service { // Tip :le service ne dépend pas de la persistence
             JpaUtil.creerContextePersistance();
             listeEtablissements = etablissementDAO.rechercheToutesLesEtablissements();
             if (afficherLog == true) {
-                System.out.print(
-                        "Service obtenirListeEtablissements)) Succès de l'obtention de la liste des établissements.\n");
+                log(
+                        "obtenirListeEtablissements)) Succès de l'obtention de la liste des établissements.");
             }
 
         } catch (final Exception ex) {
             if (afficherLog == true) {
-                System.out.print(
-                        "Service obtenirListeEtablissements)) Echec de l'obtention de la liste des établissements.\n");
+                log(
+                        "obtenirListeEtablissements)) Echec de l'obtention de la liste des établissements.");
             }
 
             if (afficherTraceErreur == true) {
@@ -594,12 +597,12 @@ public class Service { // Tip :le service ne dépend pas de la persistence
             JpaUtil.creerContextePersistance();
             listeMatieres = matiereDAO.rechercheToutesLesMatieres();
             if (afficherLog == true) {
-                System.out.print("Service obtenirListeMatieres)) Succès de l'obtention de la liste des matières.\n");
+                log("obtenirListeMatieres)) Succès de l'obtention de la liste des matières.");
             }
 
         } catch (final Exception ex) {
             if (afficherLog == true) {
-                System.out.print("Service obtenirListeMatieres)) Echec de l'obtention de la liste des matières.\n");
+                log("obtenirListeMatieres)) Echec de l'obtention de la liste des matières.");
             }
 
             if (afficherTraceErreur == true) {
@@ -622,16 +625,16 @@ public class Service { // Tip :le service ne dépend pas de la persistence
             JpaUtil.creerContextePersistance();
             listeDemandes = demandeDAO.rechercheToutesLesDemandes(intervenant);
             if (afficherLog == true) {
-                System.out.print(
-                        "Service obtenirHistoriqueIntervenant)) Succès de l'obtention de l'historique de l'intervenant "
-                                + intervenant + ".\n");
+                log(
+                        "obtenirHistoriqueIntervenant)) Succès de l'obtention de l'historique de l'intervenant "
+                                + intervenant);
             }
 
         } catch (final Exception ex) {
             if (afficherLog == true) {
-                System.out.print(
-                        "Service obtenirHistoriqueIntervenant)) Echec de l'obtention de l'historique de l'intervenant "
-                                + intervenant + ".\n");
+                log(
+                        "obtenirHistoriqueIntervenant)) Echec de l'obtention de l'historique de l'intervenant "
+                                + intervenant);
             }
 
             if (afficherTraceErreur == true) {
@@ -654,14 +657,14 @@ public class Service { // Tip :le service ne dépend pas de la persistence
             JpaUtil.creerContextePersistance();
             listeDemandes = demandeDAO.rechercheToutesLesDemandes(eleve);
             if (afficherLog == true) {
-                System.out.print("Service obtenirHistoriqueEleve)) Succès de l'obtention de l'historique de l'élève "
-                        + eleve + ".\n");
+                log("obtenirHistoriqueEleve)) Succès de l'obtention de l'historique de l'élève "
+                        + eleve);
             }
 
         } catch (final Exception ex) {
             if (afficherLog == true) {
-                System.out.print("Service obtenirHistoriqueEleve)) Echec de l'obtention de l'historique de l'élève "
-                        + eleve + ".\n");
+                log("obtenirHistoriqueEleve)) Echec de l'obtention de l'historique de l'élève "
+                        + eleve);
             }
 
             if (afficherTraceErreur == true) {
@@ -688,19 +691,19 @@ public class Service { // Tip :le service ne dépend pas de la persistence
             matiere = demandeDAO.rechercheMatierePopulaire();
             if (matiere == null) {
                 if (afficherLog == true) {
-                    System.out.println("Matiere rechercheMatierePopulaire)) Matiere non trouvée");
+                    log("Matiere rechercheMatierePopulaire)) Matiere non trouvée");
                 }
             } else {
                 if (afficherLog == true) {
-                    System.out.print(
-                            "Service obtenirMatierePopulaire)) Succès de la recherche : Matiere la plus populaire : "
-                                    + matiere + ".\n");
+                    log(
+                            "obtenirMatierePopulaire)) Succès de la recherche : Matiere la plus populaire : "
+                                    + matiere);
                 }
             }
 
         } catch (final Exception ex) { // Erreur interne dans la recherche
             if (afficherLog == true) {
-                System.out.print("Service obtenirMatierePopulaire)) Echec de la recherche.\n");
+                log("obtenirMatierePopulaire)) Echec de la recherche.");
             }
 
             if (afficherTraceErreur == true) {
@@ -724,13 +727,13 @@ public class Service { // Tip :le service ne dépend pas de la persistence
             tuple = demandeDAO.rechercheStatsSoutienTotal();
             if (afficherLog == true) {
                 System.out
-                        .print("Service obtenirStatsSoutienTotal))  Succès de la recherche. Nombre total de demandes : "
-                                + tuple[0] + ", durée totale des soutiens : " + tuple[1] + "min. \n");
+                        .print("obtenirStatsSoutienTotal))  Succès de la recherche. Nombre total de demandes : "
+                                + tuple[0] + ", durée totale des soutiens : " + tuple[1] + "min. ");
             }
 
         } catch (final Exception ex) { // Erreur interne dans la recherche
             if (afficherLog == true) {
-                System.out.print("Service obtenirStatsSoutienTotal)) Echec de la recherche.\n");
+                log("obtenirStatsSoutienTotal)) Echec de la recherche.");
             }
 
             if (afficherTraceErreur == true) {
@@ -753,14 +756,14 @@ public class Service { // Tip :le service ne dépend pas de la persistence
             JpaUtil.creerContextePersistance();
             tuple = demandeDAO.rechercheStatsSoutienEleve();
             if (afficherLog == true) {
-                System.out.print(
-                        "Service obtenirStatsSoutienEleve)) Succès de la recherche. Nombre moyen de demandes par élève : "
-                                + tuple[0] + ", durée moyenne de tous les soutien par élève : " + tuple[1] + "min.\n");
+                log(
+                        "obtenirStatsSoutienEleve)) Succès de la recherche. Nombre moyen de demandes par élève : "
+                                + tuple[0] + ", durée moyenne de tous les soutien par élève : " + tuple[1] + "min.");
             }
 
         } catch (final Exception ex) { // Erreur interne dans la recherche
             if (afficherLog == true) {
-                System.out.print("Service obtenirStatsSoutienEleve)) Echec de la recherche.\n");
+                log("obtenirStatsSoutienEleve)) Echec de la recherche.");
             }
 
             if (afficherTraceErreur == true) {
@@ -783,15 +786,15 @@ public class Service { // Tip :le service ne dépend pas de la persistence
             JpaUtil.creerContextePersistance();
             tuple = demandeDAO.rechercheStatsSoutienEtablissement();
             if (afficherLog == true) {
-                System.out.print(
-                        "Service obtenirStatsSoutienEtablissement)) Succès de la recherche. Nombre moyen de demandes par établissement : "
+                log(
+                        "obtenirStatsSoutienEtablissement)) Succès de la recherche. Nombre moyen de demandes par établissement : "
                                 + tuple[0] + ", durée moyenne de tous les soutien par établissement : " + tuple[1]
-                                + "min.\n");
+                                + "min.");
             }
 
         } catch (final Exception ex) { // Erreur interne dans la recherche
             if (afficherLog == true) {
-                System.out.print("Service obtenirStatsSoutienEtablissement)) Echec de la recherche.\n");
+                log("obtenirStatsSoutienEtablissement)) Echec de la recherche.");
             }
 
             if (afficherTraceErreur == true) {
@@ -815,12 +818,12 @@ public class Service { // Tip :le service ne dépend pas de la persistence
             JpaUtil.creerContextePersistance();
             eleve = eleveDAO.rechercheParID(id);
             if (afficherLog == true) {
-                System.out.print("Service recupererEleveParID) Succès de la recherche par ID : " + eleve + ".\n");
+                log("recupererEleveParID) Succès de la recherche par ID : " + eleve);
             }
 
         } catch (final Exception ex) {
             if (afficherLog == true) {
-                System.out.print("Service recupererEleveParID) Echec de la recherche par ID.\n");
+                log("recupererEleveParID) Echec de la recherche par ID.");
             }
 
             if (afficherTraceErreur == true) {
@@ -840,14 +843,14 @@ public class Service { // Tip :le service ne dépend pas de la persistence
             JpaUtil.creerContextePersistance();
             intervenant = intervenantDAO.rechercheParID(id);
             if (afficherLog == true) {
-                System.out.print(
-                        "Service recupererIntervenantParID) Succès de la recherche par ID : " + intervenant + ".\n");
+                log(
+                        "recupererIntervenantParID) Succès de la recherche par ID : " + intervenant);
             }
 
         } catch (final Exception ex) {
 
             if (afficherLog == true) {
-                System.out.print("Service recupererIntervenantParID) Echec de la recherche par ID.\n");
+                log("recupererIntervenantParID) Echec de la recherche par ID.");
             }
 
             if (afficherTraceErreur == true) {
@@ -867,13 +870,13 @@ public class Service { // Tip :le service ne dépend pas de la persistence
             JpaUtil.creerContextePersistance();
             demande = demandeDAO.rechercheParID(id);
             if (afficherLog == true) {
-                System.out.print("Service recupererDemandeParID) Succès de la recherche par ID : " + demande + ".\n");
+                log("recupererDemandeParID) Succès de la recherche par ID : " + demande);
             }
 
         } catch (final Exception ex) {
 
             if (afficherLog == true) {
-                System.out.print("Service recupererDemandeParID) Echec de la recherche par ID.\n");
+                log("recupererDemandeParID) Echec de la recherche par ID.");
                 if (afficherTraceErreur == true) {
                 }
 
@@ -892,13 +895,13 @@ public class Service { // Tip :le service ne dépend pas de la persistence
             JpaUtil.creerContextePersistance();
             matiere = matiereDAO.rechercheParID(id);
             if (afficherLog == true) {
-                System.out.print("Service recupererMatiereParID) Succès de la recherche par ID : " + matiere + ".\n");
+                log("recupererMatiereParID) Succès de la recherche par ID : " + matiere);
             }
 
         } catch (final Exception ex) {
 
             if (afficherLog == true) {
-                System.out.print("Service recupererMatiereParID) Echec de la recherche par ID.\n");
+                log("recupererMatiereParID) Echec de la recherche par ID.");
             }
 
             if (afficherTraceErreur == true) {
@@ -919,14 +922,13 @@ public class Service { // Tip :le service ne dépend pas de la persistence
             JpaUtil.creerContextePersistance();
             etablissement = etablissementDAO.rechercheParID(id);
             if (afficherLog == true) {
-                System.out.print("Service recupererEtablissementParID) Succès de la recherche par ID : " + etablissement
-                        + ".\n");
+                log("recupererEtablissementParID) Succès de la recherche par ID : " + etablissement);
             }
 
         } catch (final Exception ex) {
 
             if (afficherLog == true) {
-                System.out.print("Service recupererEtablissementParID) Echec de la recherche par ID.\n");
+                log("recupererEtablissementParID) Echec de la recherche par ID.");
             }
 
             if (afficherTraceErreur == true) {
@@ -961,23 +963,26 @@ public class Service { // Tip :le service ne dépend pas de la persistence
 
         final Enseignant en = new Enseignant("ew", "DEKEW", "Simon", "0713200950", 0, 0, "Lycée");
 
+        final Autre samy = new Autre("SAMSAM", "Saa", "Myy", "0123321456", 4, 2, "INSAAAAMYYY");
+
         try {
             JpaUtil.creerContextePersistance();
             JpaUtil.ouvrirTransaction();
             intervenantDAO.creerIntervenant(en);
             intervenantDAO.creerIntervenant(a);
             intervenantDAO.creerIntervenant(et);
+            intervenantDAO.creerIntervenant(samy);
             JpaUtil.validerTransaction();
 
             if (afficherLog == true) {
-                System.out.print(
-                        "Service Interne initialiserIntervenants> Succès de l'initialisation des intervenants.\n");
+                log(
+                        "Interne initialiserIntervenants> Succès de l'initialisation des intervenants.");
             }
 
         } catch (final Exception ex) { // Erreur interne de persistance
             if (afficherLog == true) {
-                System.out.print(
-                        "Service Interne initialiserIntervenants> Echec de l'initialisation des intervenants.\n");
+                log(
+                        "Interne initialiserIntervenants> Echec de l'initialisation des intervenants.");
             }
 
             if (afficherTraceErreur == true) {
@@ -997,6 +1002,7 @@ public class Service { // Tip :le service ne dépend pas de la persistence
         matieres.add("Maths");
         matieres.add("Histoire Géographie");
         matieres.add("Francais");
+        matieres.add("Physique");
 
         final MatiereDAO matiereDAO = new MatiereDAO();
         Matiere matiere;
@@ -1012,14 +1018,14 @@ public class Service { // Tip :le service ne dépend pas de la persistence
                 matiereDAO.creerMatiere(matiere); // Persistance de la matière
             }
             if (afficherLog == true) {
-                System.out.print("Service Interne initialiserMatieres> Succès de l'initialisation des matières.\n");
+                log("Interne initialiserMatieres> Succès de l'initialisation des matières.");
             }
 
             JpaUtil.validerTransaction();
 
         } catch (final Exception ex) {
             if (afficherLog == true) {
-                System.out.print("Service Interne initialiserMatieres> Echec de l'initialisation des matières.\n");
+                log("Interne initialiserMatieres> Echec de l'initialisation des matières.");
             }
 
             if (afficherTraceErreur == true) {
@@ -1029,6 +1035,15 @@ public class Service { // Tip :le service ne dépend pas de la persistence
         } finally {
             JpaUtil.fermerContextePersistance();
         }
+
+    }
+
+    private void initialiserEleves() {
+
+        String codeEtab1 = "0692155T";
+        Eleve e1 = new Eleve("Hugo", "Victor", "26/02/1802", 4, "vhugo@paris.fr", "1234");
+
+        inscrireEleve(e1, codeEtab1);
 
     }
 
@@ -1051,17 +1066,17 @@ public class Service { // Tip :le service ne dépend pas de la persistence
                 etablissement = new Etablissement(code, result.get(1), result.get(2), result.get(4), result.get(5),
                         result.get(6), result.get(8));
                 if (afficherLog == true) {
-                    System.out.print(
-                            "Service Interne chercherInfosEtablissement> Succès de la création d'un nouvel établissement : "
-                                    + etablissement + ".\n");
+                    log(
+                            "Interne chercherInfosEtablissement> Succès de la création d'un nouvel établissement : "
+                                    + etablissement);
                 }
 
             }
 
         } catch (final Exception ex) {
             if (afficherLog == true) {
-                System.out.print(
-                        "Service Interne chercherInfosEtablissement> Echec de la création d'un nouvel établissement.\n");
+                log(
+                        "Interne chercherInfosEtablissement> Echec de la création d'un nouvel établissement.");
             }
 
             if (afficherTraceErreur == true) {
@@ -1083,14 +1098,14 @@ public class Service { // Tip :le service ne dépend pas de la persistence
             intervenantDAO.majIntervenant(intervenant);
 
             if (afficherLog == true) {
-                System.out.print("Service Interne remettreIntervenantDispo> Succès : l'intervenant " + intervenant
-                        + " est à nouveau disponible.\n");
+                log("Interne remettreIntervenantDispo> Succès : l'intervenant " + intervenant
+                        + " est à nouveau disponible.");
             }
 
         } catch (final Exception ex) { // Si erreur dans la mise à jour de l'objet Intervenant
             if (afficherLog == true) {
-                System.out.print("Service Interne remettreIntervenantDispo> Echec : l'intervenant " + intervenant
-                        + " n'a pas être remis comme disponible.\n");
+                log("Interne remettreIntervenantDispo> Echec : l'intervenant " + intervenant
+                        + " n'a pas être remis comme disponible.");
             }
 
             if (afficherTraceErreur == true) {
@@ -1105,28 +1120,8 @@ public class Service { // Tip :le service ne dépend pas de la persistence
 
     }
 
-    /*
-     * public Intervenant connecterIntervenant(String login){
-     * try {
-     * 
-     * JpaUtil.creerContextePersistance();
-     * JpaUtil.ouvrirTransaction();
-     * 
-     * JpaUtil.validerTransaction();
-     * 
-     * System.out.print("Succès connexion intervenant." );
-     * 
-     * 
-     * } catch (Exception ex) {
-     * System.out.print("Echec connexion intervenant");
-     * 
-     * JpaUtil.annulerTransaction();
-     * 
-     * 
-     * } finally {
-     * JpaUtil.fermerContextePersistance();
-     * }
-     * return intervenant;
-     * }
-     */
+    private static void log(final String message) {
+        System.out.println(ColorUtil.ANSI_YELLOW + "[Service:Log] " + message + ColorUtil.ANSI_RESET);
+    }
+
 }

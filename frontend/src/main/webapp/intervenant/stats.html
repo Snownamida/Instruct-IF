@@ -1,126 +1,52 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Statistiques</title>
+    <link rel="stylesheet" href="stats.css" />
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+  </head>
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Statistiques</title>
-  <link rel="stylesheet" href="stats.css" />
-  <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-</head>
-
-<body>
-  <div class="navbar">
-    <a href="demande.html">
-      <button type="button" class="nav-button">Demande de cours</button>
-    </a>
-    <a href="history.html">
-      <button type="button" class="nav-button">Historique</button>
-    </a>
-    <a href="stats.html">
-      <button type="button" class="nav-button active">Statistiques</button>
-    </a>
-    <a href="profile.html">
-      <button type="button" class="nav-button">Profil</button>
-    </a>
-    <button type="button" class="nav-button" onlclick="logout()">Déconnexion</button>
-  </div>
-  <h1>Tableau de bord global, statistiques sur l'application:</h1>
-  <div class="stats">
-    <div class="content" id="content-div">
-      <!-- Les stats seront insérées ici -->
+  <body>
+    <div class="navbar">
+      <a href="demande.html">
+        <button type="button" class="nav-button">Demande de cours</button>
+      </a>
+      <a href="history.html">
+        <button type="button" class="nav-button">Historique</button>
+      </a>
+      <a href="stats.html">
+        <button type="button" class="nav-button active">Statistiques</button>
+      </a>
+      <a href="profile.html">
+        <button type="button" class="nav-button">Profil</button>
+      </a>
+      <button type="button" class="nav-button" onclick="logout()">
+        Déconnexion
+      </button>
     </div>
-    <table>
-      <thead>
-        <tr>
-          <th>Nom de l'établissement</th>
-          <th>Département</th>
-          <th>Commune</th>
-          <th>IPS</th>
-          <th>Nombre de soutiens</th>
-          <th>Durée moyenne</th>
-        </tr>
-      </thead>
-      <tbody id="etabs">
-        <!-- Les etablissements seront insérées ici -->
-      </tbody>
-    </table>
-  </div>
-</body>
-<script>
-  function getStatsTable() {
-    $.ajax({
-      url: '../ActionServlet',
-      method: 'POST',
-      data: { todo: 'etabs' },
-      dataType: 'json'
-    })
-      .done(function (response) {
-        const etabs = $('#etabs');
-        response.forEach(function (etab) {
-          const row = '<tr>' +
-            '<td>' + etab.nom + '</td>' +
-            '<td>' + etab.codeDepartement + '</td>' +
-            '<td>' + etab.nomCommune + '</td>' +
-            '<td>' + etab.ips + '</td>' +
-            '<td>' + etab.nbDemandes + '</td>' +
-            '<td>' + etab.dureeMoyenne + '</td>' +
-            '</tr>';
-          etabs.append(row);
-        });
-      })
-      .fail(function (error) {
-        console.error('Erreur lors de la récupération du tableau de stats :', error);
-        alert('Erreur lors de la récupération du tableau de stats');
-      });
-  }
-  function getStats() {
-    $.ajax({
-      url: '../ActionServlet',
-      method: 'POST',
-      data: { todo: 'stats' },
-      dataType: 'json'
-    })
-      .done(function (response) {
-        const aRemplir = $('#content-div');
-        aRemplir.innerHTML = `<p>Matière la plus demandée : ${reponse.populate_matiere.denomination}</p>
-          <p>Au total : ${nb_soutien} soutiens pour une durée totale de ${time_total_soutien} minutes</p>
-          <p>Par eleve, en moyenne : ${nb_average_soutien_per_eleve} soutiens pour une durée moyenne de ${time_average_soutien_per_eleve} minutes</p>
-          <p>Par établissement, en moyenne : ${nb_average_soutien_per_etab} soutiens pour une durée moyenne de ${time_average_soutien_per_etab} minutes</p>`
-      })
-      .fail(function (error) {
-        console.error('Erreur lors de la récupération des stats :', error);
-        alert('Erreur lors de la récupération des stats');
-      });
-  }
-
-
-  // Fonction pour formater la durée en heures, minutes et secondes
-  function formatDuration(duration) {
-    const seconds = parseInt(duration, 10) % 60;
-    const hours = Math.floor(seconds / 3600);
-    const minutes = Math.floor((seconds % 3600) / 60);
-    return hours + 'h' + (minutes < 10 ? '0' : '') + minutes + 'min' + (seconds < 10 ? '0' : '') + seconds + 's';
-  }
-
-  function logout() {
-    $.ajax({
-      url: '../ActionServlet',
-      method: 'POST',
-      data: { todo: 'signout' },
-      dataType: 'json'
-    })
-      .done((response) => {
-        window.location.href = '../index.html';
-      })
-      .fail((error) => {
-        console.error('Erreur lors de la déconnexion:', error);
-      });
-  }
-  $(document).ready(() => {
-    getStats();
-    getStatsTable();
-  });
-</script>
-
+    <h1>Tableau de bord global, statistiques sur l'application:</h1>
+    <div class="stats">
+      <div class="content" id="content-div">
+        <!-- Les stats seront insérées ici -->
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th>Nom de l'établissement</th>
+            <th>Département</th>
+            <th>Commune</th>
+            <th>IPS</th>
+            <th>Nombre de soutiens</th>
+            <th>Durée moyenne</th>
+          </tr>
+        </thead>
+        <tbody id="etabs">
+          <!-- Les etablissements seront insérées ici -->
+        </tbody>
+      </table>
+    </div>
+  </body>
+  <script src="stats.js"></script>
 </html>
